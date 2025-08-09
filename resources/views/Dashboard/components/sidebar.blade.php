@@ -120,90 +120,29 @@
 
         <!-- 📜 c. Riwayat Pendakian Pendaki -->
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="{{ route('hiker-history.index') }}" class="menu-link">
                 <i class="menu-icon icon-base ri ri-history-line"></i>
                 <div data-i18n="Riwayat Pendakian">Riwayat Pendakian</div>
                 <div class="badge rounded-pill bg-label-secondary fs-tiny ms-auto">📜</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="climbing-dates.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-calendar-line"></i>
-                        <div data-i18n="Tanggal Pendakian">Tanggal Pendakian</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="checkin-checkout-times.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-time-fill"></i>
-                        <div data-i18n="Jam Check-in & Checkout">Jam Check-in & Checkout</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="total-climbing-hours.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-timer-line"></i>
-                        <div data-i18n="Total Jam Pendakian">Jam Pendakian</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="route-tracking.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-roadster-line"></i>
-                        <div data-i18n="Rute yang Dilewati">Rute</div>
-                        <div class="badge rounded-pill bg-label-info fs-tiny ms-auto">Track</div>
-                    </a>
-                </li>
-            </ul>
         </li>
 
         <!-- 📄 d. List Pengaduan -->
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="{{ route('complaints.index') }}" class="menu-link">
                 <i class="menu-icon icon-base ri ri-feedback-line"></i>
                 <div data-i18n="List Pengaduan">Pengaduan</div>
                 <div class="badge rounded-pill bg-label-danger fs-tiny ms-auto">📄</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="all-complaints.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-file-list-3-line"></i>
-                        <div data-i18n="Tabel Semua Pengaduan">Pengaduan</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="complaints-filter.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-filter-3-line"></i>
-                        <div data-i18n="Filter Berdasarkan Waktu, Gunung, Status">Filter Waktu, Gunung, Status</div>
-                    </a>
-                </li>
-            </ul>
         </li>
 
         <!-- 🧰 e. List Peminjaman Alat -->
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="{{ route('equipment-rentals.index') }}" class="menu-link">
                 <i class="menu-icon icon-base ri ri-tools-line"></i>
                 <div data-i18n="List Peminjaman Alat">Peminjaman Alat</div>
                 <div class="badge rounded-pill bg-label-warning fs-tiny ms-auto">🧰</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="borrower-names.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-user-line"></i>
-                        <div data-i18n="Nama Pendaki">Nama Pendaki</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="borrowed-equipment.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-hammer-line"></i>
-                        <div data-i18n="Alat yang Dipinjam">Alat Dipinjam</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="equipment-status.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-checkbox-circle-line"></i>
-                        <div data-i18n="Status (Dipinjam/Dikembalikan)">Status (Dipinjam/Dikembalikan)</div>
-                    </a>
-                </li>
-            </ul>
         </li>
 
         <!-- 🌟 f. List Feedback & Rating -->
