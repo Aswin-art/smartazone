@@ -49,7 +49,7 @@
         <!-- Dashboard Admin Sidebar Menu -->
         <!-- 📈 a. Data Analitik -->
         <li class="menu-item">
-            <a href="{{ url('analytics-overview') }}" class="menu-link">
+            <a href="{{ route('dashboard.index') }}" class="menu-link">
                 <i class="menu-icon icon-base ri ri-bar-chart-box-line"></i>
                 <div data-i18n="Data Analitik">Data Analitik</div>
                 <div class="badge rounded-pill bg-label-success fs-tiny ms-auto">📈</div>
@@ -59,12 +59,12 @@
 
         <!-- 🧍‍♂️ b. List Pendaki -->
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="{{ route('hikers.index') }}" class="menu-link">
                 <i class="menu-icon icon-base ri ri-group-line"></i>
                 <div data-i18n="List Pendaki">Pendaki</div>
                 <div class="badge rounded-pill bg-label-info fs-tiny ms-auto">🧍‍♂️</div>
             </a>
-            <ul class="menu-sub">
+            {{-- <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="climbers-personal-booking.html" class="menu-link">
                         <i class="menu-icon icon-base ri ri-user-settings-line"></i>
@@ -83,7 +83,7 @@
                         <div data-i18n="Tautan ke Riwayat Pendakian">Riwayat Pendakian</div>
                     </a>
                 </li>
-            </ul>
+            </ul> --}}
         </li>
 
         <!-- 🔬 Subfitur: Monitor Kesehatan -->
