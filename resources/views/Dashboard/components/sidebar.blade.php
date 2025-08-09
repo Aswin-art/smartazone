@@ -88,34 +88,11 @@
 
         <!-- 🔬 Subfitur: Monitor Kesehatan -->
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="{{ route('health.index') }}" class="menu-link">
                 <i class="menu-icon icon-base ri ri-heart-pulse-line"></i>
                 <div data-i18n="Monitor Kesehatan">Monitor Kesehatan</div>
                 <div class="badge rounded-pill bg-label-warning fs-tiny ms-auto">🔬</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="health-monitoring-iot.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-heart-add-line"></i>
-                        <div data-i18n="Monitor Kesehatan Pendaki">Kesehatan Pendaki</div>
-                        <div class="badge rounded-pill bg-label-primary fs-tiny ms-auto">IoT</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="gps-tracking-map.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-map-pin-line"></i>
-                        <div data-i18n="Peta Pemantauan Pendaki">Peta Pendaki</div>
-                        <div class="badge rounded-pill bg-label-success fs-tiny ms-auto">GPS</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="sos-signal-monitor.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-alarm-warning-line"></i>
-                        <div data-i18n="SOS Signal Monitor">SOS Monitor</div>
-                        <div class="badge rounded-pill bg-label-danger fs-tiny ms-auto">🆘</div>
-                    </a>
-                </li>
-            </ul>
         </li>
 
         <!-- 📜 c. Riwayat Pendakian Pendaki -->
@@ -147,31 +124,11 @@
 
         <!-- 🌟 f. List Feedback & Rating -->
         <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+            <a href="{{ route('feedback.index') }}" class="menu-link">
                 <i class="menu-icon icon-base ri ri-star-line"></i>
                 <div data-i18n="List Feedback & Rating">Feedback & Rating</div>
                 <div class="badge rounded-pill bg-label-success fs-tiny ms-auto">🌟</div>
             </a>
-            <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="star-ratings.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-star-fill"></i>
-                        <div data-i18n="Rating Bintang">Rating Bintang</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="text-feedback.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-message-3-line"></i>
-                        <div data-i18n="Feedback Teks">Feedback Teks</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="mountain-climbing-time.html" class="menu-link">
-                        <i class="menu-icon icon-base ri ri-landscape-line"></i>
-                        <div data-i18n="Gunung & Waktu Pendakian Terkait">Gunung & Waktu Pendakian Terkait</div>
-                    </a>
-                </li>
-            </ul>
         </li>
 
         {{-- <!-- Dashboards -->
