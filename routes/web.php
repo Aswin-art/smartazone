@@ -1,12 +1,10 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    // dd("Welcome to the Dashboard");
-    return view('Dashboard.pages.index');
-});
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
