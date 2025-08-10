@@ -326,7 +326,8 @@
                                                     <div class="me-2">
                                                         <h6 class="mb-0">{{ $booking->user_name }}</h6>
                                                         <p class="mb-0">{{ $booking->mountain_name }}
-                                                            ({{ $booking->team_size }} hikers)</p>
+                                                            ({{ $booking->team_size }} hikers)
+                                                        </p>
                                                     </div>
                                                     <span
                                                         class="badge bg-label-{{ $statusColors[$booking->status] ?? 'secondary' }} rounded-pill">{{ ucfirst($booking->status) }}</span>

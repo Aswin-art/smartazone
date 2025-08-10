@@ -9,7 +9,7 @@
         <div class="layout-container">
             <!-- Menu -->
 
-            @include('dashboard.components.sidebar')
+            @include('Dashboard.components.sidebar')
             <!-- / Menu -->
 
             <!-- Layout container -->
@@ -29,8 +29,8 @@
                         <div class="navbar-nav align-items-center">
                             <div class="nav-item d-flex align-items-center">
                                 <i class="icon-base ri ri-search-line icon-lg lh-0"></i>
-                                <input type="text" class="form-control border-0 shadow-none"
-                                    placeholder="Search..." aria-label="Search..." />
+                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
+                                    aria-label="Search..." />
                             </div>
                         </div>
                         <!-- /Search -->
@@ -49,8 +49,7 @@
                                 <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="../assets/img/avatars/1.png" alt="alt"
-                                            class="rounded-circle" />
+                                        <img src="../assets/img/avatars/1.png" alt="alt" class="rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -124,6 +123,5 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
 
-     @stack('scripts')
-@include('dashboard.layouts.tail')
-
+    @stack('scripts')
+    @include('Dashboard.layouts.tail')

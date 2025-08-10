@@ -1,4 +1,4 @@
-@extends('dashboard.layouts.app')
+@extends('Dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -85,7 +85,8 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#filterModal">
                                         <i class="icon-base ri ri-filter-3-line me-1"></i>Filter
                                     </button>
                                     <button type="button" class="btn btn-primary" onclick="exportComplaints()">
@@ -94,7 +95,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Quick Filters -->
                         <div class="row mt-3">
                             <div class="col-md-4">
@@ -103,7 +104,7 @@
                             <div class="col-md-2">
                                 <select class="form-select" id="quickMountainFilter">
                                     <option value="">Semua Gunung</option>
-                                    @foreach($mountains as $mountain)
+                                    @foreach ($mountains as $mountain)
                                         <option value="{{ $mountain->id }}">{{ $mountain->name }}</option>
                                     @endforeach
                                 </select>
@@ -197,7 +198,7 @@
                                     <label for="filterMountain" class="form-label">Gunung</label>
                                     <select class="form-select" id="filterMountain" name="mountain_id">
                                         <option value="">Semua Gunung</option>
-                                        @foreach($mountains as $mountain)
+                                        @foreach ($mountains as $mountain)
                                             <option value="{{ $mountain->id }}">{{ $mountain->name }}</option>
                                         @endforeach
                                     </select>
@@ -393,9 +394,9 @@
                 data.forEach(function(complaint) {
                     let priorityBadge = getPriorityBadge(complaint.priority_level);
                     let statusBadge = getStatusBadge(complaint.complaint_status);
-                    let imageBadge = complaint.has_image ? 
+                    let imageBadge = complaint.has_image ?
                         '<i class="icon-base ri ri-image-line text-info ms-2" title="Ada gambar"></i>' : '';
-                    
+
                     html += `
                 <tr>
                     <td>
@@ -473,7 +474,7 @@
                 let badgeClass = '';
                 let priorityText = '';
                 let icon = '';
-                
+
                 switch (priority) {
                     case 'high':
                         badgeClass = 'bg-label-danger';
@@ -495,7 +496,7 @@
                         priorityText = 'Normal';
                         icon = 'ri-file-text-line';
                 }
-                
+
                 return `<span class="badge rounded-pill ${badgeClass}">
                     <i class="icon-base ${icon} icon-12px me-1"></i>
                     ${priorityText}
@@ -505,7 +506,7 @@
             function getStatusBadge(status) {
                 let badgeClass = '';
                 let statusText = '';
-                
+
                 switch (status) {
                     case 'new':
                         badgeClass = 'bg-label-success';
@@ -523,7 +524,7 @@
                         badgeClass = 'bg-label-secondary';
                         statusText = 'Unknown';
                 }
-                
+
                 return `<span class="badge rounded-pill ${badgeClass}">${statusText}</span>`;
             }
 
@@ -534,7 +535,7 @@
                     $('#pagination').empty();
                     return;
                 }
-                
+
                 html += `
             <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
                 <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage - 1})">
@@ -542,17 +543,18 @@
                 </a>
             </li>
         `;
-                
+
                 const startPage = Math.max(1, currentPage - 2);
                 const endPage = Math.min(totalPages, startPage + 4);
-                
+
                 if (startPage > 1) {
-                    html += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(1)">1</a></li>`;
+                    html +=
+                        `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(1)">1</a></li>`;
                     if (startPage > 2) {
                         html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
                     }
                 }
-                
+
                 for (let i = startPage; i <= endPage; i++) {
                     html += `
                 <li class="page-item ${i === currentPage ? 'active' : ''}">
@@ -560,14 +562,15 @@
                 </li>
             `;
                 }
-                
+
                 if (endPage < totalPages) {
                     if (endPage < totalPages - 1) {
                         html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
                     }
-                    html += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+                    html +=
+                        `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
                 }
-                
+
                 html += `
             <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
                 <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage + 1})">
@@ -604,7 +607,8 @@
             window.viewDetail = function(complaintId) {
                 currentComplaintId = complaintId;
                 $.ajax({
-                    url: '{{ route('complaints.detail', ':complaintId') }}'.replace(':complaintId', complaintId),
+                    url: '{{ route('complaints.detail', ':complaintId') }}'.replace(':complaintId',
+                        complaintId),
                     type: 'GET',
                     success: function(response) {
                         renderDetailModal(response);
@@ -623,7 +627,8 @@
 
             window.contactUser = function(phone) {
                 if (phone) {
-                    const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=Halo,%20kami%20dari%20Mountain%20Management%20System%20ingin%20merespon%20pengaduan%20Anda.`;
+                    const whatsappUrl =
+                        `https://wa.me/${phone.replace(/\D/g, '')}?text=Halo,%20kami%20dari%20Mountain%20Management%20System%20ingin%20merespon%20pengaduan%20Anda.`;
                     window.open(whatsappUrl, '_blank');
                 } else {
                     alert('Nomor telepon tidak tersedia.');
@@ -632,7 +637,8 @@
 
             window.markComplaintAsRead = function(complaintId) {
                 $.ajax({
-                    url: '{{ route('complaints.mark-read', ':complaintId') }}'.replace(':complaintId', complaintId),
+                    url: '{{ route('complaints.mark-read', ':complaintId') }}'.replace(':complaintId',
+                        complaintId),
                     type: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}'
@@ -661,11 +667,11 @@
                 filters.status = $('#filterStatus').val();
                 filters.date_from = $('#dateFrom').val();
                 filters.date_to = $('#dateTo').val();
-                
+
                 // Update quick filters to match
                 $('#quickMountainFilter').val(filters.mountain_id);
                 $('#quickStatusFilter').val(filters.status);
-                
+
                 currentPage = 1;
                 loadComplaints();
                 loadStatistics();
@@ -680,7 +686,7 @@
                     date_to: '',
                     priority: ''
                 };
-                
+
                 // Clear all filter inputs
                 $('#searchInput').val('');
                 $('#quickMountainFilter').val('');
@@ -690,7 +696,7 @@
                 $('#filterStatus').val('');
                 $('#dateFrom').val('');
                 $('#dateTo').val('');
-                
+
                 searchTerm = '';
                 currentPage = 1;
                 loadComplaints();
@@ -727,7 +733,7 @@
                 if (relatedComplaints.length > 0) {
                     relatedComplaints.forEach(function(related) {
                         const relatedDate = new Date(related.created_at).toLocaleDateString('id-ID');
-                        const shortMessage = related.message.length > 50 ? 
+                        const shortMessage = related.message.length > 50 ?
                             related.message.substring(0, 50) + '...' : related.message;
                         relatedHtml += `
                     <tr>
@@ -790,45 +796,45 @@
             </div>
 
             ${membersHtml ? `
-            <div class="mt-4">
-                <h6>Anggota Tim</h6>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>NIK</th>
-                                <th>Telepon</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${membersHtml}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            ` : ''}
+                    <div class="mt-4">
+                        <h6>Anggota Tim</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>NIK</th>
+                                        <th>Telepon</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${membersHtml}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    ` : ''}
 
             ${relatedHtml ? `
-            <div class="mt-4">
-                <h6>Pengaduan Terkait dari Pendaki yang Sama</h6>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Gunung</th>
-                                <th>Pengaduan</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${relatedHtml}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            ` : ''}
+                    <div class="mt-4">
+                        <h6>Pengaduan Terkait dari Pendaki yang Sama</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Gunung</th>
+                                        <th>Pengaduan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${relatedHtml}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    ` : ''}
         `;
 
                 $('#detailContent').html(detailHtml);

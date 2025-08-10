@@ -10,7 +10,7 @@ class SOSMonitoringController extends Controller
 {
     public function index()
     {
-        return view('dashboard.pages.sos-monitoring.index');
+        return view('Dashboard.pages.sos-monitoring.index');
     }
 
     public function getData(Request $request)

@@ -9,7 +9,7 @@ class HikersController extends Controller
 {
     public function index()
     {
-        return view('dashboard.pages.hikers.index');
+        return view('Dashboard.pages.hikers.index');
     }
 
     public function getData(Request $request)

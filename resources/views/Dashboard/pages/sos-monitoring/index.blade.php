@@ -1,4 +1,4 @@
-@extends('dashboard.layouts.app')
+@extends('Dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -164,7 +164,8 @@
         </div>
 
         <!-- SOS Detail Modal -->
-        <div class="modal fade" id="sosDetailModal" tabindex="-1" aria-labelledby="sosDetailModalLabel" aria-hidden="true">
+        <div class="modal fade" id="sosDetailModal" tabindex="-1" aria-labelledby="sosDetailModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -193,7 +194,8 @@
         </div>
 
         <!-- Response Modal -->
-        <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
+        <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -214,13 +216,13 @@
                             </div>
                             <div class="mb-3">
                                 <label for="responderName" class="form-label">Responder Name *</label>
-                                <input type="text" class="form-control" id="responderName" name="responder_name" 
-                                       placeholder="Enter your name" required>
+                                <input type="text" class="form-control" id="responderName" name="responder_name"
+                                    placeholder="Enter your name" required>
                             </div>
                             <div class="mb-3">
                                 <label for="responseNotes" class="form-label">Response Notes</label>
                                 <textarea class="form-control" id="responseNotes" name="response_notes" rows="3"
-                                          placeholder="Enter any additional notes or actions taken..."></textarea>
+                                    placeholder="Enter any additional notes or actions taken..."></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -236,10 +238,13 @@
 
         <footer class="content-footer footer bg-footer-theme">
             <div class="container-xxl">
-                <div class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
+                <div
+                    class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
                     <div class="mb-2 mb-md-0">
                         &#169;
-                        <script>document.write(new Date().getFullYear());</script>, Mountain Management System
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>, Mountain Management System
                     </div>
                 </div>
             </div>
@@ -250,118 +255,118 @@
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        let currentPage = 1;
-        let itemsPerPage = 10;
-        let searchTerm = '';
-        let statusFilter = '';
-        let totalRecords = 0;
-        let refreshInterval;
-        let currentSOSId = null;
-        
-        loadSOSData();
-        loadSOSStats();
-        loadRecentSOSAlerts();
-        
-        // Auto-refresh every 15 seconds for SOS signals
-        refreshInterval = setInterval(function() {
+    <script>
+        $(document).ready(function() {
+            let currentPage = 1;
+            let itemsPerPage = 10;
+            let searchTerm = '';
+            let statusFilter = '';
+            let totalRecords = 0;
+            let refreshInterval;
+            let currentSOSId = null;
+
             loadSOSData();
             loadSOSStats();
             loadRecentSOSAlerts();
-        }, 15000);
 
-        let searchTimeout;
-        $('#searchInput').on('keyup', function() {
-            clearTimeout(searchTimeout);
-            searchTerm = $(this).val();
-            searchTimeout = setTimeout(function() {
+            // Auto-refresh every 15 seconds for SOS signals
+            refreshInterval = setInterval(function() {
+                loadSOSData();
+                loadSOSStats();
+                loadRecentSOSAlerts();
+            }, 15000);
+
+            let searchTimeout;
+            $('#searchInput').on('keyup', function() {
+                clearTimeout(searchTimeout);
+                searchTerm = $(this).val();
+                searchTimeout = setTimeout(function() {
+                    currentPage = 1;
+                    loadSOSData();
+                }, 500);
+            });
+
+            $('#statusFilter').on('change', function() {
+                statusFilter = $(this).val();
                 currentPage = 1;
                 loadSOSData();
-            }, 500);
-        });
+            });
 
-        $('#statusFilter').on('change', function() {
-            statusFilter = $(this).val();
-            currentPage = 1;
-            loadSOSData();
-        });
-
-        function loadSOSData() {
-            showLoading();
-            $.ajax({
-                url: '{{ route('sos.getData') }}',
-                type: 'GET',
-                data: {
-                    search: searchTerm,
-                    status: statusFilter,
-                    start: (currentPage - 1) * itemsPerPage,
-                    length: itemsPerPage,
-                    order_column: 'mss.timestamp',
-                    order_dir: 'desc'
-                },
-                success: function(response) {
-                    hideLoading();
-                    totalRecords = response.recordsTotal;
-                    if (response.data && response.data.length > 0) {
-                        renderTable(response.data);
-                        renderPagination();
-                        updateTableInfo();
-                        $('#noDataMessage').hide();
-                    } else {
-                        $('#sosTable tbody').empty();
-                        $('#pagination').empty();
-                        $('#tableInfo').text('Showing 0 to 0 of 0 entries');
-                        $('#noDataMessage').show();
+            function loadSOSData() {
+                showLoading();
+                $.ajax({
+                    url: '{{ route('sos.getData') }}',
+                    type: 'GET',
+                    data: {
+                        search: searchTerm,
+                        status: statusFilter,
+                        start: (currentPage - 1) * itemsPerPage,
+                        length: itemsPerPage,
+                        order_column: 'mss.timestamp',
+                        order_dir: 'desc'
+                    },
+                    success: function(response) {
+                        hideLoading();
+                        totalRecords = response.recordsTotal;
+                        if (response.data && response.data.length > 0) {
+                            renderTable(response.data);
+                            renderPagination();
+                            updateTableInfo();
+                            $('#noDataMessage').hide();
+                        } else {
+                            $('#sosTable tbody').empty();
+                            $('#pagination').empty();
+                            $('#tableInfo').text('Showing 0 to 0 of 0 entries');
+                            $('#noDataMessage').show();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        hideLoading();
+                        console.error('Error loading SOS data:', error);
+                        alert('Error loading data. Please try again.');
                     }
-                },
-                error: function(xhr, status, error) {
-                    hideLoading();
-                    console.error('Error loading SOS data:', error);
-                    alert('Error loading data. Please try again.');
-                }
-            });
-        }
+                });
+            }
 
-        function loadSOSStats() {
-            $.ajax({
-                url: '{{ route('sos.stats') }}',
-                type: 'GET',
-                success: function(response) {
-                    $('#totalSOS').text(response.total_sos);
-                    $('#pendingSOS').text(response.pending_sos);
-                    $('#resolvedSOS').text(response.resolved_sos);
-                    $('#avgResponseTime').text(response.avg_response_time);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error loading SOS stats:', error);
-                }
-            });
-        }
+            function loadSOSStats() {
+                $.ajax({
+                    url: '{{ route('sos.stats') }}',
+                    type: 'GET',
+                    success: function(response) {
+                        $('#totalSOS').text(response.total_sos);
+                        $('#pendingSOS').text(response.pending_sos);
+                        $('#resolvedSOS').text(response.resolved_sos);
+                        $('#avgResponseTime').text(response.avg_response_time);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading SOS stats:', error);
+                    }
+                });
+            }
 
-        function loadRecentSOSAlerts() {
-            $.ajax({
-                url: '{{ route('sos.stats') }}',
-                type: 'GET',
-                success: function(response) {
-                    renderRecentSOSAlerts(response.recent_sos);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error loading recent SOS alerts:', error);
-                }
-            });
-        }
+            function loadRecentSOSAlerts() {
+                $.ajax({
+                    url: '{{ route('sos.stats') }}',
+                    type: 'GET',
+                    success: function(response) {
+                        renderRecentSOSAlerts(response.recent_sos);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading recent SOS alerts:', error);
+                    }
+                });
+            }
 
-        function renderRecentSOSAlerts(recentSOS) {
-            let html = '';
-            
-            if (recentSOS && recentSOS.length > 0) {
-                recentSOS.forEach(function(sos) {
-                    let priorityClass = getPriorityClass(sos.timestamp);
-                    let statusBadge = getSOSStatusBadge(sos.response_status);
-                    let timeAgo = getTimeAgo(sos.timestamp);
-                    
-                    html += `
+            function renderRecentSOSAlerts(recentSOS) {
+                let html = '';
+
+                if (recentSOS && recentSOS.length > 0) {
+                    recentSOS.forEach(function(sos) {
+                        let priorityClass = getPriorityClass(sos.timestamp);
+                        let statusBadge = getSOSStatusBadge(sos.response_status);
+                        let timeAgo = getTimeAgo(sos.timestamp);
+
+                        html += `
                         <div class="alert alert-${priorityClass} d-flex align-items-center" role="alert">
                             <i class="ri-alarm-warning-line me-2 ri-22px"></i>
                             <div class="flex-grow-1">
@@ -384,28 +389,30 @@
                             </div>
                         </div>
                     `;
-                });
-            } else {
-                html = `
+                    });
+                } else {
+                    html = `
                     <div class="alert alert-success text-center" role="alert">
                         <i class="ri-shield-check-line me-2"></i>
                         No recent SOS signals. All hikers are safe.
                     </div>
                 `;
-            }
-            
-            $('#recentSOSContainer').html(html);
-        }
+                }
 
-        function renderTable(data) {
-            let html = '';
-            data.forEach(function(sos) {
-                let priorityBadge = getPriorityBadge(sos.priority);
-                let statusBadge = getSOSStatusBadge(sos.status);
-                let coordinates = `${parseFloat(sos.latitude).toFixed(6)}, ${parseFloat(sos.longitude).toFixed(6)}`;
-                let message = sos.message.length > 30 ? sos.message.substring(0, 30) + '...' : sos.message;
-                
-                html += `
+                $('#recentSOSContainer').html(html);
+            }
+
+            function renderTable(data) {
+                let html = '';
+                data.forEach(function(sos) {
+                    let priorityBadge = getPriorityBadge(sos.priority);
+                    let statusBadge = getSOSStatusBadge(sos.status);
+                    let coordinates =
+                        `${parseFloat(sos.latitude).toFixed(6)}, ${parseFloat(sos.longitude).toFixed(6)}`;
+                    let message = sos.message.length > 30 ? sos.message.substring(0, 30) + '...' : sos
+                        .message;
+
+                    html += `
                     <tr class="${sos.priority === 'critical' ? 'table-danger' : ''}">
                         <td>${priorityBadge}</td>
                         <td>
@@ -444,11 +451,11 @@
                             <div>
                                 <small class="text-muted">${sos.timestamp}</small>
                                 ${sos.responded_at ? `
-                                    <br><small class="text-success">
-                                        <i class="ri-check-line me-1"></i>
-                                        Responded: ${sos.responded_at}
-                                    </small>
-                                ` : ''}
+                                        <br><small class="text-success">
+                                            <i class="ri-check-line me-1"></i>
+                                            Responded: ${sos.responded_at}
+                                        </small>
+                                    ` : ''}
                             </div>
                         </td>
                         <td>${statusBadge}</td>
@@ -463,11 +470,11 @@
                                         View Details
                                     </a>
                                     ${sos.status === 'pending' ? `
-                                    <a class="dropdown-item" href="javascript:void(0);" onclick="respondToSOS(${sos.sos_id})">
-                                        <i class="icon-base ri ri-chat-check-line icon-18px me-2"></i>
-                                        Respond
-                                    </a>
-                                    ` : ''}
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="respondToSOS(${sos.sos_id})">
+                                            <i class="icon-base ri ri-chat-check-line icon-18px me-2"></i>
+                                            Respond
+                                        </a>
+                                        ` : ''}
                                     <a class="dropdown-item" href="https://maps.google.com/?q=${sos.latitude},${sos.longitude}" target="_blank">
                                         <i class="icon-base ri ri-map-pin-line icon-18px me-2"></i>
                                         Open in Maps
@@ -481,179 +488,180 @@
                         </td>
                     </tr>
                 `;
-            });
-            $('#sosTable tbody').html(html);
-        }
-
-        function getPriorityBadge(priority) {
-            switch (priority) {
-                case 'critical':
-                    return '<span class="badge bg-danger">Critical</span>';
-                case 'high':
-                    return '<span class="badge bg-warning">High</span>';
-                case 'medium':
-                    return '<span class="badge bg-info">Medium</span>';
-                case 'normal':
-                    return '<span class="badge bg-success">Normal</span>';
-                default:
-                    return '<span class="badge bg-secondary">Unknown</span>';
+                });
+                $('#sosTable tbody').html(html);
             }
-        }
 
-        function getSOSStatusBadge(status) {
-            switch (status) {
-                case 'pending':
-                    return '<span class="badge bg-label-danger">Pending</span>';
-                case 'responded':
-                    return '<span class="badge bg-label-warning">Responded</span>';
-                case 'resolved':
-                    return '<span class="badge bg-label-success">Resolved</span>';
-                case 'false_alarm':
-                    return '<span class="badge bg-label-secondary">False Alarm</span>';
-                default:
-                    return '<span class="badge bg-label-danger">Pending</span>';
-            }
-        }
-
-        function getPriorityClass(timestamp) {
-            let hoursAgo = (new Date() - new Date(timestamp)) / (1000 * 60 * 60);
-            if (hoursAgo > 6) return 'danger';
-            if (hoursAgo > 2) return 'warning';
-            return 'info';
-        }
-
-        function getTimeAgo(timestamp) {
-            let now = new Date();
-            let past = new Date(timestamp);
-            let diffMs = now - past;
-            let diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
-            let diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-            
-            if (diffHrs > 0) {
-                return `${diffHrs}h ${diffMins}m`;
-            } else {
-                return `${diffMins}m`;
-            }
-        }
-
-        window.viewSOSDetails = function(sosId) {
-            $.ajax({
-                url: `/sos/${sosId}`,
-                type: 'GET',
-                success: function(response) {
-                    currentSOSId = sosId;
-                    renderSOSDetails(response);
-                    $('#sosDetailModal').modal('show');
-                },
-                error: function(xhr, status, error) {
-                    alert('Error loading SOS details. Please try again.');
+            function getPriorityBadge(priority) {
+                switch (priority) {
+                    case 'critical':
+                        return '<span class="badge bg-danger">Critical</span>';
+                    case 'high':
+                        return '<span class="badge bg-warning">High</span>';
+                    case 'medium':
+                        return '<span class="badge bg-info">Medium</span>';
+                    case 'normal':
+                        return '<span class="badge bg-success">Normal</span>';
+                    default:
+                        return '<span class="badge bg-secondary">Unknown</span>';
                 }
-            });
-        };
+            }
 
-        window.respondToSOS = function(sosId) {
-            currentSOSId = sosId;
-            $('#sosSignalId').val(sosId);
-            $('#responseModal').modal('show');
-        };
+            function getSOSStatusBadge(status) {
+                switch (status) {
+                    case 'pending':
+                        return '<span class="badge bg-label-danger">Pending</span>';
+                    case 'responded':
+                        return '<span class="badge bg-label-warning">Responded</span>';
+                    case 'resolved':
+                        return '<span class="badge bg-label-success">Resolved</span>';
+                    case 'false_alarm':
+                        return '<span class="badge bg-label-secondary">False Alarm</span>';
+                    default:
+                        return '<span class="badge bg-label-danger">Pending</span>';
+                }
+            }
 
-        window.getEmergencyContacts = function(bookingId) {
-            $.ajax({
-                url: `/sos/emergency-contacts/${bookingId}`,
-                type: 'GET',
-                success: function(response) {
-                    let contactsHtml = `
+            function getPriorityClass(timestamp) {
+                let hoursAgo = (new Date() - new Date(timestamp)) / (1000 * 60 * 60);
+                if (hoursAgo > 6) return 'danger';
+                if (hoursAgo > 2) return 'warning';
+                return 'info';
+            }
+
+            function getTimeAgo(timestamp) {
+                let now = new Date();
+                let past = new Date(timestamp);
+                let diffMs = now - past;
+                let diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
+                let diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+                if (diffHrs > 0) {
+                    return `${diffHrs}h ${diffMins}m`;
+                } else {
+                    return `${diffMins}m`;
+                }
+            }
+
+            window.viewSOSDetails = function(sosId) {
+                $.ajax({
+                    url: `/sos/${sosId}`,
+                    type: 'GET',
+                    success: function(response) {
+                        currentSOSId = sosId;
+                        renderSOSDetails(response);
+                        $('#sosDetailModal').modal('show');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error loading SOS details. Please try again.');
+                    }
+                });
+            };
+
+            window.respondToSOS = function(sosId) {
+                currentSOSId = sosId;
+                $('#sosSignalId').val(sosId);
+                $('#responseModal').modal('show');
+            };
+
+            window.getEmergencyContacts = function(bookingId) {
+                $.ajax({
+                    url: `/sos/emergency-contacts/${bookingId}`,
+                    type: 'GET',
+                    success: function(response) {
+                        let contactsHtml = `
                         <div class="alert alert-info">
                             <h6>Emergency Contacts:</h6>
                             <p><strong>Emergency Contact:</strong> ${response.emergency_contact || 'Not provided'}</p>
                             <p><strong>Hiker Phone:</strong> ${response.phone || 'Not provided'}</p>
                         </div>
                     `;
-                    
-                    if (response.members) {
-                        let members = JSON.parse(response.members);
-                        contactsHtml += '<h6>Team Members:</h6><ul>';
-                        members.forEach(function(member) {
-                            contactsHtml += `<li>${member.name || 'Unknown'} - ${member.phone || 'No phone'}</li>`;
-                        });
-                        contactsHtml += '</ul>';
+
+                        if (response.members) {
+                            let members = JSON.parse(response.members);
+                            contactsHtml += '<h6>Team Members:</h6><ul>';
+                            members.forEach(function(member) {
+                                contactsHtml +=
+                                    `<li>${member.name || 'Unknown'} - ${member.phone || 'No phone'}</li>`;
+                            });
+                            contactsHtml += '</ul>';
+                        }
+
+                        alert(contactsHtml);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error loading emergency contacts.');
                     }
-                    
-                    alert(contactsHtml);
-                },
-                error: function(xhr, status, error) {
-                    alert('Error loading emergency contacts.');
-                }
-            });
-        };
-
-        window.refreshSOSAlerts = function() {
-            loadRecentSOSAlerts();
-        };
-
-        // Response form submission
-        $('#responseForm').on('submit', function(e) {
-            e.preventDefault();
-            
-            let formData = {
-                _token: '{{ csrf_token() }}',
-                status: $('#responseStatus').val(),
-                responder_name: $('#responderName').val(),
-                response_notes: $('#responseNotes').val()
+                });
             };
-            
-            $.ajax({
-                url: `/sos/${currentSOSId}/respond`,
-                type: 'POST',
-                data: formData,
-                success: function(response) {
-                    alert('Response recorded successfully');
-                    $('#responseModal').modal('hide');
-                    $('#responseForm')[0].reset();
-                    loadSOSData();
-                    loadSOSStats();
-                },
-                error: function(xhr, status, error) {
-                    alert('Error recording response. Please try again.');
-                }
-            });
-        });
 
-        // Quick response buttons
-        $('#markResolvedBtn').on('click', function() {
-            if (currentSOSId && confirm('Mark this SOS signal as resolved?')) {
+            window.refreshSOSAlerts = function() {
+                loadRecentSOSAlerts();
+            };
+
+            // Response form submission
+            $('#responseForm').on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = {
+                    _token: '{{ csrf_token() }}',
+                    status: $('#responseStatus').val(),
+                    responder_name: $('#responderName').val(),
+                    response_notes: $('#responseNotes').val()
+                };
+
                 $.ajax({
                     url: `/sos/${currentSOSId}/respond`,
                     type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        status: 'resolved',
-                        responder_name: 'Admin Dashboard',
-                        response_notes: 'Marked as resolved from dashboard'
-                    },
+                    data: formData,
                     success: function(response) {
-                        alert('SOS signal marked as resolved');
-                        $('#sosDetailModal').modal('hide');
+                        alert('Response recorded successfully');
+                        $('#responseModal').modal('hide');
+                        $('#responseForm')[0].reset();
                         loadSOSData();
                         loadSOSStats();
                     },
                     error: function(xhr, status, error) {
-                        alert('Error updating status. Please try again.');
+                        alert('Error recording response. Please try again.');
                     }
                 });
-            }
-        });
+            });
 
-        $('#markRespondedBtn').on('click', function() {
-            respondToSOS(currentSOSId);
-            $('#sosDetailModal').modal('hide');
-        });
+            // Quick response buttons
+            $('#markResolvedBtn').on('click', function() {
+                if (currentSOSId && confirm('Mark this SOS signal as resolved?')) {
+                    $.ajax({
+                        url: `/sos/${currentSOSId}/respond`,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            status: 'resolved',
+                            responder_name: 'Admin Dashboard',
+                            response_notes: 'Marked as resolved from dashboard'
+                        },
+                        success: function(response) {
+                            alert('SOS signal marked as resolved');
+                            $('#sosDetailModal').modal('hide');
+                            loadSOSData();
+                            loadSOSStats();
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Error updating status. Please try again.');
+                        }
+                    });
+                }
+            });
 
-        function renderSOSDetails(data) {
-            let priorityClass = getPriorityClass(data.sos_signal.timestamp);
-            let statusBadge = getSOSStatusBadge(data.sos_signal.response_status);
-            
-            let detailsHtml = `
+            $('#markRespondedBtn').on('click', function() {
+                respondToSOS(currentSOSId);
+                $('#sosDetailModal').modal('hide');
+            });
+
+            function renderSOSDetails(data) {
+                let priorityClass = getPriorityClass(data.sos_signal.timestamp);
+                let statusBadge = getSOSStatusBadge(data.sos_signal.response_status);
+
+                let detailsHtml = `
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card bg-light">
@@ -709,9 +717,9 @@
                     </div>
                 </div>
             `;
-            
-            if (data.sos_signal.response_status && data.sos_signal.response_status !== 'pending') {
-                detailsHtml += `
+
+                if (data.sos_signal.response_status && data.sos_signal.response_status !== 'pending') {
+                    detailsHtml += `
                     <hr>
                     <div class="row">
                         <div class="col-12">
@@ -725,92 +733,94 @@
                         </div>
                     </div>
                 `;
-            }
-            
-            $('#sosDetails').html(detailsHtml);
-        }
+                }
 
-        // Utility functions for pagination, etc. (similar to previous examples)
-        function renderPagination() {
-            const totalPages = Math.ceil(totalRecords / itemsPerPage);
-            let html = '';
-            if (totalPages <= 1) {
-                $('#pagination').empty();
-                return;
+                $('#sosDetails').html(detailsHtml);
             }
-            
-            html += `
+
+            // Utility functions for pagination, etc. (similar to previous examples)
+            function renderPagination() {
+                const totalPages = Math.ceil(totalRecords / itemsPerPage);
+                let html = '';
+                if (totalPages <= 1) {
+                    $('#pagination').empty();
+                    return;
+                }
+
+                html += `
                 <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
                     <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage - 1})">
                         <i class="ri-arrow-left-s-line"></i>
                     </a>
                 </li>
             `;
-            
-            const startPage = Math.max(1, currentPage - 2);
-            const endPage = Math.min(totalPages, startPage + 4);
-            
-            if (startPage > 1) {
-                html += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(1)">1</a></li>`;
-                if (startPage > 2) {
-                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+
+                const startPage = Math.max(1, currentPage - 2);
+                const endPage = Math.min(totalPages, startPage + 4);
+
+                if (startPage > 1) {
+                    html +=
+                        `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(1)">1</a></li>`;
+                    if (startPage > 2) {
+                        html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                    }
                 }
-            }
-            
-            for (let i = startPage; i <= endPage; i++) {
-                html += `
+
+                for (let i = startPage; i <= endPage; i++) {
+                    html += `
                     <li class="page-item ${i === currentPage ? 'active' : ''}">
                         <a class="page-link" href="javascript:void(0);" onclick="changePage(${i})">${i}</a>
                     </li>
                 `;
-            }
-            
-            if (endPage < totalPages) {
-                if (endPage < totalPages - 1) {
-                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
                 }
-                html += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
-            }
-            
-            html += `
+
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                    }
+                    html +=
+                        `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+                }
+
+                html += `
                 <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
                     <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage + 1})">
                         <i class="ri-arrow-right-s-line"></i>
                     </a>
                 </li>
             `;
-            
-            $('#pagination').html(html);
-        }
 
-        window.changePage = function(page) {
-            if (page < 1 || page > Math.ceil(totalRecords / itemsPerPage)) return;
-            currentPage = page;
-            loadSOSData();
-        };
-
-        function updateTableInfo() {
-            const start = (currentPage - 1) * itemsPerPage + 1;
-            const end = Math.min(currentPage * itemsPerPage, totalRecords);
-            $('#tableInfo').text(`Showing ${start} to ${end} of ${totalRecords} entries`);
-        }
-
-        function showLoading() {
-            $('#loadingSpinner').show();
-            $('#sosTable tbody').empty();
-            $('#noDataMessage').hide();
-        }
-
-        function hideLoading() {
-            $('#loadingSpinner').hide();
-        }
-
-        // Clear interval when page is unloaded
-        $(window).on('beforeunload', function() {
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
+                $('#pagination').html(html);
             }
+
+            window.changePage = function(page) {
+                if (page < 1 || page > Math.ceil(totalRecords / itemsPerPage)) return;
+                currentPage = page;
+                loadSOSData();
+            };
+
+            function updateTableInfo() {
+                const start = (currentPage - 1) * itemsPerPage + 1;
+                const end = Math.min(currentPage * itemsPerPage, totalRecords);
+                $('#tableInfo').text(`Showing ${start} to ${end} of ${totalRecords} entries`);
+            }
+
+            function showLoading() {
+                $('#loadingSpinner').show();
+                $('#sosTable tbody').empty();
+                $('#noDataMessage').hide();
+            }
+
+            function hideLoading() {
+                $('#loadingSpinner').hide();
+            }
+
+            // Clear interval when page is unloaded
+            $(window).on('beforeunload', function() {
+                if (refreshInterval) {
+                    clearInterval(refreshInterval);
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endpush

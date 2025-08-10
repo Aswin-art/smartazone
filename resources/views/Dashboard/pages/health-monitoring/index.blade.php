@@ -1,4 +1,4 @@
-@extends('dashboard.layouts.app')
+@extends('Dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -156,7 +156,8 @@
         </div>
 
         <!-- Health Detail Modal -->
-        <div class="modal fade" id="healthDetailModal" tabindex="-1" aria-labelledby="healthDetailModalLabel" aria-hidden="true">
+        <div class="modal fade" id="healthDetailModal" tabindex="-1" aria-labelledby="healthDetailModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -180,10 +181,13 @@
 
         <footer class="content-footer footer bg-footer-theme">
             <div class="container-xxl">
-                <div class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
+                <div
+                    class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
                     <div class="mb-2 mb-md-0">
                         &#169;
-                        <script>document.write(new Date().getFullYear());</script>, Mountain Management System
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>, Mountain Management System
                     </div>
                 </div>
             </div>
@@ -194,108 +198,108 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-<script>
-    $(document).ready(function() {
-        let currentPage = 1;
-        let itemsPerPage = 10;
-        let searchTerm = '';
-        let totalRecords = 0;
-        let refreshInterval;
-        
-        loadHealthData();
-        loadStats();
-        loadHealthAlerts();
-        
-        // Auto-refresh every 30 seconds
-        refreshInterval = setInterval(function() {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let currentPage = 1;
+            let itemsPerPage = 10;
+            let searchTerm = '';
+            let totalRecords = 0;
+            let refreshInterval;
+
             loadHealthData();
             loadStats();
             loadHealthAlerts();
-        }, 30000);
 
-        let searchTimeout;
-        $('#searchInput').on('keyup', function() {
-            clearTimeout(searchTimeout);
-            searchTerm = $(this).val();
-            searchTimeout = setTimeout(function() {
-                currentPage = 1;
+            // Auto-refresh every 30 seconds
+            refreshInterval = setInterval(function() {
                 loadHealthData();
-            }, 500);
-        });
+                loadStats();
+                loadHealthAlerts();
+            }, 30000);
 
-        function loadHealthData() {
-            showLoading();
-            $.ajax({
-                url: '{{ route('health.getData') }}',
-                type: 'GET',
-                data: {
-                    search: searchTerm,
-                    start: (currentPage - 1) * itemsPerPage,
-                    length: itemsPerPage,
-                    order_column: 'mhl.timestamp',
-                    order_dir: 'desc'
-                },
-                success: function(response) {
-                    hideLoading();
-                    totalRecords = response.recordsTotal;
-                    if (response.data && response.data.length > 0) {
-                        renderTable(response.data);
-                        renderPagination();
-                        updateTableInfo();
-                        $('#noDataMessage').hide();
-                    } else {
-                        $('#healthTable tbody').empty();
-                        $('#pagination').empty();
-                        $('#tableInfo').text('Showing 0 to 0 of 0 entries');
-                        $('#noDataMessage').show();
+            let searchTimeout;
+            $('#searchInput').on('keyup', function() {
+                clearTimeout(searchTimeout);
+                searchTerm = $(this).val();
+                searchTimeout = setTimeout(function() {
+                    currentPage = 1;
+                    loadHealthData();
+                }, 500);
+            });
+
+            function loadHealthData() {
+                showLoading();
+                $.ajax({
+                    url: '{{ route('health.getData') }}',
+                    type: 'GET',
+                    data: {
+                        search: searchTerm,
+                        start: (currentPage - 1) * itemsPerPage,
+                        length: itemsPerPage,
+                        order_column: 'mhl.timestamp',
+                        order_dir: 'desc'
+                    },
+                    success: function(response) {
+                        hideLoading();
+                        totalRecords = response.recordsTotal;
+                        if (response.data && response.data.length > 0) {
+                            renderTable(response.data);
+                            renderPagination();
+                            updateTableInfo();
+                            $('#noDataMessage').hide();
+                        } else {
+                            $('#healthTable tbody').empty();
+                            $('#pagination').empty();
+                            $('#tableInfo').text('Showing 0 to 0 of 0 entries');
+                            $('#noDataMessage').show();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        hideLoading();
+                        console.error('Error loading health data:', error);
                     }
-                },
-                error: function(xhr, status, error) {
-                    hideLoading();
-                    console.error('Error loading health data:', error);
-                }
-            });
-        }
+                });
+            }
 
-        function loadStats() {
-            $.ajax({
-                url: '{{ route('health.stats') }}',
-                type: 'GET',
-                success: function(response) {
-                    $('#totalActiveHikers').text(response.total_active);
-                    $('#criticalHikers').text(response.critical_hikers);
-                    $('#recentAlerts').text(response.recent_alerts);
-                    $('#normalStatus').text(response.total_active - response.critical_hikers);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error loading stats:', error);
-                }
-            });
-        }
+            function loadStats() {
+                $.ajax({
+                    url: '{{ route('health.stats') }}',
+                    type: 'GET',
+                    success: function(response) {
+                        $('#totalActiveHikers').text(response.total_active);
+                        $('#criticalHikers').text(response.critical_hikers);
+                        $('#recentAlerts').text(response.recent_alerts);
+                        $('#normalStatus').text(response.total_active - response.critical_hikers);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading stats:', error);
+                    }
+                });
+            }
 
-        function loadHealthAlerts() {
-            $.ajax({
-                url: '{{ route('health.stats') }}',
-                type: 'GET',
-                success: function(response) {
-                    renderHealthAlerts(response.alert_details);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error loading alerts:', error);
-                }
-            });
-        }
+            function loadHealthAlerts() {
+                $.ajax({
+                    url: '{{ route('health.stats') }}',
+                    type: 'GET',
+                    success: function(response) {
+                        renderHealthAlerts(response.alert_details);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading alerts:', error);
+                    }
+                });
+            }
 
-        function renderHealthAlerts(alerts) {
-            let html = '';
-            
-            if (alerts && alerts.length > 0) {
-                alerts.forEach(function(alert) {
-                    let alertClass = getAlertClass(alert.heart_rate, alert.body_temperature);
-                    let alertIcon = getAlertIcon(alert.heart_rate, alert.body_temperature);
-                    
-                    html += `
+            function renderHealthAlerts(alerts) {
+                let html = '';
+
+                if (alerts && alerts.length > 0) {
+                    alerts.forEach(function(alert) {
+                        let alertClass = getAlertClass(alert.heart_rate, alert.body_temperature);
+                        let alertIcon = getAlertIcon(alert.heart_rate, alert.body_temperature);
+
+                        html += `
                         <div class="alert ${alertClass} d-flex align-items-center" role="alert">
                             <i class="${alertIcon} me-2"></i>
                             <div class="flex-grow-1">
@@ -308,27 +312,27 @@
                             </div>
                         </div>
                     `;
-                });
-            } else {
-                html = `
+                    });
+                } else {
+                    html = `
                     <div class="alert alert-success text-center" role="alert">
                         <i class="ri-shield-check-line me-2"></i>
                         No health alerts at this time. All hikers are in normal condition.
                     </div>
                 `;
-            }
-            
-            $('#healthAlertsContainer').html(html);
-        }
+                }
 
-        function renderTable(data) {
-            let html = '';
-            data.forEach(function(health) {
-                let statusBadge = getHealthStatusBadge(health.health_status);
-                let heartRateColor = getVitalColor(health.heart_rate, 'heart_rate');
-                let temperatureColor = getVitalColor(health.body_temperature, 'temperature');
-                
-                html += `
+                $('#healthAlertsContainer').html(html);
+            }
+
+            function renderTable(data) {
+                let html = '';
+                data.forEach(function(health) {
+                    let statusBadge = getHealthStatusBadge(health.health_status);
+                    let heartRateColor = getVitalColor(health.heart_rate, 'heart_rate');
+                    let temperatureColor = getVitalColor(health.body_temperature, 'temperature');
+
+                    html += `
                     <tr>
                         <td>
                             <i class="icon-base ri ri-user-3-line icon-22px text-info me-3"></i>
@@ -372,109 +376,109 @@
                                         View Chart
                                     </a>
                                     ${health.health_status === 'critical' ? `
-                                    <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="sendEmergencyAlert(${health.booking_id})">
-                                        <i class="icon-base ri ri-alarm-warning-line icon-18px me-2"></i>
-                                        Send Alert
-                                    </a>
-                                    ` : ''}
+                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="sendEmergencyAlert(${health.booking_id})">
+                                            <i class="icon-base ri ri-alarm-warning-line icon-18px me-2"></i>
+                                            Send Alert
+                                        </a>
+                                        ` : ''}
                                 </div>
                             </div>
                         </td>
                     </tr>
                 `;
-            });
-            $('#healthTable tbody').html(html);
-        }
-
-        function getHealthStatusBadge(status) {
-            switch (status) {
-                case 'critical':
-                    return '<span class="badge bg-label-danger">Critical</span>';
-                case 'warning':
-                    return '<span class="badge bg-label-warning">Warning</span>';
-                case 'normal':
-                    return '<span class="badge bg-label-success">Normal</span>';
-                default:
-                    return '<span class="badge bg-label-secondary">Unknown</span>';
+                });
+                $('#healthTable tbody').html(html);
             }
-        }
 
-        function getVitalColor(value, type) {
-            if (type === 'heart_rate') {
-                if (value > 120 || value < 50) return 'bg-label-danger';
-                if (value > 100 || value < 60) return 'bg-label-warning';
-                return 'bg-label-success';
-            } else if (type === 'temperature') {
-                if (value > 38.5 || value < 35.0) return 'bg-label-danger';
-                if (value > 37.8 || value < 35.5) return 'bg-label-warning';
-                return 'bg-label-success';
-            }
-            return 'bg-label-secondary';
-        }
-
-        function getAlertClass(heartRate, temperature) {
-            if (heartRate > 120 || heartRate < 50 || temperature > 38.5 || temperature < 35.0) {
-                return 'alert-danger';
-            }
-            return 'alert-warning';
-        }
-
-        function getAlertIcon(heartRate, temperature) {
-            if (heartRate > 120 || heartRate < 50 || temperature > 38.5 || temperature < 35.0) {
-                return 'ri-alert-line';
-            }
-            return 'ri-error-warning-line';
-        }
-
-        window.viewHealthDetails = function(bookingId) {
-            $.ajax({
-                url: `/health/${bookingId}`,
-                type: 'GET',
-                success: function(response) {
-                    renderHealthDetails(response);
-                    $('#healthDetailModal').modal('show');
-                },
-                error: function(xhr, status, error) {
-                    alert('Error loading health details. Please try again.');
+            function getHealthStatusBadge(status) {
+                switch (status) {
+                    case 'critical':
+                        return '<span class="badge bg-label-danger">Critical</span>';
+                    case 'warning':
+                        return '<span class="badge bg-label-warning">Warning</span>';
+                    case 'normal':
+                        return '<span class="badge bg-label-success">Normal</span>';
+                    default:
+                        return '<span class="badge bg-label-secondary">Unknown</span>';
                 }
-            });
-        };
+            }
 
-        window.viewHealthChart = function(bookingId) {
-            // This would open a chart modal showing health trends
-            viewHealthDetails(bookingId);
-        };
+            function getVitalColor(value, type) {
+                if (type === 'heart_rate') {
+                    if (value > 120 || value < 50) return 'bg-label-danger';
+                    if (value > 100 || value < 60) return 'bg-label-warning';
+                    return 'bg-label-success';
+                } else if (type === 'temperature') {
+                    if (value > 38.5 || value < 35.0) return 'bg-label-danger';
+                    if (value > 37.8 || value < 35.5) return 'bg-label-warning';
+                    return 'bg-label-success';
+                }
+                return 'bg-label-secondary';
+            }
 
-        window.sendEmergencyAlert = function(bookingId) {
-            if (confirm('Send emergency health alert for this hiker?')) {
+            function getAlertClass(heartRate, temperature) {
+                if (heartRate > 120 || heartRate < 50 || temperature > 38.5 || temperature < 35.0) {
+                    return 'alert-danger';
+                }
+                return 'alert-warning';
+            }
+
+            function getAlertIcon(heartRate, temperature) {
+                if (heartRate > 120 || heartRate < 50 || temperature > 38.5 || temperature < 35.0) {
+                    return 'ri-alert-line';
+                }
+                return 'ri-error-warning-line';
+            }
+
+            window.viewHealthDetails = function(bookingId) {
                 $.ajax({
-                    url: '{{ route('health.sendAlert') }}',
-                    type: 'POST',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        booking_id: bookingId,
-                        alert_type: 'health_emergency',
-                        message: 'Critical health readings detected'
-                    },
+                    url: `/health/${bookingId}`,
+                    type: 'GET',
                     success: function(response) {
-                        alert('Emergency alert sent successfully');
+                        renderHealthDetails(response);
+                        $('#healthDetailModal').modal('show');
                     },
                     error: function(xhr, status, error) {
-                        alert('Error sending alert. Please try again.');
+                        alert('Error loading health details. Please try again.');
                     }
                 });
-            }
-        };
+            };
 
-        window.refreshAlerts = function() {
-            loadHealthAlerts();
-        };
+            window.viewHealthChart = function(bookingId) {
+                // This would open a chart modal showing health trends
+                viewHealthDetails(bookingId);
+            };
 
-        function renderHealthDetails(data) {
-            let statusClass = data.current_status === 'critical' ? 'danger' : 
-                             data.current_status === 'warning' ? 'warning' : 'success';
-            
-            let detailsHtml = `
+            window.sendEmergencyAlert = function(bookingId) {
+                if (confirm('Send emergency health alert for this hiker?')) {
+                    $.ajax({
+                        url: '{{ route('health.sendAlert') }}',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            booking_id: bookingId,
+                            alert_type: 'health_emergency',
+                            message: 'Critical health readings detected'
+                        },
+                        success: function(response) {
+                            alert('Emergency alert sent successfully');
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Error sending alert. Please try again.');
+                        }
+                    });
+                }
+            };
+
+            window.refreshAlerts = function() {
+                loadHealthAlerts();
+            };
+
+            function renderHealthDetails(data) {
+                let statusClass = data.current_status === 'critical' ? 'danger' :
+                    data.current_status === 'warning' ? 'warning' : 'success';
+
+                let detailsHtml = `
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card bg-light">
@@ -531,67 +535,67 @@
                                 </thead>
                                 <tbody>
             `;
-            
-            data.readings.forEach(function(reading) {
-                detailsHtml += `
+
+                data.readings.forEach(function(reading) {
+                    detailsHtml += `
                     <tr>
                         <td><small>${new Date(reading.timestamp).toLocaleTimeString()}</small></td>
                         <td><small>${reading.heart_rate} bpm</small></td>
                         <td><small>${reading.body_temperature}°C</small></td>
                     </tr>
                 `;
-            });
-            
-            detailsHtml += `
+                });
+
+                detailsHtml += `
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             `;
-            
-            $('#healthDetails').html(detailsHtml);
-        }
 
-        // Pagination and other utility functions (same as previous examples)
-        function renderPagination() {
-            const totalPages = Math.ceil(totalRecords / itemsPerPage);
-            let html = '';
-            if (totalPages <= 1) {
-                $('#pagination').empty();
-                return;
+                $('#healthDetails').html(detailsHtml);
             }
-            // ... pagination code similar to previous examples
-        }
 
-        window.changePage = function(page) {
-            if (page < 1 || page > Math.ceil(totalRecords / itemsPerPage)) return;
-            currentPage = page;
-            loadHealthData();
-        };
-
-        function updateTableInfo() {
-            const start = (currentPage - 1) * itemsPerPage + 1;
-            const end = Math.min(currentPage * itemsPerPage, totalRecords);
-            $('#tableInfo').text(`Showing ${start} to ${end} of ${totalRecords} entries`);
-        }
-
-        function showLoading() {
-            $('#loadingSpinner').show();
-            $('#healthTable tbody').empty();
-            $('#noDataMessage').hide();
-        }
-
-        function hideLoading() {
-            $('#loadingSpinner').hide();
-        }
-
-        // Clear interval when page is unloaded
-        $(window).on('beforeunload', function() {
-            if (refreshInterval) {
-                clearInterval(refreshInterval);
+            // Pagination and other utility functions (same as previous examples)
+            function renderPagination() {
+                const totalPages = Math.ceil(totalRecords / itemsPerPage);
+                let html = '';
+                if (totalPages <= 1) {
+                    $('#pagination').empty();
+                    return;
+                }
+                // ... pagination code similar to previous examples
             }
+
+            window.changePage = function(page) {
+                if (page < 1 || page > Math.ceil(totalRecords / itemsPerPage)) return;
+                currentPage = page;
+                loadHealthData();
+            };
+
+            function updateTableInfo() {
+                const start = (currentPage - 1) * itemsPerPage + 1;
+                const end = Math.min(currentPage * itemsPerPage, totalRecords);
+                $('#tableInfo').text(`Showing ${start} to ${end} of ${totalRecords} entries`);
+            }
+
+            function showLoading() {
+                $('#loadingSpinner').show();
+                $('#healthTable tbody').empty();
+                $('#noDataMessage').hide();
+            }
+
+            function hideLoading() {
+                $('#loadingSpinner').hide();
+            }
+
+            // Clear interval when page is unloaded
+            $(window).on('beforeunload', function() {
+                if (refreshInterval) {
+                    clearInterval(refreshInterval);
+                }
+            });
         });
-    });
-</script>
+    </script>
 @endpush

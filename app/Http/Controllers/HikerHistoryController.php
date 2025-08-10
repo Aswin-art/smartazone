@@ -10,7 +10,7 @@ class HikerHistoryController extends Controller
 {
     public function index()
     {
-        return view('dashboard.pages.hiker-history.index');
+        return view('Dashboard.pages.hiker-history.index');
     }
 
     public function getData(Request $request)

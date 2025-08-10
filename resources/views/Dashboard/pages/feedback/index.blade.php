@@ -1,4 +1,4 @@
-@extends('dashboard.layouts.app')
+@extends('Dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -173,7 +173,7 @@
             let itemsPerPage = 10;
             let searchTerm = '';
             let totalRecords = 0;
-            
+
             loadFeedback();
             loadStats();
 
@@ -231,18 +231,19 @@
                             let totalReviews = 0;
                             let totalRating = 0;
                             let totalMountains = response.length;
-                            
+
                             response.forEach(function(item) {
                                 totalReviews += parseInt(item.total_reviews);
                                 totalRating += parseFloat(item.avg_rating);
                             });
-                            
-                            let avgRating = totalMountains > 0 ? (totalRating / totalMountains).toFixed(1) : 0;
-                            
+
+                            let avgRating = totalMountains > 0 ? (totalRating / totalMountains).toFixed(
+                                1) : 0;
+
                             $('#totalReviews').text(totalReviews);
                             $('#avgRating').text(avgRating);
                             $('#totalMountains').text(totalMountains);
-                            
+
                             // Calculate this month's reviews (you might want to add this to backend)
                             $('#thisMonth').text('0'); // Placeholder
                         }
@@ -257,10 +258,10 @@
                 let html = '';
                 data.forEach(function(feedback) {
                     let stars = generateStars(feedback.rating);
-                    let comment = feedback.comment.length > 50 
-                        ? feedback.comment.substring(0, 50) + '...' 
-                        : feedback.comment;
-                    
+                    let comment = feedback.comment.length > 50 ?
+                        feedback.comment.substring(0, 50) + '...' :
+                        feedback.comment;
+
                     html += `
                 <tr>
                     <td>

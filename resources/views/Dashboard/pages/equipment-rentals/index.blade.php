@@ -1,4 +1,4 @@
-@extends('dashboard.layouts.app')
+@extends('Dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -83,10 +83,12 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button type="button" class="btn btn-outline-info" onclick="showEquipmentAvailability()">
+                                    <button type="button" class="btn btn-outline-info"
+                                        onclick="showEquipmentAvailability()">
                                         <i class="icon-base ri ri-database-2-line me-1"></i>Stok Alat
                                     </button>
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#filterModal">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#filterModal">
                                         <i class="icon-base ri ri-filter-3-line me-1"></i>Filter
                                     </button>
                                     <button type="button" class="btn btn-primary" onclick="exportRentals()">
@@ -95,16 +97,17 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Quick Filters -->
                         <div class="row mt-3">
                             <div class="col-md-3">
-                                <input type="text" id="searchInput" class="form-control" placeholder="Cari peminjaman...">
+                                <input type="text" id="searchInput" class="form-control"
+                                    placeholder="Cari peminjaman...">
                             </div>
                             <div class="col-md-2">
                                 <select class="form-select" id="quickMountainFilter">
                                     <option value="">Semua Gunung</option>
-                                    @foreach($mountains as $mountain)
+                                    @foreach ($mountains as $mountain)
                                         <option value="{{ $mountain->id }}">{{ $mountain->name }}</option>
                                     @endforeach
                                 </select>
@@ -112,7 +115,7 @@
                             <div class="col-md-2">
                                 <select class="form-select" id="quickEquipmentFilter">
                                     <option value="">Semua Alat</option>
-                                    @foreach($equipments as $equipment)
+                                    @foreach ($equipments as $equipment)
                                         <option value="{{ $equipment->id }}">{{ $equipment->name }}</option>
                                     @endforeach
                                 </select>
@@ -206,7 +209,7 @@
                                     <label for="filterMountain" class="form-label">Gunung</label>
                                     <select class="form-select" id="filterMountain" name="mountain_id">
                                         <option value="">Semua Gunung</option>
-                                        @foreach($mountains as $mountain)
+                                        @foreach ($mountains as $mountain)
                                             <option value="{{ $mountain->id }}">{{ $mountain->name }}</option>
                                         @endforeach
                                     </select>
@@ -215,7 +218,7 @@
                                     <label for="filterEquipment" class="form-label">Alat</label>
                                     <select class="form-select" id="filterEquipment" name="equipment_id">
                                         <option value="">Semua Alat</option>
-                                        @foreach($equipments as $equipment)
+                                        @foreach ($equipments as $equipment)
                                             <option value="{{ $equipment->id }}">{{ $equipment->name }}</option>
                                         @endforeach
                                     </select>
@@ -265,7 +268,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-warning" id="updateStatusBtn" onclick="updateRentalStatus()">
+                        <button type="button" class="btn btn-outline-warning" id="updateStatusBtn"
+                            onclick="updateRentalStatus()">
                             <i class="icon-base ri ri-refresh-line me-1"></i>Ubah Status
                         </button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
@@ -275,7 +279,8 @@
         </div>
 
         <!-- Equipment Availability Modal -->
-        <div class="modal fade" id="availabilityModal" tabindex="-1" aria-labelledby="availabilityModalLabel" aria-hidden="true">
+        <div class="modal fade" id="availabilityModal" tabindex="-1" aria-labelledby="availabilityModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -287,7 +292,7 @@
                             <label for="availabilityMountain" class="form-label">Pilih Gunung</label>
                             <select class="form-select" id="availabilityMountain">
                                 <option value="">Pilih gunung...</option>
-                                @foreach($mountains as $mountain)
+                                @foreach ($mountains as $mountain)
                                     <option value="{{ $mountain->id }}">{{ $mountain->name }}</option>
                                 @endforeach
                             </select>
@@ -329,7 +334,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="button" class="btn btn-primary" onclick="confirmStatusUpdate()">Ubah Status</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmStatusUpdate()">Ubah
+                            Status</button>
                     </div>
                 </div>
             </div>
@@ -471,12 +477,13 @@
                 let html = '';
                 data.forEach(function(rental) {
                     let statusBadge = getStatusBadge(rental.rental_status, rental.is_overdue);
-                    let overdueBadge = rental.is_overdue ? 
-                        `<br><small class="badge bg-danger">Terlambat ${rental.overdue_days} hari</small>` : '';
-                    let equipmentImage = rental.has_image ? 
-                        `<img src="${rental.equipment_image}" class="rounded me-2" style="width: 32px; height: 32px; object-fit: cover;" alt="${rental.equipment_name}">` : 
+                    let overdueBadge = rental.is_overdue ?
+                        `<br><small class="badge bg-danger">Terlambat ${rental.overdue_days} hari</small>` :
+                        '';
+                    let equipmentImage = rental.has_image ?
+                        `<img src="${rental.equipment_image}" class="rounded me-2" style="width: 32px; height: 32px; object-fit: cover;" alt="${rental.equipment_name}">` :
                         '<i class="icon-base ri ri-tools-line icon-22px text-primary me-2"></i>';
-                    
+
                     html += `
                 <tr ${rental.is_overdue ? 'class="table-warning"' : ''}>
                     <td>
@@ -564,7 +571,7 @@
                 let badgeClass = '';
                 let statusText = '';
                 let icon = '';
-                
+
                 if (isOverdue && status === 'borrowed') {
                     badgeClass = 'bg-label-danger';
                     statusText = 'Dipinjam (Terlambat)';
@@ -587,7 +594,7 @@
                             icon = 'ri-question-line';
                     }
                 }
-                
+
                 return `<span class="badge rounded-pill ${badgeClass}">
                     <i class="icon-base ${icon} icon-12px me-1"></i>
                     ${statusText}
@@ -601,7 +608,7 @@
                     $('#pagination').empty();
                     return;
                 }
-                
+
                 html += `
             <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
                 <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage - 1})">
@@ -609,17 +616,18 @@
                 </a>
             </li>
         `;
-                
+
                 const startPage = Math.max(1, currentPage - 2);
                 const endPage = Math.min(totalPages, startPage + 4);
-                
+
                 if (startPage > 1) {
-                    html += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(1)">1</a></li>`;
+                    html +=
+                        `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(1)">1</a></li>`;
                     if (startPage > 2) {
                         html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
                     }
                 }
-                
+
                 for (let i = startPage; i <= endPage; i++) {
                     html += `
                 <li class="page-item ${i === currentPage ? 'active' : ''}">
@@ -627,14 +635,15 @@
                 </li>
             `;
                 }
-                
+
                 if (endPage < totalPages) {
                     if (endPage < totalPages - 1) {
                         html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
                     }
-                    html += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+                    html +=
+                        `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
                 }
-                
+
                 html += `
             <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
                 <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage + 1})">
@@ -671,7 +680,8 @@
             window.viewDetail = function(rentalId) {
                 currentRentalId = rentalId;
                 $.ajax({
-                    url: '{{ route('equipment-rentals.detail', ':rentalId') }}'.replace(':rentalId', rentalId),
+                    url: '{{ route('equipment-rentals.detail', ':rentalId') }}'.replace(':rentalId',
+                        rentalId),
                     type: 'GET',
                     success: function(response) {
                         renderDetailModal(response);
@@ -685,7 +695,8 @@
 
             window.contactUser = function(phone) {
                 if (phone) {
-                    const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=Halo,%20kami%20dari%20Mountain%20Management%20System%20mengenai%20peminjaman%20alat%20Anda.`;
+                    const whatsappUrl =
+                        `https://wa.me/${phone.replace(/\D/g, '')}?text=Halo,%20kami%20dari%20Mountain%20Management%20System%20mengenai%20peminjaman%20alat%20Anda.`;
                     window.open(whatsappUrl, '_blank');
                 } else {
                     alert('Nomor telepon tidak tersedia.');
@@ -706,7 +717,8 @@
                 }
 
                 $.ajax({
-                    url: '{{ route('equipment-rentals.update-status', ':rentalId') }}'.replace(':rentalId', currentRentalId),
+                    url: '{{ route('equipment-rentals.update-status', ':rentalId') }}'.replace(
+                        ':rentalId', currentRentalId),
                     type: 'POST',
                     data: {
                         status: newStatus,
@@ -737,19 +749,23 @@
 
             function loadEquipmentAvailability(mountainId) {
                 if (!mountainId) {
-                    $('#availabilityContent').html('<p class="text-muted text-center">Pilih gunung untuk melihat ketersediaan alat</p>');
+                    $('#availabilityContent').html(
+                        '<p class="text-muted text-center">Pilih gunung untuk melihat ketersediaan alat</p>');
                     return;
                 }
 
                 $.ajax({
                     url: '{{ route('equipment-rentals.equipment-availability') }}',
                     type: 'GET',
-                    data: { mountain_id: mountainId },
+                    data: {
+                        mountain_id: mountainId
+                    },
                     success: function(response) {
                         renderAvailabilityTable(response.equipments);
                     },
                     error: function(xhr, status, error) {
-                        $('#availabilityContent').html('<p class="text-danger text-center">Error loading data</p>');
+                        $('#availabilityContent').html(
+                            '<p class="text-danger text-center">Error loading data</p>');
                     }
                 });
             }
@@ -776,9 +792,10 @@
         `;
 
                 equipments.forEach(function(equipment) {
-                    const availabilityPercentage = (equipment.available_quantity / equipment.total_quantity) * 100;
+                    const availabilityPercentage = (equipment.available_quantity / equipment
+                        .total_quantity) * 100;
                     let statusBadge = '';
-                    
+
                     if (availabilityPercentage > 50) {
                         statusBadge = '<span class="badge bg-success">Tersedia</span>';
                     } else if (availabilityPercentage > 20) {
@@ -816,12 +833,12 @@
                 filters.status = $('#filterStatus').val();
                 filters.date_from = $('#dateFrom').val();
                 filters.date_to = $('#dateTo').val();
-                
+
                 // Update quick filters to match
                 $('#quickMountainFilter').val(filters.mountain_id);
                 $('#quickEquipmentFilter').val(filters.equipment_id);
                 $('#quickStatusFilter').val(filters.status);
-                
+
                 currentPage = 1;
                 loadRentals();
                 loadStatistics();
@@ -836,7 +853,7 @@
                     date_from: '',
                     date_to: ''
                 };
-                
+
                 // Clear all filter inputs
                 $('#searchInput').val('');
                 $('#quickMountainFilter').val('');
@@ -848,7 +865,7 @@
                 $('#filterStatus').val('');
                 $('#dateFrom').val('');
                 $('#dateTo').val('');
-                
+
                 searchTerm = '';
                 showOverdueOnly = false;
                 currentPage = 1;
@@ -892,10 +909,10 @@
                 let otherRentalsHtml = '';
                 if (otherRentals.length > 0) {
                     otherRentals.forEach(function(other) {
-                        const statusBadge = other.status === 'returned' ? 
-                            '<span class="badge bg-success">Dikembalikan</span>' : 
+                        const statusBadge = other.status === 'returned' ?
+                            '<span class="badge bg-success">Dikembalikan</span>' :
                             '<span class="badge bg-warning">Dipinjam</span>';
-                        
+
                         otherRentalsHtml += `
                     <tr>
                         <td>${other.equipment_name}</td>
@@ -911,10 +928,10 @@
                 if (rentalHistory.length > 0) {
                     rentalHistory.forEach(function(history) {
                         const historyDate = new Date(history.created_at).toLocaleDateString('id-ID');
-                        const statusBadge = history.status === 'returned' ? 
-                            '<span class="badge bg-success">Dikembalikan</span>' : 
+                        const statusBadge = history.status === 'returned' ?
+                            '<span class="badge bg-success">Dikembalikan</span>' :
                             '<span class="badge bg-warning">Dipinjam</span>';
-                        
+
                         historyHtml += `
                     <tr>
                         <td>${historyDate}</td>
@@ -934,12 +951,12 @@
 
                 let durationText = '';
                 let overdueText = '';
-                
+
                 if (returnDate) {
                     const diffTime = returnDate - hikeDate;
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                     durationText = `${diffDays} hari`;
-                    
+
                     if (rental.status === 'borrowed' && today > returnDate) {
                         const overdueDays = Math.ceil((today - returnDate) / (1000 * 60 * 60 * 24));
                         overdueText = `<div class="alert alert-danger mt-2">
@@ -1065,67 +1082,67 @@
             </div>
 
             ${membersHtml ? `
-            <div class="mt-4">
-                <h6>Anggota Tim</h6>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>NIK</th>
-                                <th>Telepon</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${membersHtml}
-                        </tbody>
-                    </table>
+                <div class="mt-4">
+                    <h6>Anggota Tim</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>NIK</th>
+                                    <th>Telepon</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${membersHtml}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            ` : ''}
+                ` : ''}
 
             ${otherRentalsHtml ? `
-            <div class="mt-4">
-                <h6>Alat Lain yang Dipinjam dalam Booking yang Sama</h6>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nama Alat</th>
-                                <th>Jumlah</th>
-                                <th>Status</th>
-                                <th>Deskripsi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${otherRentalsHtml}
-                        </tbody>
-                    </table>
+                <div class="mt-4">
+                    <h6>Alat Lain yang Dipinjam dalam Booking yang Sama</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nama Alat</th>
+                                    <th>Jumlah</th>
+                                    <th>Status</th>
+                                    <th>Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${otherRentalsHtml}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            ` : ''}
+                ` : ''}
 
             ${historyHtml ? `
-            <div class="mt-4">
-                <h6>Riwayat Peminjaman Pendaki</h6>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Tanggal</th>
-                                <th>Gunung</th>
-                                <th>Alat</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${historyHtml}
-                        </tbody>
-                    </table>
+                <div class="mt-4">
+                    <h6>Riwayat Peminjaman Pendaki</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Gunung</th>
+                                    <th>Alat</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${historyHtml}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            ` : ''}
+                ` : ''}
         `;
 
                 $('#detailContent').html(detailHtml);

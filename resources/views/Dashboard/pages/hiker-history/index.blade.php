@@ -1,4 +1,4 @@
-@extends('dashboard.layouts.app')
+@extends('Dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -180,7 +180,7 @@
                 data.forEach(function(history) {
                     let statusBadge = getStatusBadge(history.status);
                     let trackingBadge = getTrackingBadge(history.has_tracking, history.tracking_info);
-                    
+
                     html += `
                 <tr>
                     <td>
@@ -298,7 +298,7 @@
                     $('#pagination').empty();
                     return;
                 }
-                
+
                 html += `
             <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
                 <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage - 1})">
@@ -306,17 +306,18 @@
                 </a>
             </li>
         `;
-                
+
                 const startPage = Math.max(1, currentPage - 2);
                 const endPage = Math.min(totalPages, startPage + 4);
-                
+
                 if (startPage > 1) {
-                    html += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(1)">1</a></li>`;
+                    html +=
+                        `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(1)">1</a></li>`;
                     if (startPage > 2) {
                         html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
                     }
                 }
-                
+
                 for (let i = startPage; i <= endPage; i++) {
                     html += `
                 <li class="page-item ${i === currentPage ? 'active' : ''}">
@@ -324,14 +325,15 @@
                 </li>
             `;
                 }
-                
+
                 if (endPage < totalPages) {
                     if (endPage < totalPages - 1) {
                         html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
                     }
-                    html += `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+                    html +=
+                        `<li class="page-item"><a class="page-link" href="javascript:void(0);" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
                 }
-                
+
                 html += `
             <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
                 <a class="page-link" href="javascript:void(0);" onclick="changePage(${currentPage + 1})">
@@ -366,7 +368,8 @@
 
             window.viewDetail = function(bookingId) {
                 $.ajax({
-                    url: '{{ route('hiker-history.detail', ':bookingId') }}'.replace(':bookingId', bookingId),
+                    url: '{{ route('hiker-history.detail', ':bookingId') }}'.replace(':bookingId',
+                        bookingId),
                     type: 'GET',
                     success: function(response) {
                         renderDetailModal(response);
@@ -380,7 +383,8 @@
 
             window.viewTracking = function(bookingId) {
                 $.ajax({
-                    url: '{{ route('hiker-history.tracking-route', ':bookingId') }}'.replace(':bookingId', bookingId),
+                    url: '{{ route('hiker-history.tracking-route', ':bookingId') }}'.replace(
+                        ':bookingId', bookingId),
                     type: 'GET',
                     success: function(response) {
                         if (response.route && response.route.length > 0) {
@@ -432,7 +436,8 @@
                 let durationHtml = '-';
                 if (data.total_duration) {
                     const duration = data.total_duration;
-                    durationHtml = `${duration.days > 0 ? duration.days + ' hari ' : ''}${duration.hours} jam ${duration.minutes} menit`;
+                    durationHtml =
+                        `${duration.days > 0 ? duration.days + ' hari ' : ''}${duration.hours} jam ${duration.minutes} menit`;
                 }
 
                 const detailHtml = `
@@ -503,46 +508,46 @@
             </div>
 
             ${membersHtml ? `
-            <div class="mt-4">
-                <h6>Anggota Tim</h6>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th>NIK</th>
-                                <th>Telepon</th>
-                                <th>Kontak Darurat</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${membersHtml}
-                        </tbody>
-                    </table>
+                <div class="mt-4">
+                    <h6>Anggota Tim</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama</th>
+                                    <th>NIK</th>
+                                    <th>Telepon</th>
+                                    <th>Kontak Darurat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${membersHtml}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            ` : ''}
+                ` : ''}
 
             ${equipmentHtml ? `
-            <div class="mt-4">
-                <h6>Penyewaan Peralatan</h6>
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nama Peralatan</th>
-                                <th>Jumlah</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${equipmentHtml}
-                        </tbody>
-                    </table>
+                <div class="mt-4">
+                    <h6>Penyewaan Peralatan</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nama Peralatan</th>
+                                    <th>Jumlah</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${equipmentHtml}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            ` : ''}
+                ` : ''}
         `;
 
                 $('#detailContent').html(detailHtml);

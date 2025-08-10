@@ -26,7 +26,7 @@ class EquipmentRentalsController extends Controller
             ->get();
 
 
-        return view('dashboard.pages.equipment-rentals.index', compact('mountains', 'equipments'));
+        return view('Dashboard.pages.equipment-rentals.index', compact('mountains', 'equipments'));
     }
 
     public function getData(Request $request)
