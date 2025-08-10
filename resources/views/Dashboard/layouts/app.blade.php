@@ -9,7 +9,7 @@
         <div class="layout-container">
             <!-- Menu -->
 
-            @include('Dashboard.components.sidebar')
+            @include('dashboard.components.sidebar')
             <!-- / Menu -->
 
             <!-- Layout container -->
@@ -124,4 +124,6 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
 
-@include('Dashboard.layouts.tail')
+     @stack('scripts')
+@include('dashboard.layouts.tail')
+
