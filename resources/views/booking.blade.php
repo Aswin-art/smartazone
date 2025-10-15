@@ -91,6 +91,23 @@
                     </div>
                 </div>
 
+                <!-- Button Data Anggota (Muncul jika pendaki > 1) -->
+                <div id="memberDataBtn" class="mb-8 hidden">
+                    <button onclick="openMemberModal()"
+                        class="group w-full font-medium py-4 px-6 rounded-2xl border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 relative overflow-hidden"
+                        style="background: linear-gradient(135deg, #FFD166 0%, #FFF3CD 100%); border-color: #FFD166; color: #1A1A1A;">
+                        <div class="relative flex items-center justify-center space-x-3">
+                            <svg class="w-5 h-5 transition-colors" style="color: #1B4965;" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                </path>
+                            </svg>
+                            <span id="memberBtnText">Input Data Anggota Pendaki</span>
+                        </div>
+                    </button>
+                </div>
+
                 <!-- Button Sewa Peralatan -->
                 <div class="mb-8">
                     <button id="equipmentBtn"
@@ -199,16 +216,56 @@
         </div>
     </div>
 
+    <!-- Modal Data Anggota -->
+    <div id="memberModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden">
+            <div class="p-6 text-white" style="background: linear-gradient(135deg, #1B4965 0%, #2A5A7A 100%);">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold">Data Anggota Pendaki</h2>
+                    <button id="closeMemberModal" class="p-2 hover:bg-white/20 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-sm opacity-90 mt-2">Masukkan data untuk setiap anggota pendaki</p>
+            </div>
+
+            <div class="p-6 max-h-96 overflow-y-auto">
+                <div id="memberList">
+                    <!-- Member forms will be populated here -->
+                </div>
+            </div>
+
+            <div class="border-t p-6" style="background-color: #F7F7F7;">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="font-semibold" style="color: #1A1A1A;">
+                        Data Lengkap: <span id="completedMembers">0</span>/<span id="totalMembers">0</span> orang
+                    </span>
+                </div>
+                <button id="confirmMembers" class="w-full text-white font-semibold py-3 rounded-xl transition-all"
+                    style="background: linear-gradient(135deg, #1B4965 0%, #2A5A7A 100%);">
+                    Simpan Data Anggota
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const departureDate = document.getElementById('departureDate');
             const returnDate = document.getElementById('returnDate');
             const climberCount = document.getElementById('climberCount');
             const formContainer = document.getElementById('formContainer');
+            const memberDataBtn = document.getElementById('memberDataBtn');
             const equipmentBtn = document.getElementById('equipmentBtn');
             const equipmentModal = document.getElementById('equipmentModal');
+            const memberModal = document.getElementById('memberModal');
             const closeModal = document.getElementById('closeModal');
+            const closeMemberModal = document.getElementById('closeMemberModal');
             const confirmEquipment = document.getElementById('confirmEquipment');
+            const confirmMembers = document.getElementById('confirmMembers');
             const submitBtn = document.getElementById('submitBtn');
 
             // Price elements
@@ -272,6 +329,7 @@
             ];
 
             let selectedEquipment = {};
+            let memberData = [];
             let currentPrices = {
                 entrance: 0,
                 climber: 0,
@@ -322,8 +380,117 @@
             climberCount.addEventListener('change', function() {
                 const count = parseInt(this.value) || 1;
                 currentPrices.climber = count * 150000; // 150k per person
+                updateMemberDataButton(count);
+                initializeMemberData(count);
                 updatePricing();
             });
+
+            function updateMemberDataButton(count) {
+                const memberBtnText = document.getElementById('memberBtnText');
+
+                if (count > 1) {
+                    memberDataBtn.classList.remove('hidden');
+                    const remainingMembers = count - 1; // Exclude leader
+                    memberBtnText.textContent = `Input Data Anggota Pendaki (${remainingMembers} orang)`;
+                } else {
+                    memberDataBtn.classList.add('hidden');
+                }
+            }
+
+            function initializeMemberData(count) {
+                // Initialize member data array (excluding leader)
+                memberData = [];
+                for (let i = 1; i < count; i++) {
+                    memberData.push({
+                        name: '',
+                        email: '',
+                        phone: '',
+                        experience: ''
+                    });
+                }
+            }
+
+            // Member Modal Functions
+            function openMemberModal() {
+                populateMemberList();
+                memberModal.classList.remove('hidden');
+                memberModal.classList.add('flex');
+            }
+
+            function closeMemberModalFunc() {
+                memberModal.classList.add('hidden');
+                memberModal.classList.remove('flex');
+                updateMemberProgress();
+            }
+
+            function populateMemberList() {
+                const memberList = document.getElementById('memberList');
+                const totalMembers = document.getElementById('totalMembers');
+
+                memberList.innerHTML = '';
+                totalMembers.textContent = memberData.length;
+
+                memberData.forEach((member, index) => {
+                    const memberForm = createMemberForm(member, index);
+                    memberList.appendChild(memberForm);
+                });
+
+                updateMemberProgress();
+            }
+
+            function createMemberForm(member, index) {
+                const div = document.createElement('div');
+                div.className = 'mb-6 p-4 rounded-2xl border';
+                div.style.cssText =
+                    'background: linear-gradient(135deg, rgba(255, 209, 102, 0.1) 0%, rgba(255, 255, 255, 0.3) 100%); border-color: rgba(255, 209, 102, 0.3);';
+
+                div.innerHTML = `
+                    <h4 class="font-semibold mb-4 flex items-center space-x-2" style="color: #1A1A1A;">
+                        <div class="w-2 h-2 rounded-full" style="background-color: #FF9F40;"></div>
+                        <span>Anggota ${index + 1}</span>
+                    </h4>
+                    <div class="space-y-3">
+                        <input type="text" placeholder="Nama Lengkap" value="${member.name}"
+                            onchange="updateMemberData(${index}, 'name', this.value)"
+                            class="w-full p-3 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 transition-all duration-300 font-medium"
+                            style="background-color: rgba(255, 255, 255, 0.8); border-color: #FFD166; color: #1A1A1A;">
+                        <input type="email" placeholder="Email Address" value="${member.email}"
+                            onchange="updateMemberData(${index}, 'email', this.value)"
+                            class="w-full p-3 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 transition-all duration-300 font-medium"
+                            style="background-color: rgba(255, 255, 255, 0.8); border-color: #FFD166; color: #1A1A1A;">
+                        <input type="tel" placeholder="Nomor Telepon" value="${member.phone}"
+                            onchange="updateMemberData(${index}, 'phone', this.value)"
+                            class="w-full p-3 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 transition-all duration-300 font-medium"
+                            style="background-color: rgba(255, 255, 255, 0.8); border-color: #FFD166; color: #1A1A1A;">
+                        <textarea placeholder="Pengalaman Mendaki (opsional)" rows="2" onchange="updateMemberData(${index}, 'experience', this.value)"
+                            class="w-full p-3 backdrop-blur-sm border rounded-xl focus:outline-none focus:ring-2 transition-all duration-300 resize-none font-medium"
+                            style="background-color: rgba(255, 255, 255, 0.8); border-color: #FFD166; color: #1A1A1A;">${member.experience}</textarea>
+                    </div>
+                `;
+
+                return div;
+            }
+
+            window.updateMemberData = function(index, field, value) {
+                memberData[index][field] = value;
+                updateMemberProgress();
+            }
+
+            function updateMemberProgress() {
+                const completedMembers = memberData.filter(member =>
+                    member.name.trim() !== '' && member.email.trim() !== '' && member.phone.trim() !== ''
+                ).length;
+
+                document.getElementById('completedMembers').textContent = completedMembers;
+
+                // Update button text
+                const memberBtnText = document.getElementById('memberBtnText');
+                if (completedMembers === memberData.length && memberData.length > 0) {
+                    memberBtnText.textContent = `Data Anggota Lengkap ✓`;
+                } else {
+                    memberBtnText.textContent = `Input Data Anggota Pendaki (${memberData.length} orang)`;
+                }
+            }
 
             // Equipment modal
             equipmentBtn.addEventListener('click', function() {
@@ -335,6 +502,12 @@
             closeModal.addEventListener('click', function() {
                 equipmentModal.classList.add('hidden');
             });
+
+            closeMemberModal.addEventListener('click', closeMemberModalFunc);
+            confirmMembers.addEventListener('click', closeMemberModalFunc);
+
+            // Make openMemberModal global
+            window.openMemberModal = openMemberModal;
 
             function showEquipmentModal() {
                 const equipmentList = document.getElementById('equipmentList');

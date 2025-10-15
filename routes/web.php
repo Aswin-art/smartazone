@@ -37,7 +37,7 @@ Route::get('/profile', function () {
 
 Route::prefix('dashboard')->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::prefix('hikers')->group(function () {
         Route::get('/', [HikersController::class, 'index'])->name('hikers.index');
