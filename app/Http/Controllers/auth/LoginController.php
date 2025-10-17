@@ -29,7 +29,7 @@ class LoginController extends Controller
 
             switch ($user->user_type) {
                 case 'superadmin':
-                    return redirect()->route('superadmin.dashboard');
+                    return redirect()->route('superadmin.mountains.index');
                 case 'admin':
                     return redirect()->route('admin.dashboard');
                 case 'pendaki':

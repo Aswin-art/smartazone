@@ -10,6 +10,7 @@ use App\Http\Controllers\HealthMonitoringController;
 use App\Http\Controllers\HikersController;
 use App\Http\Controllers\LocationTrackingController;
 use App\Http\Controllers\SOSMonitoringController;
+use App\Http\Controllers\Superadmin\MountainController;
 use Illuminate\Support\Facades\Route;
 
 // $mainDomain = config('app.domain');
@@ -25,10 +26,14 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     // SUPERADMIN 
-    Route::prefix('superadmin')->middleware('role:superadmin')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('superadmin.dashboard');
-        })->name('superadmin.dashboard');
+    Route::prefix('superadmin')->middleware('role:superadmin')->name('superadmin.')->group(function () {
+        Route::get('/mountains', [MountainController::class, 'index'])->name('mountains.index');
+        Route::get('/mountains/get-data', [MountainController::class, 'getData'])->name('mountains.getData');
+        Route::get('/mountains/{id}', [MountainController::class, 'show'])->name('mountains.show');
+        Route::get('/mountains/{id}/edit', [MountainController::class, 'edit'])->name('mountains.edit');
+        Route::put('/mountains/{id}', [MountainController::class, 'update'])->name('mountains.update');
+        Route::post('/mountains/{id}/deactivate', [MountainController::class, 'deactivate'])->name('mountains.deactivate');
+        Route::delete('/mountains/{id}', [MountainController::class, 'destroy'])->name('mountains.destroy');
     });
 
     // ADMIN GUNUNG
