@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ComplaintsController;
 use App\Http\Controllers\EquipmentRentalsController;
 use App\Http\Controllers\HikerHistoryController;
@@ -17,6 +18,34 @@ use Illuminate\Support\Facades\Route;
 //         return view('landing-page');
 //     });
 // });
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    // SUPERADMIN 
+    Route::prefix('superadmin')->middleware('role:superadmin')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('superadmin.dashboard');
+        })->name('superadmin.dashboard');
+    });
+
+    // ADMIN GUNUNG
+    Route::prefix('admin')->middleware('role:admin')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('admin.dashboard');
+    });
+
+    // PENDAKI 
+    Route::prefix('pendaki')->middleware('role:pendaki')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('pendaki.dashboard');
+        })->name('pendaki.dashboard');
+    });
+});
+
 
 Route::get('/', function () {
     return view('landing-page');
