@@ -39,7 +39,7 @@ Route::middleware(['auth'])->group(function () {
     // ADMIN GUNUNG
     Route::prefix('admin')->middleware('role:admin')->group(function () {
         Route::get('/dashboard', function () {
-            return view('admin.dashboard');
+            return view('Dashboard.superadmin.index');
         })->name('admin.dashboard');
     });
 
