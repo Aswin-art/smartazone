@@ -1,4 +1,4 @@
-@extends('Dashboard.layouts.app')
+@extends('dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -1082,67 +1082,67 @@
             </div>
 
             ${membersHtml ? `
-                <div class="mt-4">
-                    <h6>Anggota Tim</h6>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama</th>
-                                    <th>NIK</th>
-                                    <th>Telepon</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${membersHtml}
-                            </tbody>
-                        </table>
+                    <div class="mt-4">
+                        <h6>Anggota Tim</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>NIK</th>
+                                        <th>Telepon</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${membersHtml}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                ` : ''}
+                    ` : ''}
 
             ${otherRentalsHtml ? `
-                <div class="mt-4">
-                    <h6>Alat Lain yang Dipinjam dalam Booking yang Sama</h6>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Nama Alat</th>
-                                    <th>Jumlah</th>
-                                    <th>Status</th>
-                                    <th>Deskripsi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${otherRentalsHtml}
-                            </tbody>
-                        </table>
+                    <div class="mt-4">
+                        <h6>Alat Lain yang Dipinjam dalam Booking yang Sama</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Alat</th>
+                                        <th>Jumlah</th>
+                                        <th>Status</th>
+                                        <th>Deskripsi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${otherRentalsHtml}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                ` : ''}
+                    ` : ''}
 
             ${historyHtml ? `
-                <div class="mt-4">
-                    <h6>Riwayat Peminjaman Pendaki</h6>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Tanggal</th>
-                                    <th>Gunung</th>
-                                    <th>Alat</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${historyHtml}
-                            </tbody>
-                        </table>
+                    <div class="mt-4">
+                        <h6>Riwayat Peminjaman Pendaki</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Tanggal</th>
+                                        <th>Gunung</th>
+                                        <th>Alat</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${historyHtml}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                ` : ''}
+                    ` : ''}
         `;
 
                 $('#detailContent').html(detailHtml);

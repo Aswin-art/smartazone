@@ -1,4 +1,4 @@
-@include('Dashboard.layouts.head')
+@include('dashboard.layouts.head')
 
 </head>
 
@@ -9,7 +9,7 @@
         <div class="layout-container">
             <!-- Menu -->
 
-            @include('Dashboard.components.sidebar')
+            @include('dashboard.components.sidebar')
             <!-- / Menu -->
 
             <!-- Layout container -->
@@ -124,4 +124,4 @@
     </div>
 
     @stack('scripts')
-    @include('Dashboard.layouts.tail')
+    @include('dashboard.layouts.tail')

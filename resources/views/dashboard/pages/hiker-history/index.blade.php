@@ -1,4 +1,4 @@
-@extends('Dashboard.layouts.app')
+@extends('dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -508,46 +508,46 @@
             </div>
 
             ${membersHtml ? `
-                <div class="mt-4">
-                    <h6>Anggota Tim</h6>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Nama</th>
-                                    <th>NIK</th>
-                                    <th>Telepon</th>
-                                    <th>Kontak Darurat</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${membersHtml}
-                            </tbody>
-                        </table>
+                    <div class="mt-4">
+                        <h6>Anggota Tim</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama</th>
+                                        <th>NIK</th>
+                                        <th>Telepon</th>
+                                        <th>Kontak Darurat</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${membersHtml}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                ` : ''}
+                    ` : ''}
 
             ${equipmentHtml ? `
-                <div class="mt-4">
-                    <h6>Penyewaan Peralatan</h6>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Nama Peralatan</th>
-                                    <th>Jumlah</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${equipmentHtml}
-                            </tbody>
-                        </table>
+                    <div class="mt-4">
+                        <h6>Penyewaan Peralatan</h6>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Peralatan</th>
+                                        <th>Jumlah</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${equipmentHtml}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                ` : ''}
+                    ` : ''}
         `;
 
                 $('#detailContent').html(detailHtml);

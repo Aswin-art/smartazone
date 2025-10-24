@@ -10,7 +10,7 @@ class LocationTrackingController extends Controller
 {
     public function index()
     {
-        return view('Dashboard.pages.location-tracking.index');
+        return view('dashboard.pages.location-tracking.index');
     }
 
     public function getActiveHikers()

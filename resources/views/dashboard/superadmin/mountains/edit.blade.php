@@ -1,4 +1,4 @@
-@extends('Dashboard.layouts.app')
+@extends('dashboard.layouts.app')
 
 @section('content')
     <div class="content-wrapper">

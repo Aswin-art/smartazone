@@ -1,4 +1,4 @@
-@extends('Dashboard.layouts.app')
+@extends('dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -376,11 +376,11 @@
                                         View Chart
                                     </a>
                                     ${health.health_status === 'critical' ? `
-                                        <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="sendEmergencyAlert(${health.booking_id})">
-                                            <i class="icon-base ri ri-alarm-warning-line icon-18px me-2"></i>
-                                            Send Alert
-                                        </a>
-                                        ` : ''}
+                                            <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="sendEmergencyAlert(${health.booking_id})">
+                                                <i class="icon-base ri ri-alarm-warning-line icon-18px me-2"></i>
+                                                Send Alert
+                                            </a>
+                                            ` : ''}
                                 </div>
                             </div>
                         </td>

@@ -1,4 +1,4 @@
-@extends('Dashboard.layouts.app')
+@extends('dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -451,11 +451,11 @@
                             <div>
                                 <small class="text-muted">${sos.timestamp}</small>
                                 ${sos.responded_at ? `
-                                        <br><small class="text-success">
-                                            <i class="ri-check-line me-1"></i>
-                                            Responded: ${sos.responded_at}
-                                        </small>
-                                    ` : ''}
+                                            <br><small class="text-success">
+                                                <i class="ri-check-line me-1"></i>
+                                                Responded: ${sos.responded_at}
+                                            </small>
+                                        ` : ''}
                             </div>
                         </td>
                         <td>${statusBadge}</td>
@@ -470,11 +470,11 @@
                                         View Details
                                     </a>
                                     ${sos.status === 'pending' ? `
-                                        <a class="dropdown-item" href="javascript:void(0);" onclick="respondToSOS(${sos.sos_id})">
-                                            <i class="icon-base ri ri-chat-check-line icon-18px me-2"></i>
-                                            Respond
-                                        </a>
-                                        ` : ''}
+                                            <a class="dropdown-item" href="javascript:void(0);" onclick="respondToSOS(${sos.sos_id})">
+                                                <i class="icon-base ri ri-chat-check-line icon-18px me-2"></i>
+                                                Respond
+                                            </a>
+                                            ` : ''}
                                     <a class="dropdown-item" href="https://maps.google.com/?q=${sos.latitude},${sos.longitude}" target="_blank">
                                         <i class="icon-base ri ri-map-pin-line icon-18px me-2"></i>
                                         Open in Maps

@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $overallStats = $this->getOverallStats();
         $recentBookings = $this->getRecentBookings();
 
-        return view('Dashboard.pages.index', compact(
+        return view('dashboard.pages.index', compact(
             'monthlyHikers',
             'totalRevenue',
             'checkInOutTrends',

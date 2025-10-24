@@ -1,4 +1,4 @@
-@extends('Dashboard.layouts.app')
+@extends('dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -359,12 +359,12 @@
                                 <div class="location-info">
                                     <span class="d-block">${coordinates}</span>
                                     ${hiker.latitude && hiker.longitude ? `
-                                            <small class="text-muted">
-                                                <a href="https://maps.google.com/?q=${hiker.latitude},${hiker.longitude}" target="_blank" class="text-decoration-none">
-                                                    <i class="ri-external-link-line me-1"></i>View on Map
-                                                </a>
-                                            </small>
-                                        ` : ''}
+                                                <small class="text-muted">
+                                                    <a href="https://maps.google.com/?q=${hiker.latitude},${hiker.longitude}" target="_blank" class="text-decoration-none">
+                                                        <i class="ri-external-link-line me-1"></i>View on Map
+                                                    </a>
+                                                </small>
+                                            ` : ''}
                                 </div>
                             </td>
                             <td>${statusBadge}</td>

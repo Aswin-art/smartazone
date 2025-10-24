@@ -10,7 +10,7 @@ class FeedbackController extends Controller
 {
     public function index()
     {
-        return view('Dashboard.pages.feedback.index');
+        return view('dashboard.pages.feedback.index');
     }
 
     public function getData(Request $request)

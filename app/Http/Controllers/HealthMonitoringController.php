@@ -10,7 +10,7 @@ class HealthMonitoringController extends Controller
 {
     public function index()
     {
-        return view('Dashboard.pages.health-monitoring.index');
+        return view('dashboard.pages.health-monitoring.index');
     }
 
     public function getData(Request $request)

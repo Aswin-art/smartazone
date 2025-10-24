@@ -1,4 +1,4 @@
-@extends('Dashboard.layouts.app')
+@extends('dashboard.layouts.app')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -796,45 +796,45 @@
             </div>
 
             ${membersHtml ? `
-                    <div class="mt-4">
-                        <h6>Anggota Tim</h6>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                        <th>NIK</th>
-                                        <th>Telepon</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${membersHtml}
-                                </tbody>
-                            </table>
+                        <div class="mt-4">
+                            <h6>Anggota Tim</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama</th>
+                                            <th>NIK</th>
+                                            <th>Telepon</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${membersHtml}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    ` : ''}
+                        ` : ''}
 
             ${relatedHtml ? `
-                    <div class="mt-4">
-                        <h6>Pengaduan Terkait dari Pendaki yang Sama</h6>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal</th>
-                                        <th>Gunung</th>
-                                        <th>Pengaduan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${relatedHtml}
-                                </tbody>
-                            </table>
+                        <div class="mt-4">
+                            <h6>Pengaduan Terkait dari Pendaki yang Sama</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Gunung</th>
+                                            <th>Pengaduan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${relatedHtml}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    ` : ''}
+                        ` : ''}
         `;
 
                 $('#detailContent').html(detailHtml);

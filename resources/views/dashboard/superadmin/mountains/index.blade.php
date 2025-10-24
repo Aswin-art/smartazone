@@ -1,4 +1,4 @@
-@extends('Dashboard.layouts.app')
+@extends('dashboard.layouts.app')
 
 @section('content')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -215,9 +215,9 @@
                                     <i class="bi bi-pencil-square me-2 text-success"></i>Edit Data
                                 </a>
                                 ${mountain.status !== 'inactive' ? `
-                                    <a class="dropdown-item text-warning" href="javascript:void(0);" onclick="deactivateMountain(${mountain.id})">
-                                        <i class="bi bi-pause-circle me-2"></i>Nonaktifkan
-                                    </a>` : ''}
+                                        <a class="dropdown-item text-warning" href="javascript:void(0);" onclick="deactivateMountain(${mountain.id})">
+                                            <i class="bi bi-pause-circle me-2"></i>Nonaktifkan
+                                        </a>` : ''}
                                 <a class="dropdown-item text-danger" href="javascript:void(0);" onclick="deleteMountain(${mountain.id})">
                                     <i class="bi bi-trash3 me-2"></i>Hapus
                                 </a>
