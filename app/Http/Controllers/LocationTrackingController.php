@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class LocationTrackingController extends Controller
 {
@@ -15,27 +16,27 @@ class LocationTrackingController extends Controller
 
     public function getActiveHikers()
     {
-        $activeHikers = DB::table('mountain_bookings as mb')
-            ->join('users as u', 'mb.user_id', '=', 'u.id')
-            ->join('mountains as m', 'mb.mountain_id', '=', 'm.id')
-            ->leftJoin('mountain_location_logs as mll', function($join) {
-                $join->on('mb.id', '=', 'mll.booking_id')
-                     ->whereRaw('mll.id = (SELECT MAX(id) FROM mountain_location_logs WHERE booking_id = mb.id)');
+        $activeHikers = DB::table('mountain_hiking_histories as mh')
+            ->join('users as u', 'mh.user_id', '=', 'u.id')
+            ->join('mountains as m', 'mh.mountain_id', '=', 'm.id')
+            ->leftJoin('mountain_location_logs as mll', function ($join) {
+                $join->on('mh.booking_id', '=', 'mll.booking_id')
+                    ->whereRaw('mll.id = (SELECT MAX(id) FROM mountain_location_logs WHERE booking_id = mh.booking_id)');
             })
             ->select(
-                'mb.id as booking_id',
+                'mh.booking_id',
                 'u.name as user_name',
                 'u.email',
                 'u.phone',
                 'm.name as mountain_name',
                 'm.location as mountain_location',
-                'mb.checkin_time',
-                'mb.team_size',
+                'mh.start_time',
+                'mh.status',
                 'mll.latitude',
                 'mll.longitude',
                 'mll.timestamp as last_location_update'
             )
-            ->where('mb.status', 'active')
+            ->where('mh.status', 'active')
             ->get();
 
         return response()->json($activeHikers);
@@ -44,8 +45,8 @@ class LocationTrackingController extends Controller
     public function getHikerLocationHistory($bookingId)
     {
         $locations = DB::table('mountain_location_logs as mll')
-            ->join('mountain_bookings as mb', 'mll.booking_id', '=', 'mb.id')
-            ->join('users as u', 'mb.user_id', '=', 'u.id')
+            ->join('mountain_hiking_histories as mh', 'mll.booking_id', '=', 'mh.booking_id')
+            ->join('users as u', 'mh.user_id', '=', 'u.id')
             ->join('mountains as m', 'mll.mountain_id', '=', 'm.id')
             ->select(
                 'u.name as user_name',
@@ -56,11 +57,11 @@ class LocationTrackingController extends Controller
             )
             ->where('mll.booking_id', $bookingId)
             ->orderBy('mll.timestamp', 'desc')
-            ->limit(100) // Last 100 location points
+            ->limit(100)
             ->get();
 
         if ($locations->isEmpty()) {
-            return response()->json(['error' => 'No location data found'], 404);
+            return response()->json(['error' => 'Data lokasi tidak ditemukan'], 404);
         }
 
         return response()->json([
@@ -74,24 +75,23 @@ class LocationTrackingController extends Controller
 
     public function getLocationStats()
     {
-        $totalActiveHikers = DB::table('mountain_bookings')
+        $totalActiveHikers = DB::table('mountain_hiking_histories')
             ->where('status', 'active')
             ->count();
 
-        $hikersWithRecentLocation = DB::table('mountain_bookings as mb')
-            ->join('mountain_location_logs as mll', 'mb.id', '=', 'mll.booking_id')
-            ->where('mb.status', 'active')
-            ->where('mll.timestamp', '>=', now()->subMinutes(30))
-            ->distinct('mb.id')
+        $hikersWithRecentLocation = DB::table('mountain_hiking_histories as mh')
+            ->join('mountain_location_logs as mll', 'mh.booking_id', '=', 'mll.booking_id')
+            ->where('mh.status', 'active')
+            ->where('mll.timestamp', '>=', Carbon::now()->subMinutes(30))
+            ->distinct('mh.booking_id')
             ->count();
 
         $offlineHikers = $totalActiveHikers - $hikersWithRecentLocation;
 
-        // Get hikers by mountain
-        $hikersByMountain = DB::table('mountain_bookings as mb')
-            ->join('mountains as m', 'mb.mountain_id', '=', 'm.id')
+        $hikersByMountain = DB::table('mountain_hiking_histories as mh')
+            ->join('mountains as m', 'mh.mountain_id', '=', 'm.id')
             ->select('m.name as mountain_name', DB::raw('COUNT(*) as hiker_count'))
-            ->where('mb.status', 'active')
+            ->where('mh.status', 'active')
             ->groupBy('m.id', 'm.name')
             ->get();
 
@@ -106,18 +106,17 @@ class LocationTrackingController extends Controller
     public function updateLocation(Request $request)
     {
         $request->validate([
-            'booking_id' => 'required|exists:mountain_bookings,id',
+            'booking_id' => 'required|exists:mountain_hiking_histories,booking_id',
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180'
         ]);
 
-        // Get mountain_id from booking
-        $booking = DB::table('mountain_bookings')
-            ->where('id', $request->booking_id)
+        $booking = DB::table('mountain_hiking_histories')
+            ->where('booking_id', $request->booking_id)
             ->first();
 
         if (!$booking) {
-            return response()->json(['error' => 'Booking not found'], 404);
+            return response()->json(['error' => 'Data pendakian tidak ditemukan'], 404);
         }
 
         DB::table('mountain_location_logs')->insert([
@@ -125,26 +124,38 @@ class LocationTrackingController extends Controller
             'mountain_id' => $booking->mountain_id,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
-            'timestamp' => now()
+            'timestamp' => Carbon::now()
         ]);
 
-        return response()->json(['success' => 'Location updated successfully']);
+        return response()->json(['success' => 'Lokasi berhasil diperbarui']);
     }
 
     public function getGeofenceAlerts()
     {
-        // This would check if hikers are outside safe zones
-        // For now, return mock data
-        return response()->json([
-            'alerts' => []
-        ]);
+        $alerts = DB::table('mountain_geofence_alerts as mga')
+            ->join('users as u', 'mga.user_id', '=', 'u.id')
+            ->join('mountains as m', 'mga.mountain_id', '=', 'm.id')
+            ->select(
+                'mga.id',
+                'u.name as user_name',
+                'm.name as mountain_name',
+                'mga.latitude',
+                'mga.longitude',
+                'mga.message',
+                'mga.created_at'
+            )
+            ->orderBy('mga.created_at', 'desc')
+            ->limit(10)
+            ->get();
+
+        return response()->json(['alerts' => $alerts]);
     }
 
     public function exportLocationData($bookingId)
     {
         $locations = DB::table('mountain_location_logs as mll')
-            ->join('mountain_bookings as mb', 'mll.booking_id', '=', 'mb.id')
-            ->join('users as u', 'mb.user_id', '=', 'u.id')
+            ->join('mountain_hiking_histories as mh', 'mll.booking_id', '=', 'mh.booking_id')
+            ->join('users as u', 'mh.user_id', '=', 'u.id')
             ->join('mountains as m', 'mll.mountain_id', '=', 'm.id')
             ->select(
                 'u.name as hiker_name',
@@ -157,8 +168,8 @@ class LocationTrackingController extends Controller
             ->orderBy('mll.timestamp', 'asc')
             ->get();
 
-        $filename = "hiker_location_data_" . $bookingId . "_" . date('Y-m-d') . ".csv";
-        
+        $filename = "hiker_location_data_" . $bookingId . "_" . date('Y-m-d_H-i-s') . ".csv";
+
         $headers = [
             "Content-type" => "text/csv",
             "Content-Disposition" => "attachment; filename=$filename",
@@ -167,7 +178,7 @@ class LocationTrackingController extends Controller
             "Expires" => "0"
         ];
 
-        $callback = function() use($locations) {
+        $callback = function () use ($locations) {
             $file = fopen('php://output', 'w');
             fputcsv($file, ['Hiker Name', 'Mountain', 'Latitude', 'Longitude', 'Timestamp']);
 

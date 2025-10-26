@@ -4,18 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $monthlyHikers = $this->getMonthlyHikers();
-        $totalRevenue = $this->getTotalRevenue();
-        $checkInOutTrends = $this->getCheckInOutTrends();
-        $favoriteRoutes = $this->getFavoriteRoutes();
-        $overallStats = $this->getOverallStats();
-        $recentBookings = $this->getRecentBookings();
+        $mountainId = Auth::user()->mountain_id;
+
+        $monthlyHikers = $this->getMonthlyHikers($mountainId);
+        $totalRevenue = $this->getTotalRevenue($mountainId);
+        $checkInOutTrends = $this->getCheckInOutTrends($mountainId);
+        $favoriteRoutes = $this->getFavoriteRoutes($mountainId);
+        $overallStats = $this->getOverallStats($mountainId);
+        $recentBookings = $this->getRecentBookings($mountainId);
 
         return view('dashboard.pages.index', compact(
             'monthlyHikers',
@@ -27,7 +30,7 @@ class DashboardController extends Controller
         ));
     }
 
-    private function getMonthlyHikers()
+    private function getMonthlyHikers($mountainId)
     {
         $currentYear = Carbon::now()->year;
 
@@ -39,6 +42,7 @@ class DashboardController extends Controller
                 DB::raw('COUNT(*) as total_bookings')
             )
             ->whereYear('created_at', $currentYear)
+            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
             ->groupBy(DB::raw('MONTH(created_at)'), DB::raw('MONTHNAME(created_at)'))
             ->orderBy('month')
             ->get();
@@ -56,28 +60,28 @@ class DashboardController extends Controller
         return $monthlyStats;
     }
 
-    private function getTotalRevenue()
+    private function getTotalRevenue($mountainId)
     {
         $currentMonth = Carbon::now()->format('Y-m');
         $lastMonth = Carbon::now()->subMonth()->format('Y-m');
 
-        $currentMonthRevenue = DB::table('mountain_bookings')
-            ->join('mountains', 'mountain_bookings.mountain_id', '=', 'mountains.id')
-            ->where(DB::raw("DATE_FORMAT(mountain_bookings.created_at, '%Y-%m')"), $currentMonth)
+        $query = DB::table('mountain_bookings')
+            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId));
+
+        $currentMonthRevenue = (clone $query)
+            ->where(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"), $currentMonth)
             ->sum(DB::raw('team_size * 50000'));
 
-        $lastMonthRevenue = DB::table('mountain_bookings')
-            ->join('mountains', 'mountain_bookings.mountain_id', '=', 'mountains.id')
-            ->where(DB::raw("DATE_FORMAT(mountain_bookings.created_at, '%Y-%m')"), $lastMonth)
+        $lastMonthRevenue = (clone $query)
+            ->where(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"), $lastMonth)
             ->sum(DB::raw('team_size * 50000'));
 
-        $totalRevenue = DB::table('mountain_bookings')
+        $totalRevenue = (clone $query)
             ->sum(DB::raw('team_size * 50000'));
 
-        $growthPercentage = 0;
-        if ($lastMonthRevenue > 0) {
-            $growthPercentage = (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100;
-        }
+        $growthPercentage = $lastMonthRevenue > 0
+            ? (($currentMonthRevenue - $lastMonthRevenue) / $lastMonthRevenue) * 100
+            : 0;
 
         return [
             'total' => $totalRevenue,
@@ -87,7 +91,7 @@ class DashboardController extends Controller
         ];
     }
 
-    private function getCheckInOutTrends()
+    private function getCheckInOutTrends($mountainId)
     {
         $last7Days = collect();
 
@@ -95,10 +99,12 @@ class DashboardController extends Controller
             $date = Carbon::now()->subDays($i);
 
             $checkIns = DB::table('mountain_bookings')
+                ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
                 ->whereDate('checkin_time', $date->format('Y-m-d'))
                 ->count();
 
             $checkOuts = DB::table('mountain_bookings')
+                ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
                 ->whereDate('checkout_time', $date->format('Y-m-d'))
                 ->count();
 
@@ -110,37 +116,33 @@ class DashboardController extends Controller
         }
 
         $totalActiveBookings = DB::table('mountain_bookings')
+            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
             ->where('status', 'active')
             ->whereNotNull('checkin_time')
             ->whereNull('checkout_time')
             ->count();
 
-        $averageDuration = DB::table('mountain_bookings')
-            ->where('status', 'completed')
-            ->whereNotNull('total_duration_minutes')
-            ->avg('total_duration_minutes');
-
         return [
             'daily_trends' => $last7Days,
             'active_bookings' => $totalActiveBookings,
-            'avg_duration_hours' => $averageDuration ? round($averageDuration / 60, 1) : 0
         ];
     }
 
-    private function getFavoriteRoutes()
+    private function getFavoriteRoutes($mountainId)
     {
         $routes = DB::table('mountain_bookings')
             ->join('mountains', 'mountain_bookings.mountain_id', '=', 'mountains.id')
+            ->leftJoin('mountain_feedbacks', 'mountain_bookings.id', '=', 'mountain_feedbacks.booking_id')
             ->select(
                 'mountains.name',
                 'mountains.location',
-                DB::raw('COUNT(*) as total_bookings'),
+                DB::raw('COUNT(mountain_bookings.id) as total_bookings'),
                 DB::raw('SUM(team_size) as total_hikers'),
                 DB::raw('AVG(COALESCE(mountain_feedbacks.rating, 0)) as avg_rating')
             )
-            ->leftJoin('mountain_feedbacks', 'mountain_bookings.id', '=', 'mountain_feedbacks.booking_id')
+            ->when($mountainId, fn($q) => $q->where('mountains.id', $mountainId))
             ->groupBy('mountains.id', 'mountains.name', 'mountains.location')
-            ->orderBy('total_bookings', 'desc')
+            ->orderByDesc('total_bookings')
             ->limit(5)
             ->get();
 
@@ -155,25 +157,32 @@ class DashboardController extends Controller
         });
     }
 
-    private function getOverallStats()
+    private function getOverallStats($mountainId)
     {
         $totalMountains = DB::table('mountains')
             ->where('status', 'active')
+            ->when($mountainId, fn($q) => $q->where('id', $mountainId))
             ->count();
 
         $totalUsers = DB::table('users')
             ->where('user_type', 'pendaki')
             ->count();
 
-        $totalBookings = DB::table('mountain_bookings')->count();
+        $totalBookings = DB::table('mountain_bookings')
+            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
+            ->count();
 
-        $totalEquipmentRentals = DB::table('mountain_equipment_rentals')->count();
+        $totalEquipmentRentals = DB::table('mountain_equipment_rentals')
+            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
+            ->count();
 
         $sosSignalsToday = DB::table('mountain_sos_signals')
+            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
             ->whereDate('timestamp', Carbon::today())
             ->count();
 
         $activeBookingsToday = DB::table('mountain_bookings')
+            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
             ->where('status', 'active')
             ->whereDate('hike_date', '<=', Carbon::today())
             ->whereDate('return_date', '>=', Carbon::today())
@@ -185,11 +194,11 @@ class DashboardController extends Controller
             'total_bookings' => $totalBookings,
             'equipment_rentals' => $totalEquipmentRentals,
             'sos_today' => $sosSignalsToday,
-            'active_today' => $activeBookingsToday
+            'active_today' => $activeBookingsToday,
         ];
     }
 
-    private function getRecentBookings()
+    private function getRecentBookings($mountainId)
     {
         return DB::table('mountain_bookings')
             ->join('users', 'mountain_bookings.user_id', '=', 'users.id')
@@ -203,7 +212,8 @@ class DashboardController extends Controller
                 'mountain_bookings.hike_date',
                 'mountain_bookings.created_at'
             )
-            ->orderBy('mountain_bookings.created_at', 'desc')
+            ->when($mountainId, fn($q) => $q->where('mountain_bookings.mountain_id', $mountainId))
+            ->orderByDesc('mountain_bookings.created_at')
             ->limit(8)
             ->get();
     }

@@ -37,11 +37,11 @@
 
             <!-- Quick Stats -->
             <div class="row mb-4 g-3">
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="card h-100 border-0 shadow-sm rounded-4">
                         <div class="card-body text-center p-4">
                             <div class="d-flex align-items-center justify-content-center mb-3"
-                                style="width: 56px; height: 56px; margin: 0 auto; 
+                                style="width: 56px; height: 56px; margin: 0 auto;
                         background: linear-gradient(135deg, #696CFF 0%, #8A92FF 100%);
                         border-radius: 12px; color: #fff; font-size: 28px;">
                                 <i class="bi bi-tools"></i>
@@ -52,7 +52,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="card h-100 border-0 shadow-sm rounded-4">
                         <div class="card-body text-center p-4">
                             <div class="d-flex align-items-center justify-content-center mb-3"
@@ -66,7 +66,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="card h-100 border-0 shadow-sm rounded-4">
                         <div class="card-body text-center p-4">
                             <div class="d-flex align-items-center justify-content-center mb-3"
@@ -80,7 +80,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                {{-- <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="card h-100 border-0 shadow-sm rounded-4">
                         <div class="card-body text-center p-4">
                             <div class="d-flex align-items-center justify-content-center mb-3"
@@ -92,7 +92,7 @@
                             <h3 class="fw-bold" style="color: #FF3E1E;">{{ $stats['total_complaints'] }}</h3>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Deskripsi -->
@@ -245,7 +245,7 @@
             </div>
 
             <!-- Komplain -->
-            <div class="card border-0 shadow-sm mb-4 rounded-4">
+            {{-- <div class="card border-0 shadow-sm mb-4 rounded-4">
                 <div class="card-body p-4">
                     <div class="d-flex align-items-center mb-3">
                         <div class="icon-square bg-danger text-white me-3 rounded-3 d-flex align-items-center justify-content-center"
@@ -268,7 +268,7 @@
                         <p class="text-center text-muted py-3">Tidak ada komplain tercatat.</p>
                     @endforelse
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Log Pendaki -->
             <div class="card border-0 shadow-sm mb-5 rounded-4">

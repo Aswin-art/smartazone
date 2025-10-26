@@ -88,7 +88,7 @@ class MountainController extends Controller
 
         $sosSignals = DB::table('mountain_sos_signals')->where('mountain_id', $id)->get();
         $feedbacks = DB::table('mountain_feedbacks')->where('mountain_id', $id)->get();
-        $complaints = DB::table('mountain_complaints')->where('mountain_id', $id)->get();
+        // $complaints = DB::table('mountain_complaints')->where('mountain_id', $id)->get();
         $hikerLogs = DB::table('mountain_hiker_logs')->where('mountain_id', $id)->get();
 
         $stats = [
@@ -96,7 +96,7 @@ class MountainController extends Controller
             'total_equipment' => $equipments->count(),
             'total_rentals' => $equipmentRentals->count(),
             'total_feedback' => $feedbacks->count(),
-            'total_complaints' => $complaints->count(),
+            // 'total_complaints' => $complaints->count(),
             'total_sos' => $sosSignals->count(),
             'total_logs' => $hikerLogs->count(),
         ];
@@ -108,7 +108,7 @@ class MountainController extends Controller
             'equipmentRentals',
             'sosSignals',
             'feedbacks',
-            'complaints',
+            // 'complaints',
             'hikerLogs',
             'stats'
         ));

@@ -78,13 +78,13 @@
                 </a>
             </li>
 
-            <li class="menu-item">
+            {{-- <li class="menu-item">
                 <a href="{{ route('complaints.index') }}" class="menu-link">
                     <i class="menu-icon icon-base ri ri-feedback-line"></i>
                     <div data-i18n="List Pengaduan">Pengaduan</div>
                     <div class="badge rounded-pill bg-label-danger fs-tiny ms-auto">📄</div>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="menu-item">
                 <a href="{{ route('equipment-rentals.index') }}" class="menu-link">

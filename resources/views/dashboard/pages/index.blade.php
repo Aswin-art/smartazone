@@ -158,8 +158,8 @@
                                         <span>Active</span>
                                     </span>
                                 </div>
-                                <p class="mb-0">Currently hiking ({{ $checkInOutTrends['avg_duration_hours'] }}h avg
-                                    duration)</p>
+                                {{-- <p class="mb-0">Currently hiking ({{ $checkInOutTrends['avg_duration_hours'] }}h avg
+                                    duration)</p> --}}
                             </div>
                             <ul class="p-0 m-0">
                                 @foreach ($checkInOutTrends['daily_trends']->take(5) as $trend)

@@ -31,7 +31,7 @@ class LoginController extends Controller
                 case 'superadmin':
                     return redirect()->route('superadmin.mountains.index');
                 case 'admin':
-                    return redirect()->route('admin.dashboard');
+                    return redirect()->route('dashboard.index');
                 case 'pendaki':
                     return redirect()->route('pendaki.dashboard');
                 default:

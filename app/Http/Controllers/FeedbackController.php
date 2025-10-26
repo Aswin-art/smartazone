@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class FeedbackController extends Controller
 {
@@ -15,6 +16,7 @@ class FeedbackController extends Controller
 
     public function getData(Request $request)
     {
+        $mountainId = Auth::user()->mountain_id;
         $search = $request->get('search', '');
         $start = $request->get('start', 0);
         $length = $request->get('length', 10);
@@ -32,13 +34,15 @@ class FeedbackController extends Controller
                 'm.name as mountain_name',
                 'mf.rating',
                 'mf.comment',
+                'mf.image_url',
+                'mf.created_at',
                 'mb.hike_date',
                 'mb.return_date',
-                'mf.created_at',
-                'mb.id as booking_id'
-            );
+                'mb.status as booking_status',
+                'mf.booking_id'
+            )
+            ->when($mountainId, fn($q) => $q->where('mf.mountain_id', $mountainId));
 
-        // Apply search filter
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('u.name', 'LIKE', "%{$search}%")
@@ -49,28 +53,27 @@ class FeedbackController extends Controller
             });
         }
 
-        // Get total count before pagination
         $totalRecords = $query->count();
 
-        // Apply ordering and pagination
         $feedbacks = $query->orderBy($orderColumn, $orderDir)
             ->skip($start)
             ->take($length)
             ->get();
 
-        // Format the data for DataTables
-        $data = $feedbacks->map(function ($feedback) {
+        $data = $feedbacks->map(function ($f) {
             return [
-                'user_name' => $feedback->user_name,
-                'email' => $feedback->email,
-                'mountain_name' => $feedback->mountain_name,
-                'rating' => $feedback->rating,
-                'comment' => $feedback->comment ?: '-',
-                'hike_date' => $feedback->hike_date ? date('Y-m-d', strtotime($feedback->hike_date)) : '-',
-                'return_date' => $feedback->return_date ? date('Y-m-d', strtotime($feedback->return_date)) : '-',
-                'created_at' => date('Y-m-d H:i', strtotime($feedback->created_at)),
-                'feedback_id' => $feedback->feedback_id,
-                'booking_id' => $feedback->booking_id
+                'feedback_id' => $f->feedback_id,
+                'user_name' => $f->user_name,
+                'email' => $f->email,
+                'mountain_name' => $f->mountain_name,
+                'rating' => $f->rating,
+                'comment' => $f->comment ?: '-',
+                'hike_date' => $f->hike_date ? Carbon::parse($f->hike_date)->format('d/m/Y') : '-',
+                'return_date' => $f->return_date ? Carbon::parse($f->return_date)->format('d/m/Y') : '-',
+                'booking_status' => ucfirst($f->booking_status),
+                'image_url' => $f->image_url,
+                'created_at' => Carbon::parse($f->created_at)->format('d/m/Y H:i'),
+                'booking_id' => $f->booking_id
             ];
         });
 
@@ -93,19 +96,18 @@ class FeedbackController extends Controller
                 'u.name as user_name',
                 'u.email',
                 'u.phone',
+                'u.emergency_contact',
                 'm.name as mountain_name',
                 'm.location as mountain_location',
                 'mb.hike_date',
                 'mb.return_date',
-                'mb.team_size',
-                'mb.checkin_time',
-                'mb.checkout_time'
+                'mb.status as booking_status'
             )
             ->where('mf.id', $id)
             ->first();
 
         if (!$feedback) {
-            return response()->json(['error' => 'Feedback not found'], 404);
+            return response()->json(['error' => 'Feedback tidak ditemukan'], 404);
         }
 
         return response()->json($feedback);
@@ -115,25 +117,28 @@ class FeedbackController extends Controller
     {
         try {
             $deleted = DB::table('mountain_feedbacks')->where('id', $id)->delete();
-            
+
             if ($deleted) {
-                return response()->json(['success' => 'Feedback deleted successfully']);
+                return response()->json(['success' => 'Feedback berhasil dihapus']);
             } else {
-                return response()->json(['error' => 'Feedback not found'], 404);
+                return response()->json(['error' => 'Feedback tidak ditemukan'], 404);
             }
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Error deleting feedback'], 500);
+            return response()->json(['error' => 'Terjadi kesalahan saat menghapus feedback'], 500);
         }
     }
 
     public function getStats()
     {
+        $mountainId = Auth::user()->mountain_id;
+
         $stats = DB::table('mountain_feedbacks as mf')
             ->join('mountains as m', 'mf.mountain_id', '=', 'm.id')
+            ->when($mountainId, fn($q) => $q->where('mf.mountain_id', $mountainId))
             ->select(
                 'm.name as mountain_name',
                 DB::raw('COUNT(*) as total_reviews'),
-                DB::raw('AVG(mf.rating) as avg_rating'),
+                DB::raw('ROUND(AVG(mf.rating), 1) as avg_rating'),
                 DB::raw('MAX(mf.rating) as max_rating'),
                 DB::raw('MIN(mf.rating) as min_rating')
             )
@@ -141,6 +146,29 @@ class FeedbackController extends Controller
             ->orderBy('avg_rating', 'desc')
             ->get();
 
-        return response()->json($stats);
+        $totalFeedbacks = DB::table('mountain_feedbacks')
+            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
+            ->count();
+
+        $avgOverallRating = DB::table('mountain_feedbacks')
+            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
+            ->avg('rating');
+
+        $latestFeedbacks = DB::table('mountain_feedbacks as mf')
+            ->join('mountain_bookings as mb', 'mf.booking_id', '=', 'mb.id')
+            ->join('users as u', 'mb.user_id', '=', 'u.id')
+            ->join('mountains as m', 'mf.mountain_id', '=', 'm.id')
+            ->when($mountainId, fn($q) => $q->where('mf.mountain_id', $mountainId))
+            ->select('mf.comment', 'mf.rating', 'u.name as user_name', 'm.name as mountain_name', 'mf.created_at')
+            ->orderBy('mf.created_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return response()->json([
+            'stats_by_mountain' => $stats,
+            'total_feedbacks' => $totalFeedbacks,
+            'avg_overall_rating' => round($avgOverallRating, 1),
+            'latest_feedbacks' => $latestFeedbacks
+        ]);
     }
 }

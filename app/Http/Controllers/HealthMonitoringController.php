@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class HealthMonitoringController extends Controller
 {
@@ -13,117 +14,133 @@ class HealthMonitoringController extends Controller
         return view('dashboard.pages.health-monitoring.index');
     }
 
-    public function getData(Request $request)
-    {
-        $search = $request->get('search', '');
-        $start = $request->get('start', 0);
-        $length = $request->get('length', 10);
-        $orderColumn = $request->get('order_column', 'mhl.timestamp');
-        $orderDir = $request->get('order_dir', 'desc');
+public function getData(Request $request)
+{
+    $mountainId = Auth::user()->mountain_id;
 
-        $query = DB::table('mountain_health_logs as mhl')
-            ->join('mountain_bookings as mb', 'mhl.booking_id', '=', 'mb.id')
-            ->join('users as u', 'mb.user_id', '=', 'u.id')
-            ->join('mountains as m', 'mhl.mountain_id', '=', 'm.id')
-            ->select(
-                'mhl.id as log_id',
-                'u.name as user_name',
-                'u.email',
-                'm.name as mountain_name',
-                'mhl.heart_rate',
-                'mhl.body_temperature',
-                'mhl.timestamp',
-                'mb.id as booking_id',
-                'mb.status as booking_status'
-            );
+    $search = $request->get('search', '');
+    $start = $request->get('start', 0);
+    $length = $request->get('length', 10);
 
-        // Apply search filter
-        if (!empty($search)) {
-            $query->where(function ($q) use ($search) {
-                $q->where('u.name', 'LIKE', "%{$search}%")
-                    ->orWhere('u.email', 'LIKE', "%{$search}%")
-                    ->orWhere('m.name', 'LIKE', "%{$search}%");
-            });
-        }
+    // pastikan default order kolom valid
+    $allowedColumns = [
+        'hl.timestamp', 'u.name', 'u.email',
+        'm.name', 'hl.heart_rate', 'hl.spo2', 'hl.stress_level'
+    ];
 
-        // Only show active bookings
-        $query->where('mb.status', 'active');
-
-        // Get total count before pagination
-        $totalRecords = $query->count();
-
-        // Apply ordering and pagination
-        $healthLogs = $query->orderBy($orderColumn, $orderDir)
-            ->skip($start)
-            ->take($length)
-            ->get();
-
-        // Format the data for DataTables
-        $data = $healthLogs->map(function ($log) {
-            return [
-                'user_name' => $log->user_name,
-                'email' => $log->email,
-                'mountain_name' => $log->mountain_name,
-                'heart_rate' => $log->heart_rate,
-                'body_temperature' => $log->body_temperature,
-                'timestamp' => date('Y-m-d H:i:s', strtotime($log->timestamp)),
-                'health_status' => $this->getHealthStatus($log->heart_rate, $log->body_temperature),
-                'log_id' => $log->log_id,
-                'booking_id' => $log->booking_id
-            ];
-        });
-
-        return response()->json([
-            'draw' => intval($request->get('draw', 1)),
-            'recordsTotal' => $totalRecords,
-            'recordsFiltered' => $totalRecords,
-            'data' => $data
-        ]);
+    $orderColumn = $request->get('order_column', 'hl.timestamp');
+    if (!in_array($orderColumn, $allowedColumns)) {
+        $orderColumn = 'hl.timestamp'; // fallback aman
     }
+
+    $orderDir = $request->get('order_dir', 'desc');
+
+    $query = DB::table('mountain_hiker_logs as hl')
+        ->join('mountain_bookings as mb', 'hl.booking_id', '=', 'mb.id')
+        ->join('users as u', 'mb.user_id', '=', 'u.id')
+        ->join('mountains as m', 'hl.mountain_id', '=', 'm.id')
+        ->select(
+            'hl.id as log_id',
+            'u.name as user_name',
+            'u.email',
+            'm.name as mountain_name',
+            'hl.heart_rate',
+            'hl.spo2',
+            'hl.stress_level',
+            'hl.timestamp',
+            'mb.status as hike_status',
+            'mb.id as booking_id'
+        )
+        ->when($mountainId, fn($q) => $q->where('hl.mountain_id', $mountainId))
+        ->where('mb.status', 'active');
+
+    if (!empty($search)) {
+        $query->where(function ($q) use ($search) {
+            $q->where('u.name', 'LIKE', "%{$search}%")
+                ->orWhere('u.email', 'LIKE', "%{$search}%")
+                ->orWhere('m.name', 'LIKE', "%{$search}%");
+        });
+    }
+
+    $totalRecords = $query->count();
+
+    $healthLogs = $query->orderBy($orderColumn, $orderDir)
+        ->skip($start)
+        ->take($length)
+        ->get();
+
+    $data = $healthLogs->map(function ($log) {
+        return [
+            'user_name' => $log->user_name,
+            'email' => $log->email,
+            'mountain_name' => $log->mountain_name,
+            'heart_rate' => $log->heart_rate ? $log->heart_rate . ' bpm' : '-',
+            'spo2' => $log->spo2 ? $log->spo2 . '%' : '-',
+            'stress_level' => $log->stress_level ?? '-',
+            'timestamp' => $log->timestamp
+                ? \Carbon\Carbon::parse($log->timestamp)->format('d/m/Y H:i:s')
+                : '-',
+            'health_status' => $this->getHealthStatus($log->heart_rate, $log->spo2, $log->stress_level),
+            'log_id' => $log->log_id,
+            'booking_id' => $log->booking_id
+        ];
+    });
+
+    return response()->json([
+        'draw' => intval($request->get('draw', 1)),
+        'recordsTotal' => $totalRecords,
+        'recordsFiltered' => $totalRecords,
+        'data' => $data
+    ]);
+}
+
 
     public function getHikerHealth($bookingId)
     {
-        $healthData = DB::table('mountain_health_logs as mhl')
-            ->join('mountain_bookings as mb', 'mhl.booking_id', '=', 'mb.id')
+        $healthData = DB::table('mountain_hiker_logs as hl')
+            ->join('mountain_bookings as mb', 'hl.booking_id', '=', 'mb.id')
             ->join('users as u', 'mb.user_id', '=', 'u.id')
-            ->join('mountains as m', 'mhl.mountain_id', '=', 'm.id')
+            ->join('mountains as m', 'hl.mountain_id', '=', 'm.id')
             ->select(
                 'u.name as user_name',
                 'u.email',
                 'm.name as mountain_name',
-                'mhl.heart_rate',
-                'mhl.body_temperature',
-                'mhl.timestamp'
+                'hl.heart_rate',
+                'hl.spo2',
+                'hl.stress_level',
+                'hl.timestamp'
             )
-            ->where('mhl.booking_id', $bookingId)
-            ->orderBy('mhl.timestamp', 'desc')
-            ->limit(24) // Last 24 readings
+            ->where('hl.booking_id', $bookingId)
+            ->orderBy('hl.timestamp', 'desc')
+            ->limit(48)
             ->get();
 
         if ($healthData->isEmpty()) {
-            return response()->json(['error' => 'No health data found'], 404);
+            return response()->json(['error' => 'Tidak ada data kesehatan'], 404);
         }
 
-        // Calculate averages and trends
         $avgHeartRate = $healthData->avg('heart_rate');
-        $avgTemperature = $healthData->avg('body_temperature');
-        $latestReading = $healthData->first();
+        $avgSpo2 = $healthData->avg('spo2');
+        $avgStress = $healthData->avg('stress_level');
+        $latest = $healthData->first();
 
         return response()->json([
             'hiker_info' => [
-                'name' => $latestReading->user_name,
-                'email' => $latestReading->email,
-                'mountain' => $latestReading->mountain_name
+                'name' => $latest->user_name,
+                'email' => $latest->email,
+                'mountain' => $latest->mountain_name
             ],
-            'current_status' => $this->getHealthStatus($latestReading->heart_rate, $latestReading->body_temperature),
+            'current_status' => $this->getHealthStatus($latest->heart_rate, $latest->spo2, $latest->stress_level),
             'latest_reading' => [
-                'heart_rate' => $latestReading->heart_rate,
-                'body_temperature' => $latestReading->body_temperature,
-                'timestamp' => $latestReading->timestamp
+                'heart_rate' => $latest->heart_rate,
+                'spo2' => $latest->spo2,
+                'stress_level' => $latest->stress_level,
+                'timestamp' => $latest->timestamp
             ],
             'averages' => [
                 'heart_rate' => round($avgHeartRate, 1),
-                'body_temperature' => round($avgTemperature, 1)
+                'spo2' => round($avgSpo2, 1),
+                'stress_level' => round($avgStress, 1)
             ],
             'readings' => $healthData
         ]);
@@ -131,43 +148,48 @@ class HealthMonitoringController extends Controller
 
     public function getHealthStats()
     {
-        // Get current health statistics
+        $mountainId = Auth::user()->mountain_id;
+
         $totalActiveHikers = DB::table('mountain_bookings')
+            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
             ->where('status', 'active')
             ->count();
 
-        $criticalHikers = DB::table('mountain_health_logs as mhl')
-            ->join('mountain_bookings as mb', 'mhl.booking_id', '=', 'mb.id')
+        $criticalHikers = DB::table('mountain_hiker_logs as hl')
+            ->join('mountain_bookings as mb', 'hl.booking_id', '=', 'mb.id')
+            ->when($mountainId, fn($q) => $q->where('hl.mountain_id', $mountainId))
             ->where('mb.status', 'active')
             ->where(function ($q) {
-                $q->where('mhl.heart_rate', '>', 120)
-                    ->orWhere('mhl.heart_rate', '<', 50)
-                    ->orWhere('mhl.body_temperature', '>', 38.5)
-                    ->orWhere('mhl.body_temperature', '<', 35.0);
+                $q->where('hl.heart_rate', '>', 120)
+                    ->orWhere('hl.heart_rate', '<', 50)
+                    ->orWhere('hl.spo2', '<', 90)
+                    ->orWhere('hl.stress_level', '>', 7);
             })
-            ->distinct('mhl.booking_id')
+            ->distinct('hl.booking_id')
             ->count();
 
-        $recentAlerts = DB::table('mountain_health_logs as mhl')
-            ->join('mountain_bookings as mb', 'mhl.booking_id', '=', 'mb.id')
+        $recentAlerts = DB::table('mountain_hiker_logs as hl')
+            ->join('mountain_bookings as mb', 'hl.booking_id', '=', 'mb.id')
             ->join('users as u', 'mb.user_id', '=', 'u.id')
-            ->join('mountains as m', 'mhl.mountain_id', '=', 'm.id')
+            ->join('mountains as m', 'hl.mountain_id', '=', 'm.id')
             ->select(
                 'u.name as user_name',
                 'm.name as mountain_name',
-                'mhl.heart_rate',
-                'mhl.body_temperature',
-                'mhl.timestamp'
+                'hl.heart_rate',
+                'hl.spo2',
+                'hl.stress_level',
+                'hl.timestamp'
             )
+            ->when($mountainId, fn($q) => $q->where('hl.mountain_id', $mountainId))
             ->where('mb.status', 'active')
             ->where(function ($q) {
-                $q->where('mhl.heart_rate', '>', 120)
-                    ->orWhere('mhl.heart_rate', '<', 50)
-                    ->orWhere('mhl.body_temperature', '>', 38.5)
-                    ->orWhere('mhl.body_temperature', '<', 35.0);
+                $q->where('hl.heart_rate', '>', 120)
+                    ->orWhere('hl.heart_rate', '<', 50)
+                    ->orWhere('hl.spo2', '<', 90)
+                    ->orWhere('hl.stress_level', '>', 7);
             })
-            ->where('mhl.timestamp', '>=', now()->subHours(1))
-            ->orderBy('mhl.timestamp', 'desc')
+            ->where('hl.timestamp', '>=', now()->subHour())
+            ->orderByDesc('hl.timestamp')
             ->limit(10)
             ->get();
 
@@ -181,11 +203,11 @@ class HealthMonitoringController extends Controller
 
     public function getChartData($bookingId)
     {
-        $data = DB::table('mountain_health_logs')
-            ->select('heart_rate', 'body_temperature', 'timestamp')
+        $data = DB::table('mountain_hiker_logs')
+            ->select('heart_rate', 'spo2', 'stress_level', 'timestamp')
             ->where('booking_id', $bookingId)
             ->orderBy('timestamp', 'desc')
-            ->limit(48) // Last 48 readings (24 hours if every 30 min)
+            ->limit(48)
             ->get()
             ->reverse()
             ->values();
@@ -193,32 +215,28 @@ class HealthMonitoringController extends Controller
         return response()->json($data);
     }
 
-    private function getHealthStatus($heartRate, $bodyTemperature)
+    private function getHealthStatus($heartRate, $spo2, $stress)
     {
-        // Critical conditions
-        if ($heartRate > 120 || $heartRate < 50 || $bodyTemperature > 38.5 || $bodyTemperature < 35.0) {
+        if ($heartRate > 120 || $heartRate < 50 || $spo2 < 90 || $stress > 7) {
             return 'critical';
         }
-        
-        // Warning conditions
-        if ($heartRate > 100 || $heartRate < 60 || $bodyTemperature > 37.8 || $bodyTemperature < 35.5) {
+        if ($heartRate > 100 || $heartRate < 60 || $spo2 < 94 || $stress > 5) {
             return 'warning';
         }
-        
         return 'normal';
     }
 
     public function sendHealthAlert(Request $request)
     {
-        // This would integrate with notification system
-        // For now, just log the alert
-        DB::table('health_alerts')->insert([
+        DB::table('mountain_sos_signals')->insert([
             'booking_id' => $request->booking_id,
-            'alert_type' => $request->alert_type,
-            'message' => $request->message,
-            'created_at' => now()
+            'mountain_id' => Auth::user()->mountain_id,
+            'timestamp' => now(),
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'message' => $request->message ?? 'Peringatan kesehatan otomatis: kondisi vital tidak normal'
         ]);
 
-        return response()->json(['success' => 'Alert sent successfully']);
+        return response()->json(['success' => 'Peringatan kesehatan berhasil dikirim']);
     }
 }
