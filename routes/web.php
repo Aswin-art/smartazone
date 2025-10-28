@@ -65,6 +65,16 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/export', [EquipmentRentalsController::class, 'exportRentals'])->name('equipment-rentals.export');
             Route::get('/{rentalId}/detail', [EquipmentRentalsController::class, 'show'])->name('equipment-rentals.detail');
             Route::post('/{rentalId}/update-status', [EquipmentRentalsController::class, 'updateStatus'])->name('equipment-rentals.update-status');
+            Route::post('/update-status/{id}', [EquipmentRentalsController::class, 'updateStatus'])->name('equipment-rentals.update-status');
+            Route::post('/store-equipment', [EquipmentRentalsController::class, 'storeEquipment'])->name('equipment.store');
+            Route::put('/update-equipment/{id}', [EquipmentRentalsController::class, 'updateEquipment'])->name('equipment.update');
+            Route::delete('/delete-equipment/{id}', [EquipmentRentalsController::class, 'deleteEquipment'])->name('equipment.delete');
+            
+            Route::get('/equipment-availability', [EquipmentRentalsController::class, 'getEquipmentAvailability'])->name('equipment-rentals.equipment-availability');
+            Route::post('/update-status/{id}', [EquipmentRentalsController::class, 'updateStatus'])->name('equipment-rentals.update-status');
+            Route::post('/store-equipment', [EquipmentRentalsController::class, 'storeEquipment'])->name('equipment.store');
+            Route::put('/update-equipment/{id}', [EquipmentRentalsController::class, 'updateEquipment'])->name('equipment.update');
+            Route::delete('/delete-equipment/{id}', [EquipmentRentalsController::class, 'deleteEquipment'])->name('equipment.delete');
         });
 
         Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
