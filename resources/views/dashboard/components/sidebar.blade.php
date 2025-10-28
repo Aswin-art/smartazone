@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="index.html" class="app-brand-link">
+        <a href="{{ Auth::user()->user_type == 'superadmin' ? route('superadmin.mountains.index') : route('dashboard.index') }}" class="app-brand-link">
             <span class="app-brand-logo demo me-1">
                 <span class="text-primary">
                     <svg width="30" height="24" viewBox="0 0 250 196" fill="none"
