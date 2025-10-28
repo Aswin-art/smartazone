@@ -463,24 +463,27 @@
             };
 
             window.deleteFeedback = function(feedbackId) {
-                if (confirm('Are you sure you want to delete this feedback? This action cannot be undone.')) {
+                if (confirm(
+                        'Apakah Anda yakin ingin menghapus feedback ini? Tindakan ini tidak dapat dibatalkan.'
+                        )) {
                     $.ajax({
-                        url: `/feedback/${feedbackId}`,
+                        url: "{{ route('feedback.destroy', ':id') }}".replace(':id', feedbackId),
                         type: 'DELETE',
                         data: {
                             _token: '{{ csrf_token() }}'
                         },
                         success: function(response) {
-                            alert('Feedback deleted successfully');
+                            alert('Feedback berhasil dihapus');
                             loadFeedback();
-                            loadStats(); // Refresh stats
+                            loadStats();
                         },
                         error: function(xhr, status, error) {
-                            alert('Error deleting feedback. Please try again.');
+                            alert('Terjadi kesalahan saat menghapus feedback. Silakan coba lagi.');
                         }
                     });
                 }
             };
+
         });
     </script>
 @endpush
