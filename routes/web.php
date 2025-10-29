@@ -9,6 +9,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HealthMonitoringController;
 use App\Http\Controllers\HikersController;
 use App\Http\Controllers\LocationTrackingController;
+use App\Http\Controllers\MountainHikerController;
 use App\Http\Controllers\SOSMonitoringController;
 use App\Http\Controllers\Superadmin\MountainController;
 use Illuminate\Support\Facades\Route;
@@ -108,6 +109,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/sos/{id}/respond', [SOSMonitoringController::class, 'respondToSOS'])->name('sos.respond');
         Route::get('/sos/emergency-contacts/{bookingId}', [SOSMonitoringController::class, 'getEmergencyContacts'])->name('sos.contacts');
         Route::post('/sos/create', [SOSMonitoringController::class, 'createSOSSignal'])->name('sos.create');
+
+        Route::get('mountain_hikers', [MountainHikerController::class, 'index'])->name('mountain_hikers.index');
+        Route::get('mountain_hikers/list', [MountainHikerController::class, 'getList'])->name('mountain_hikers.list');
+        // Route::get('mountain_hikers/{bookingId}/logs', [MountainHikerController::class, 'getLogs'])->name('mountain_hikers.logs');
+         Route::get('mountain_hikers/logs', [MountainHikerController::class, 'getLogs'])->name('mountain_hikers.logs');
     });
 });
 
