@@ -27,7 +27,7 @@
         <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered">
                 <div class="modal-content border-0 shadow-lg rounded-3 overflow-hidden">
-                    <div class="modal-header text-white" style="background: linear-gradient(135deg, #007bff, #00b4d8);">
+                    <div class="modal-header text-white">
                         <h5 class="modal-title fw-semibold" id="mapModalLabel">Peta Lokasi Pendaki</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>

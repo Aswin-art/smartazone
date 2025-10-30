@@ -10,7 +10,6 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HealthMonitoringController;
 use App\Http\Controllers\HikersController;
 use App\Http\Controllers\LocationTrackingController;
-use App\Http\Controllers\MountainHikerController;
 use App\Http\Controllers\SOSMonitoringController;
 use App\Http\Controllers\Superadmin\MountainController;
 use Illuminate\Support\Facades\Route;
