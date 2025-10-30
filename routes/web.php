@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MountainHikerController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ComplaintsController;
 use App\Http\Controllers\EquipmentRentalsController;
@@ -98,6 +99,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/sos/{id}/respond', [SOSMonitoringController::class, 'respondToSOS'])->name('sos.respond');
         Route::get('/sos/emergency-contacts/{bookingId}', [SOSMonitoringController::class, 'getEmergencyContacts'])->name('sos.contacts');
         Route::post('/sos/create', [SOSMonitoringController::class, 'createSOSSignal'])->name('sos.create');
+
+        Route::get('mountain_hikers', [MountainHikerController::class, 'index'])->name('mountain_hikers.index');
+        Route::get('mountain_hikers/list', [MountainHikerController::class, 'getList'])->name('mountain_hikers.list');
+        Route::get('mountain_hikers/logs', [MountainHikerController::class, 'getLogs'])->name('mountain_hikers.logs');
     });
 });
 

@@ -101,6 +101,13 @@
                     <div class="badge rounded-pill bg-label-success fs-tiny ms-auto">🌟</div>
                 </a>
             </li>
+            <li class="menu-item">
+                <a href="{{ route('mountain_hikers.index') }}" class="menu-link">
+                    <i class="menu-icon icon-base ri ri-map-pin-line"></i>
+                    <div data-i18n="Pendaki Aktif">Pendaki Aktif</div>
+                    <div class="badge rounded-pill bg-label-info fs-tiny ms-auto">🗺️</div>
+                </a>
+            </li>
         @elseif(Auth::user() && Auth::user()->user_type === 'superadmin')
             <li class="menu-item">
                 <a href="{{ route('superadmin.mountains.index') }}" class="menu-link">
