@@ -14,91 +14,167 @@ class HealthMonitoringController extends Controller
         return view('dashboard.pages.health-monitoring.index');
     }
 
-public function getData(Request $request)
-{
-    $mountainId = Auth::user()->mountain_id;
-    $search = $request->get('search', '');
-    $start = $request->get('start', 0);
-    $length = $request->get('length', 10);
+    public function getData(Request $request)
+    {
+        $mountainId = Auth::user()->mountain_id;
+        $search = $request->get('search', '');
+        $start = $request->get('start', 0);
+        $length = $request->get('length', 10);
 
-    $allowedColumns = [
-        'hl.timestamp',
-        'u.name',
-        'u.email',
-        'm.name',
-        'hl.heart_rate',
-        'hl.spo2',
-        'hl.stress_level'
-    ];
-
-    $orderColumn = $request->get('order_column', 'hl.timestamp');
-    if (!in_array($orderColumn, $allowedColumns)) {
-        $orderColumn = 'hl.timestamp';
-    }
-
-    $orderDir = $request->get('order_dir', 'desc');
-
-    $baseQuery = DB::table('mountain_hiker_logs as hl')
-        ->join('mountain_bookings as mb', 'hl.booking_id', '=', 'mb.id')
-        ->join('users as u', 'mb.user_id', '=', 'u.id')
-        ->join('mountains as m', 'hl.mountain_id', '=', 'm.id')
-        ->select(
-            'hl.id as log_id',
-            'u.name as user_name',
+        $allowedColumns = [
+            'hl.timestamp',
+            'u.name',
             'u.email',
-            'm.name as mountain_name',
+            'm.name',
             'hl.heart_rate',
             'hl.spo2',
-            'hl.stress_level',
-            'hl.timestamp',
-            'mb.status as hike_status',
-            'mb.id as booking_id'
-        )
-        ->when($mountainId, fn($q) => $q->where('hl.mountain_id', $mountainId))
-        ->where('mb.status', 'active');
+            'hl.stress_level'
+        ];
 
-    if ($search !== '') {
-        $baseQuery->where(function ($q) use ($search) {
-            $q->where('u.name', 'LIKE', "%{$search}%")
-              ->orWhere('u.email', 'LIKE', "%{$search}%")
-              ->orWhere('m.name', 'LIKE', "%{$search}%");
+        $orderColumn = $request->get('order_column', 'hl.timestamp');
+        if (!in_array($orderColumn, $allowedColumns)) {
+            $orderColumn = 'hl.timestamp';
+        }
+
+        $orderDir = $request->get('order_dir', 'desc');
+
+        // Subquery untuk mendapatkan log terbaru per booking
+        $subquery = DB::table('mountain_hiker_logs as hl')
+            ->select(
+                'hl.booking_id',
+                DB::raw('MAX(hl.timestamp) as latest_time')
+            )
+            ->groupBy('hl.booking_id');
+
+        // Query utama
+        $baseQuery = DB::table('mountain_bookings as mb')
+            ->leftJoinSub($subquery, 'latest', function ($join) {
+                $join->on('mb.id', '=', 'latest.booking_id');
+            })
+            ->leftJoin('mountain_hiker_logs as hl', function ($join) {
+                $join->on('mb.id', '=', 'hl.booking_id')
+                    ->on('hl.timestamp', '=', 'latest.latest_time');
+            })
+            ->join('users as u', 'mb.user_id', '=', 'u.id')
+            ->join('mountains as m', 'mb.mountain_id', '=', 'm.id')
+            ->when($mountainId, fn($q) => $q->where('mb.mountain_id', $mountainId))
+            ->where('mb.status', 'active')
+            ->select(
+                'mb.id as booking_id',
+                'u.name as user_name',
+                'u.email',
+                'm.name as mountain_name',
+                DB::raw('COALESCE(hl.heart_rate, 0) as heart_rate'),
+                DB::raw('COALESCE(hl.spo2, 0) as spo2'),
+                DB::raw('COALESCE(hl.stress_level, 0) as stress_level'),
+                DB::raw('hl.timestamp as timestamp')
+            );
+
+        if ($search !== '') {
+            $baseQuery->where(function ($q) use ($search) {
+                $q->where('u.name', 'like', "%{$search}%")
+                    ->orWhere('u.email', 'like', "%{$search}%")
+                    ->orWhere('m.name', 'like', "%{$search}%");
+            });
+        }
+
+        $totalRecords = (clone $baseQuery)->distinct('mb.id')->count('mb.id');
+
+        $logs = $baseQuery
+            ->orderBy($orderColumn, $orderDir)
+            ->skip($start)
+            ->take($length)
+            ->get();
+
+        $data = $logs->map(function ($log) {
+            return [
+                'user_name' => $log->user_name,
+                'email' => $log->email,
+                'mountain_name' => $log->mountain_name,
+                'heart_rate' => $log->heart_rate > 0 ? "{$log->heart_rate} bpm" : '-',
+                'spo2' => $log->spo2 > 0 ? "{$log->spo2}%" : '-',
+                'stress_level' => $log->stress_level > 0 ? $log->stress_level : '-',
+                'timestamp' => $log->timestamp
+                    ? \Carbon\Carbon::parse($log->timestamp)->format('d/m/Y H:i:s')
+                    : '-',
+                'health_status' => $this->getHealthStatus($log->heart_rate, $log->spo2, $log->stress_level),
+                'booking_id' => $log->booking_id
+            ];
         });
+
+        return response()->json([
+            'draw' => intval($request->get('draw', 1)),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $data
+        ]);
     }
 
-    $totalRecords = (clone $baseQuery)->count();
+    public function getHealthStats()
+    {
+        $mountainId = Auth::user()->mountain_id;
 
-    $logs = $baseQuery
-        ->orderBy($orderColumn, $orderDir)
-        ->skip($start)
-        ->take($length)
-        ->get();
+        $subquery = DB::table('mountain_hiker_logs as hl')
+            ->select(
+                'hl.booking_id',
+                DB::raw('MAX(hl.timestamp) as latest_time')
+            )
+            ->groupBy('hl.booking_id');
 
-    $data = $logs->map(function ($log) {
-        return [
-            'user_name' => $log->user_name,
-            'email' => $log->email,
-            'mountain_name' => $log->mountain_name,
-            'heart_rate' => $log->heart_rate ? "{$log->heart_rate} bpm" : '-',
-            'spo2' => $log->spo2 ? "{$log->spo2}%" : '-',
-            'stress_level' => $log->stress_level ?? '-',
-            'timestamp' => $log->timestamp
-                ? \Carbon\Carbon::parse($log->timestamp)->format('d/m/Y H:i:s')
-                : '-',
-            'health_status' => $this->getHealthStatus($log->heart_rate, $log->spo2, $log->stress_level),
-            'log_id' => $log->log_id,
-            'booking_id' => $log->booking_id
-        ];
-    });
+        $baseBookings = DB::table('mountain_bookings as mb')
+            ->leftJoinSub($subquery, 'latest', function ($join) {
+                $join->on('mb.id', '=', 'latest.booking_id');
+            })
+            ->leftJoin('mountain_hiker_logs as hl', function ($join) {
+                $join->on('mb.id', '=', 'hl.booking_id')
+                    ->on('hl.timestamp', '=', 'latest.latest_time');
+            })
+            ->when($mountainId, fn($q) => $q->where('mb.mountain_id', $mountainId))
+            ->where('mb.status', 'active');
 
-    return response()->json([
-        'draw' => intval($request->get('draw', 1)),
-        'recordsTotal' => $totalRecords,
-        'recordsFiltered' => $totalRecords,
-        'data' => $data
-    ]);
-}
+        $totalActiveHikers = (clone $baseBookings)
+            ->distinct('mb.id')
+            ->count('mb.id');
 
+        $criticalHikers = (clone $baseBookings)
+            ->where(function ($q) {
+                $q->where('hl.heart_rate', '>', 120)
+                    ->orWhere('hl.heart_rate', '<', 50)
+                    ->orWhere('hl.spo2', '<', 90)
+                    ->orWhere('hl.stress_level', '>', 7);
+            })
+            ->distinct('mb.id')
+            ->count('mb.id');
 
+        $recentAlerts = (clone $baseBookings)
+            ->join('users as u', 'mb.user_id', '=', 'u.id')
+            ->join('mountains as m', 'mb.mountain_id', '=', 'm.id')
+            ->select(
+                'u.name as user_name',
+                'm.name as mountain_name',
+                'hl.heart_rate',
+                'hl.spo2',
+                'hl.stress_level',
+                'hl.timestamp'
+            )
+            ->where(function ($q) {
+                $q->where('hl.heart_rate', '>', 120)
+                    ->orWhere('hl.heart_rate', '<', 50)
+                    ->orWhere('hl.spo2', '<', 90)
+                    ->orWhere('hl.stress_level', '>', 7);
+            })
+            ->where('hl.timestamp', '>=', now()->subHour())
+            ->orderByDesc('hl.timestamp')
+            ->limit(10)
+            ->get();
+
+        return response()->json([
+            'total_active' => $totalActiveHikers,
+            'critical_hikers' => $criticalHikers,
+            'recent_alerts' => $recentAlerts->count(),
+            'alert_details' => $recentAlerts
+        ]);
+    }
 
     public function getHikerHealth($bookingId)
     {
@@ -148,61 +224,6 @@ public function getData(Request $request)
                 'stress_level' => round($avgStress, 1)
             ],
             'readings' => $healthData
-        ]);
-    }
-
-    public function getHealthStats()
-    {
-        $mountainId = Auth::user()->mountain_id;
-
-        $totalActiveHikers = DB::table('mountain_bookings')
-            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
-            ->where('status', 'active')
-            ->count();
-
-        $criticalHikers = DB::table('mountain_hiker_logs as hl')
-            ->join('mountain_bookings as mb', 'hl.booking_id', '=', 'mb.id')
-            ->when($mountainId, fn($q) => $q->where('hl.mountain_id', $mountainId))
-            ->where('mb.status', 'active')
-            ->where(function ($q) {
-                $q->where('hl.heart_rate', '>', 120)
-                    ->orWhere('hl.heart_rate', '<', 50)
-                    ->orWhere('hl.spo2', '<', 90)
-                    ->orWhere('hl.stress_level', '>', 7);
-            })
-            ->distinct('hl.booking_id')
-            ->count();
-
-        $recentAlerts = DB::table('mountain_hiker_logs as hl')
-            ->join('mountain_bookings as mb', 'hl.booking_id', '=', 'mb.id')
-            ->join('users as u', 'mb.user_id', '=', 'u.id')
-            ->join('mountains as m', 'hl.mountain_id', '=', 'm.id')
-            ->select(
-                'u.name as user_name',
-                'm.name as mountain_name',
-                'hl.heart_rate',
-                'hl.spo2',
-                'hl.stress_level',
-                'hl.timestamp'
-            )
-            ->when($mountainId, fn($q) => $q->where('hl.mountain_id', $mountainId))
-            ->where('mb.status', 'active')
-            ->where(function ($q) {
-                $q->where('hl.heart_rate', '>', 120)
-                    ->orWhere('hl.heart_rate', '<', 50)
-                    ->orWhere('hl.spo2', '<', 90)
-                    ->orWhere('hl.stress_level', '>', 7);
-            })
-            ->where('hl.timestamp', '>=', now()->subHour())
-            ->orderByDesc('hl.timestamp')
-            ->limit(10)
-            ->get();
-
-        return response()->json([
-            'total_active' => $totalActiveHikers,
-            'critical_hikers' => $criticalHikers,
-            'recent_alerts' => $recentAlerts->count(),
-            'alert_details' => $recentAlerts
         ]);
     }
 
