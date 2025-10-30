@@ -17,25 +17,28 @@ class HealthMonitoringController extends Controller
 public function getData(Request $request)
 {
     $mountainId = Auth::user()->mountain_id;
-
     $search = $request->get('search', '');
     $start = $request->get('start', 0);
     $length = $request->get('length', 10);
 
-    // pastikan default order kolom valid
     $allowedColumns = [
-        'hl.timestamp', 'u.name', 'u.email',
-        'm.name', 'hl.heart_rate', 'hl.spo2', 'hl.stress_level'
+        'hl.timestamp',
+        'u.name',
+        'u.email',
+        'm.name',
+        'hl.heart_rate',
+        'hl.spo2',
+        'hl.stress_level'
     ];
 
     $orderColumn = $request->get('order_column', 'hl.timestamp');
     if (!in_array($orderColumn, $allowedColumns)) {
-        $orderColumn = 'hl.timestamp'; // fallback aman
+        $orderColumn = 'hl.timestamp';
     }
 
     $orderDir = $request->get('order_dir', 'desc');
 
-    $query = DB::table('mountain_hiker_logs as hl')
+    $baseQuery = DB::table('mountain_hiker_logs as hl')
         ->join('mountain_bookings as mb', 'hl.booking_id', '=', 'mb.id')
         ->join('users as u', 'mb.user_id', '=', 'u.id')
         ->join('mountains as m', 'hl.mountain_id', '=', 'm.id')
@@ -54,28 +57,29 @@ public function getData(Request $request)
         ->when($mountainId, fn($q) => $q->where('hl.mountain_id', $mountainId))
         ->where('mb.status', 'active');
 
-    if (!empty($search)) {
-        $query->where(function ($q) use ($search) {
+    if ($search !== '') {
+        $baseQuery->where(function ($q) use ($search) {
             $q->where('u.name', 'LIKE', "%{$search}%")
-                ->orWhere('u.email', 'LIKE', "%{$search}%")
-                ->orWhere('m.name', 'LIKE', "%{$search}%");
+              ->orWhere('u.email', 'LIKE', "%{$search}%")
+              ->orWhere('m.name', 'LIKE', "%{$search}%");
         });
     }
 
-    $totalRecords = $query->count();
+    $totalRecords = (clone $baseQuery)->count();
 
-    $healthLogs = $query->orderBy($orderColumn, $orderDir)
+    $logs = $baseQuery
+        ->orderBy($orderColumn, $orderDir)
         ->skip($start)
         ->take($length)
         ->get();
 
-    $data = $healthLogs->map(function ($log) {
+    $data = $logs->map(function ($log) {
         return [
             'user_name' => $log->user_name,
             'email' => $log->email,
             'mountain_name' => $log->mountain_name,
-            'heart_rate' => $log->heart_rate ? $log->heart_rate . ' bpm' : '-',
-            'spo2' => $log->spo2 ? $log->spo2 . '%' : '-',
+            'heart_rate' => $log->heart_rate ? "{$log->heart_rate} bpm" : '-',
+            'spo2' => $log->spo2 ? "{$log->spo2}%" : '-',
             'stress_level' => $log->stress_level ?? '-',
             'timestamp' => $log->timestamp
                 ? \Carbon\Carbon::parse($log->timestamp)->format('d/m/Y H:i:s')
@@ -93,6 +97,7 @@ public function getData(Request $request)
         'data' => $data
     ]);
 }
+
 
 
     public function getHikerHealth($bookingId)

@@ -113,6 +113,7 @@
                                     <th>Mountain</th>
                                     <th>Heart Rate</th>
                                     <th>Body Temperature</th>
+                                    <th>Spo2</th>
                                     <th>Status</th>
                                     <th>Last Update</th>
                                     <th>Actions</th>
@@ -355,6 +356,12 @@
                             <span class="badge ${temperatureColor} fw-medium">
                                 <i class="ri-temp-hot-line me-1"></i>
                                 ${health.body_temperature}°C
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-label-info fw-medium">
+                                <i class="ri-drop-line me-1"></i>
+                                ${health.spo2}%
                             </span>
                         </td>
                         <td>${statusBadge}</td>
