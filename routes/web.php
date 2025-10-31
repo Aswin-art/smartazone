@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MountainHikerController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ComplaintsController;
 use App\Http\Controllers\EquipmentRentalsController;
@@ -9,7 +10,6 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HealthMonitoringController;
 use App\Http\Controllers\HikersController;
 use App\Http\Controllers\LocationTrackingController;
-use App\Http\Controllers\MountainHikerController;
 use App\Http\Controllers\SOSMonitoringController;
 use App\Http\Controllers\Superadmin\MountainController;
 use Illuminate\Support\Facades\Route;
@@ -70,7 +70,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store-equipment', [EquipmentRentalsController::class, 'storeEquipment'])->name('equipment.store');
             Route::put('/update-equipment/{id}', [EquipmentRentalsController::class, 'updateEquipment'])->name('equipment.update');
             Route::delete('/delete-equipment/{id}', [EquipmentRentalsController::class, 'deleteEquipment'])->name('equipment.delete');
-            
+
             Route::get('/equipment-availability', [EquipmentRentalsController::class, 'getEquipmentAvailability'])->name('equipment-rentals.equipment-availability');
             Route::post('/update-status/{id}', [EquipmentRentalsController::class, 'updateStatus'])->name('equipment-rentals.update-status');
             Route::post('/store-equipment', [EquipmentRentalsController::class, 'storeEquipment'])->name('equipment.store');
@@ -112,8 +112,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('mountain_hikers', [MountainHikerController::class, 'index'])->name('mountain_hikers.index');
         Route::get('mountain_hikers/list', [MountainHikerController::class, 'getList'])->name('mountain_hikers.list');
-        // Route::get('mountain_hikers/{bookingId}/logs', [MountainHikerController::class, 'getLogs'])->name('mountain_hikers.logs');
-         Route::get('mountain_hikers/logs', [MountainHikerController::class, 'getLogs'])->name('mountain_hikers.logs');
+        Route::get('mountain_hikers/logs', [MountainHikerController::class, 'getLogs'])->name('mountain_hikers.logs');
     });
 });
 

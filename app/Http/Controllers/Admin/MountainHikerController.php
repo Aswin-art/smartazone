@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -11,12 +11,13 @@ class MountainHikerController extends Controller
 {
     public function index()
     {
-        return view('dashboard.pages.mountain_hikers.index');
+        return view('dashboard.pages.mountain-hikers.index');
     }
 
     public function getList(Request $request)
     {
         $mountainId = Auth::user()->mountain_id;
+
         $bookings = DB::table('mountain_bookings as mb')
             ->join('users as u', 'u.id', '=', 'mb.user_id')
             ->select(
@@ -34,6 +35,8 @@ class MountainHikerController extends Controller
         $data = $bookings->map(function ($b) {
             $lastLog = DB::table('mountain_hiker_logs')
                 ->where('booking_id', $b->booking_id)
+                ->whereNotNull('latitude')
+                ->whereNotNull('longitude')
                 ->orderByDesc('timestamp')
                 ->first(['latitude', 'longitude', 'timestamp']);
 
@@ -46,16 +49,16 @@ class MountainHikerController extends Controller
         return response()->json(['data' => $data]);
     }
 
-public function getLogs(Request $request)
+    public function getLogs(Request $request)
     {
-        $bookingId = $request->get('booking_id');
-
+        $bookingId = $request->get('id');
         $logs = DB::table('mountain_hiker_logs')
             ->where('booking_id', $bookingId)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
             ->orderByDesc('timestamp')
             ->limit(50)
             ->get(['latitude', 'longitude', 'timestamp', 'heart_rate', 'spo2', 'stress_level']);
-
         return response()->json(['logs' => $logs]);
     }
 }
