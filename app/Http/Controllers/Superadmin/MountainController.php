@@ -127,6 +127,9 @@ class MountainController extends Controller
 
     public function update(Request $request, $id)
     {
+        $mountain = DB::table('mountains')->where('id', $id)->first();
+        if (!$mountain) abort(404);
+
         $raw = $request->all();
 
         [$faqArr, $faqErr] = $this->decodeJsonArray($raw['faq'] ?? null, 'faq');
@@ -200,22 +203,33 @@ class MountainController extends Controller
         if ($request->hasFile('banner_image')) {
             $path = $request->file('banner_image')->store('mountains/banner', 'public');
             $payload['banner_image_url'] = Storage::url($path);
+        } elseif ($request->input('keep_banner') == '0') {
+            $payload['banner_image_url'] = null;
         }
 
-        $galleryUrls = [];
+        $existingGallery = json_decode($mountain->gallery ?? '[]', true);
+        $galleryUrls = is_array($existingGallery) ? $existingGallery : [];
+
+        $keepGallery = json_decode($request->input('keep_gallery', '[]'), true);
+        if (is_array($keepGallery)) {
+            $galleryUrls = $keepGallery;
+        }
+
         if ($request->hasFile('gallery')) {
             foreach ($request->file('gallery') as $image) {
                 $path = $image->store('mountains/gallery', 'public');
                 $galleryUrls[] = Storage::url($path);
             }
-            $payload['gallery'] = json_encode($galleryUrls, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         }
+
+        $payload['gallery'] = json_encode(array_values($galleryUrls), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         DB::table('mountains')->where('id', $id)->update($payload);
 
         return redirect()->route('superadmin.mountains.index')
             ->with('success', 'Data gunung berhasil diperbarui.');
     }
+
 
 
     private function toPrettyJson($value): string
