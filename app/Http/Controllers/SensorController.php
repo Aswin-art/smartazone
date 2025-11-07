@@ -7,19 +7,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Exception;
+use Illuminate\Validation\Rule;
 
 class SensorController extends Controller
 {
     public function updateLogHiker(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'booking_id'   => 'nullable|integer',
-            'mountain_id'  => 'nullable|integer',
+            'booking_id'   => 'required|integer',
+            'mountain_id'  => 'required|integer',
+            'device_id'    => 'required|integer',
             'heart_rate'   => 'nullable|numeric|min:0|max:250',
             'stress_level' => 'nullable|numeric|min:0|max:100',
             'spo2'         => 'nullable|numeric|min:0|max:100',
             'latitude'     => 'nullable|numeric|between:-90,90',
             'longitude'    => 'nullable|numeric|between:-180,180',
+            'status'       => ['required', Rule::in(['TRUE', 'FALSE'])],
             'timestamp'    => 'nullable|date',
         ]);
 
@@ -31,15 +34,21 @@ class SensorController extends Controller
         }
 
         try {
+            $validated = $validator->validated();
+
             $id = DB::table('mountain_hiker_logs')->insertGetId([
-                'booking_id'   => $request->input('booking_id'),
-                'mountain_id'  => $request->input('mountain_id'),
-                'heart_rate'   => $request->input('heart_rate'),
-                'stress_level' => $request->input('stress_level'),
-                'spo2'         => $request->input('spo2'),
-                'latitude'     => $request->input('latitude'),
-                'longitude'    => $request->input('longitude'),
-                'timestamp'    => $request->input('timestamp') ?? now(),
+                'booking_id'   => $validated['booking_id'],
+                'mountain_id'  => $validated['mountain_id'],
+                'device_id'    => $validated['device_id'],
+                'heart_rate'   => $validated['heart_rate'] ?? null,
+                'stress_level' => $validated['stress_level'] ?? null,
+                'spo2'         => $validated['spo2'] ?? null,
+                'latitude'     => $validated['latitude'] ?? null,
+                'longitude'    => $validated['longitude'] ?? null,
+                'status'       => $validated['status'],
+                'timestamp'    => $validated['timestamp'] ?? now(),
+                'created_at'   => now(),
+                'updated_at'   => now(),
             ]);
 
             $data = DB::table('mountain_hiker_logs')->where('id', $id)->first();
