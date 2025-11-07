@@ -444,7 +444,7 @@
                             </div>
                         </td>
                         <td>
-                            <span class="text-wrap" style="max-width: 150px; display: inline-block;" 
+                            <span class="text-wrap" style="max-width: 150px; display: inline-block;"
                                   title="${sos.message}">${message}</span>
                         </td>
                         <td>
@@ -682,7 +682,7 @@
                                     <i class="ri-map-pin-line me-1"></i>
                                     ${parseFloat(data.sos_signal.latitude).toFixed(6)}, ${parseFloat(data.sos_signal.longitude).toFixed(6)}
                                 </p>
-                                <a href="https://maps.google.com/?q=${data.sos_signal.latitude},${data.sos_signal.longitude}" 
+                                <a href="https://maps.google.com/?q=${data.sos_signal.latitude},${data.sos_signal.longitude}"
                                    target="_blank" class="btn btn-sm btn-outline-primary">
                                     <i class="ri-external-link-line me-1"></i>View on Map
                                 </a>
