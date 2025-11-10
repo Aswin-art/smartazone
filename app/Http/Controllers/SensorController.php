@@ -87,7 +87,7 @@ class SensorController extends Controller
             'heart_rate'   => 'nullable|numeric|min:0|max:250',
             'stress_level' => 'nullable|numeric|min:0|max:100',
             'spo2'         => 'nullable|numeric|min:0|max:100',
-            'latitude'     => 'nullable|numeric|between:-90,90',
+            'lattitude'     => 'nullable|numeric|between:-90,90',
             'longitude'    => 'nullable|numeric|between:-180,180',
             'timestamp'    => 'nullable|date',
         ]);
@@ -119,7 +119,7 @@ class SensorController extends Controller
                 'heart_rate'   => $validated['heart_rate'] ?? null,
                 'stress_level' => $validated['stress_level'] ?? null,
                 'spo2'         => $validated['spo2'] ?? null,
-                'latitude'     => $validated['latitude'] ?? null,
+                'lattitude'     => $validated['lattitude'] ?? null,
                 'longitude'    => $validated['longitude'] ?? null,
                 'timestamp'    => $validated['timestamp'] ?? now(),
                 'created_at'   => now(),
