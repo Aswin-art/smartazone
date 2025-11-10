@@ -113,6 +113,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('mountain_hikers', [MountainHikerController::class, 'index'])->name('mountain_hikers.index');
         Route::get('mountain_hikers/list', [MountainHikerController::class, 'getList'])->name('mountain_hikers.list');
         Route::get('mountain_hikers/logs', [MountainHikerController::class, 'getLogs'])->name('mountain_hikers.logs');
+
+        Route::get('/hiker-link', [App\Http\Controllers\HikerLinkController::class, 'index'])->name('hiker.link');
+        Route::post('/hiker-link/store', [App\Http\Controllers\HikerLinkController::class, 'store'])->name('hiker.link.store');
     });
 });
 

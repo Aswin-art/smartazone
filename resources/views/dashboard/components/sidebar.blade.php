@@ -1,6 +1,7 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="{{ Auth::user()->user_type == 'superadmin' ? route('superadmin.mountains.index') : route('dashboard.index') }}" class="app-brand-link">
+        <a href="{{ Auth::user()->user_type == 'superadmin' ? route('superadmin.mountains.index') : route('dashboard.index') }}"
+            class="app-brand-link">
             <span class="app-brand-logo demo me-1">
                 <span class="text-primary">
                     <svg width="30" height="24" viewBox="0 0 250 196" fill="none"
@@ -106,6 +107,13 @@
                     <i class="menu-icon icon-base ri ri-map-pin-line"></i>
                     <div data-i18n="Pendaki Aktif">Pendaki Aktif</div>
                     <div class="badge rounded-pill bg-label-info fs-tiny ms-auto">🗺️</div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{{ route('hiker.link') }}" class="menu-link">
+                    <i class="menu-icon icon-base ri ri-smartphone-line"></i>
+                    <div data-i18n="Hiker Devices">Hiker Devices</div>
+                    <div class="badge rounded-pill bg-label-primary fs-tiny ms-auto">📱</div>
                 </a>
             </li>
         @elseif(Auth::user() && Auth::user()->user_type === 'superadmin')
