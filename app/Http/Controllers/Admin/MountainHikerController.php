@@ -20,25 +20,29 @@ class MountainHikerController extends Controller
 
         $bookings = DB::table('mountain_bookings as mb')
             ->join('users as u', 'u.id', '=', 'mb.user_id')
+            ->leftJoin('mountain_hiker_status as hs', 'mb.id', '=', 'hs.booking_id')
+            ->leftJoin('mountain_devices as d', 'hs.device_id', '=', 'd.id')
             ->select(
                 'mb.id as booking_id',
                 'u.name as user_name',
                 'u.phone',
                 'mb.hike_date',
                 'mb.return_date',
-                'mb.team_size'
+                'mb.team_size',
+                'hs.device_id'
             )
             ->where('mb.mountain_id', $mountainId)
             ->where('mb.status', 'active')
+            ->groupBy('mb.id', 'u.name', 'u.phone', 'mb.hike_date', 'mb.return_date', 'mb.team_size', 'hs.device_id')
             ->get();
 
         $data = $bookings->map(function ($b) {
-            $lastLog = DB::table('mountain_hiker_logs')
-                ->where('booking_id', $b->booking_id)
-                ->whereNotNull('latitude')
-                ->whereNotNull('longitude')
-                ->orderByDesc('timestamp')
-                ->first(['latitude', 'longitude', 'timestamp']);
+            $lastLog = DB::table('mountain_hiker_logs as hl')
+                ->where('hl.device_id', $b->device_id)
+                ->whereNotNull('hl.latitude')
+                ->whereNotNull('hl.longitude')
+                ->orderByDesc('hl.timestamp')
+                ->first(['hl.latitude', 'hl.longitude', 'hl.timestamp']);
 
             $b->latitude = $lastLog->latitude ?? null;
             $b->longitude = $lastLog->longitude ?? null;
