@@ -1,418 +1,735 @@
 @extends('main-layout')
 
 @section('content')
-    <div class="max-w-lg mx-auto bg-white min-h-screen shadow-2xl overflow-hidden relative">
-        <div class="relative">
-            <div class="rounded-b-3xl absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-10">
-            </div>
-            <div class="h-96">
-                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                    alt="Mountain Vista" class="w-full h-full object-cover rounded-b-3xl">
-            </div>
-            <div class="absolute top-4 right-4 bg-white/20 backdrop-blur-md rounded-full px-4 py-2 z-20">
-                <span class="text-white text-sm font-medium">⛰️ 1.500 Mdpl</span>
-            </div>
-            <div class="absolute bottom-0 left-0 right-0 p-6 z-20">
-                <h1 class="text-white text-3xl font-bold mb-2 drop-shadow-lg">Gunung Bromo</h1>
-                <div class="flex items-center gap-4 text-white/90">
-                    <span class="flex items-center gap-1 text-sm">
-                        <span class="w-2 h-2 bg-green-400 rounded-full"></span>
-                        Buka Sekarang
-                    </span>
-                    <span class="text-sm">☀️ Cuaca Cerah</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="px-6 py-6 space-y-8 pb-32">
-            <div class="space-y-3">
-                <h2 class="text-xl font-semibold text-gray-900">Tentang Destinasi</h2>
-                <p class="text-gray-600 leading-relaxed text-sm">
-                    Nikmati keindahan matahari terbit di salah satu gunung berapi paling ikonik di Indonesia.
-                    Pemandangan spektakuler dan pengalaman tak terlupakan menanti Anda di ketinggian 2.329 meter.
-                </p>
+    <div class="bg-white min-h-screen overflow-hidden relative">
+        <!-- Hero Section - Lebih Besar & Immersive -->
+        <div class="relative h-screen overflow-hidden">
+            <!-- Background Image dengan Parallax Effect -->
+            <div class="absolute inset-0">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+                    alt="Mountain Vista" class="rellax w-full h-full object-cover scale-110" data-rellax-speed="-4"
+                    id="heroImage">
             </div>
 
-            <div class="grid grid-cols-3 gap-4">
-                <div class="text-center p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border border-blue-100">
-                    <div class="text-2xl mb-1">🌅</div>
-                    <div class="text-xs text-gray-600 font-medium">Sunrise</div>
-                    <div class="text-sm font-semibold text-gray-900">05:30</div>
-                </div>
-                <div
-                    class="text-center p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl border border-emerald-100">
-                    <div class="text-2xl mb-1">🌡️</div>
-                    <div class="text-xs text-gray-600 font-medium">Suhu</div>
-                    <div class="text-sm font-semibold text-gray-900">15-20°C</div>
-                </div>
-                <div
-                    class="text-center p-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100">
-                    <div class="text-2xl mb-1">⭐</div>
-                    <div class="text-xs text-gray-600 font-medium">Rating</div>
-                    <div class="text-sm font-semibold text-gray-900">4.8/5</div>
+            <!-- Gradient Overlay - Navy Theme -->
+            <div class="absolute inset-0 pointer-events-none"
+                style="background: linear-gradient(to bottom, rgba(27, 73, 101, 0.1) 0%, transparent 40%, rgba(27, 73, 101, 0.85) 100%);">
+            </div>
+
+            <!-- Altitude Badge - Redesigned -->
+            <div class="absolute top-6 right-6 z-20">
+                <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl px-4 py-2.5 shadow-2xl">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                        </svg>
+                        <span class="text-white text-sm font-semibold tracking-wide">2.329 MDPL</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">Galeri Foto</h3>
-                    <button class="text-sm text-blue-600 font-medium hover:text-blue-800 transition-colors">Lihat
-                        Semua</button>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    @for ($i = 1; $i <= 4; $i++)
-                        <div class="h-28 rounded-2xl overflow-hidden border border-gray-200 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                            onclick="openImageModal('https://gelorajatim.com/wp-content/uploads/2024/08/IMG-20240828-WA0020-scaled.jpg')">
-                            <img src="https://gelorajatim.com/wp-content/uploads/2024/08/IMG-20240828-WA0020-scaled.jpg"
-                                alt="Gallery {{ $i }}" class="w-full h-full object-cover">
-                        </div>
-                    @endfor
-                </div>
-            </div>
-
-            <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">Flora & Fauna</h3>
-                    <button class="text-sm text-blue-600 font-medium hover:text-blue-800 transition-colors">Lihat
-                        Semua</button>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div class="cursor-pointer group" onclick="openFloraModal('edelweiss')">
+            <!-- Hero Content - Swiss Design Layout -->
+            <div class="absolute bottom-0 left-0 right-0 z-20 pb-32">
+                <div class="px-8 space-y-6">
+                    <!-- Status Badge -->
+                    <div class="flex items-center gap-3">
                         <div
-                            class="h-32 bg-gradient-to-br from-emerald-50 to-green-100 rounded-2xl border border-emerald-200 overflow-hidden hover:shadow-lg transition-all duration-300 group-hover:scale-105">
-                            <img src="https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="Edelweiss" class="w-full h-full object-cover">
+                            class="flex items-center gap-2 bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 rounded-full px-4 py-1.5">
+                            <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                            <span class="text-white text-xs font-medium tracking-wide">BUKA</span>
                         </div>
-                        <div class="text-center mt-2">
-                            <div class="text-sm font-medium text-gray-900 group-hover:text-emerald-600 transition-colors">
-                                Edelweiss</div>
-                            <div class="text-xs text-gray-600">Bunga abadi</div>
-                        </div>
-                    </div>
-                    <div class="cursor-pointer group" onclick="openFloraModal('elang')">
                         <div
-                            class="h-32 bg-gradient-to-br from-amber-50 to-yellow-100 rounded-2xl border border-amber-200 overflow-hidden hover:shadow-lg transition-all duration-300 group-hover:scale-105">
-                            <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="Elang Jawa" class="w-full h-full object-cover">
+                            class="flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-4 py-1.5">
+                            <span class="text-white text-xs font-medium">☀️ CERAH</span>
                         </div>
-                        <div class="text-center mt-2">
-                            <div class="text-sm font-medium text-gray-900 group-hover:text-amber-600 transition-colors">
-                                Elang Jawa</div>
-                            <div class="text-xs text-gray-600">Burung langka</div>
-                        </div>
+                    </div>
+
+                    <!-- Mountain Name - Tipografi Tegas -->
+                    <div class="space-y-2">
+                        <h1 class="text-white text-5xl font-bold tracking-tight leading-none drop-shadow-2xl">
+                            Gunung<br>Bromo
+                        </h1>
+                        <p class="text-white/80 text-lg font-light tracking-wide">
+                            Jawa Timur, Indonesia
+                        </p>
                     </div>
                 </div>
             </div>
 
-            <div class="space-y-4">
-                <h3 class="text-lg font-semibold text-gray-900">Informasi Kontak</h3>
-                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-5 space-y-3">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                            <span class="text-blue-600 text-lg">📧</span>
-                        </div>
-                        <div>
-                            <div class="text-sm font-medium text-gray-900">Email</div>
-                            <div class="text-sm text-gray-600">info@gunungbromo.id</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                            <span class="text-green-600 text-lg">📞</span>
-                        </div>
-                        <div>
-                            <div class="text-sm font-medium text-gray-900">WhatsApp</div>
-                            <div class="text-sm text-gray-600">+62 812 3456 7890</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center">
-                            <span class="text-pink-600 text-lg">📷</span>
-                        </div>
-                        <div>
-                            <div class="text-sm font-medium text-gray-900">Instagram</div>
-                            <div class="text-sm text-gray-600">@gunungbromo_official</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-full max-w-lg px-4 pb-4 z-50">
-            <div class="bg-white/80 backdrop-blur-md rounded-t-3xl p-4 shadow-2xl border-t border-gray-200">
-                <div class="flex items-center justify-between mb-3">
-                    <div>
-                        <div class="text-lg font-bold text-gray-900">Mulai dari</div>
-                        <div class="text-2xl font-bold text-blue-600">Rp 250.000</div>
-                        <div class="text-xs text-gray-500">per orang</div>
-                    </div>
-                    <div class="text-right">
-                        <div class="flex items-center gap-1 text-sm text-amber-500 font-medium">
-                            <span>⭐</span>
-                            <span>4.8</span>
-                        </div>
-                        <div class="text-xs text-gray-500">1.234 ulasan</div>
-                    </div>
-                </div>
-                <button
-                    class="w-full bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white font-semibold py-4 rounded-2xl shadow-lg hover:shadow-xl hover:from-blue-600 hover:via-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
-                    <span>🎟️</span>
-                    <span>Booking Sekarang</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4">
-        <div class="relative max-w-4xl max-h-full">
-            <img id="modalImage" src="" alt="Full size image"
-                class="max-w-full max-h-full object-contain rounded-2xl">
-            <button onclick="closeImageModal()"
-                class="absolute top-4 right-4 bg-white bg-opacity-20 backdrop-blur-md rounded-full p-2 text-white hover:bg-opacity-30 transition-all">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+                <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                 </svg>
-            </button>
+            </div>
+        </div>
+
+        <!-- Content Section - Swiss Grid Layout -->
+        <div class="px-8 py-12 space-y-16 pb-56">
+            <!-- Quick Stats & About Combined -->
+            <section class="space-y-8">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-4 gap-2">
+                    <div
+                        class="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-4 text-center border border-blue-100">
+                        <div class="text-2xl font-bold text-gray-900">2.329</div>
+                        <div class="text-xs text-gray-600 font-medium uppercase tracking-wide mt-1">MDPL</div>
+                    </div>
+                    <div
+                        class="bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl p-4 text-center border border-emerald-100">
+                        <div class="text-2xl font-bold text-gray-900">15°</div>
+                        <div class="text-xs text-gray-600 font-medium uppercase tracking-wide mt-1">Suhu</div>
+                    </div>
+                    <div
+                        class="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-2xl p-4 text-center border border-amber-100">
+                        <div class="text-2xl font-bold text-gray-900">142</div>
+                        <div class="text-xs text-gray-600 font-medium uppercase tracking-wide mt-1">Pendaki</div>
+                    </div>
+                    <div
+                        class="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-2xl p-4 text-center border border-purple-100">
+                        <div class="text-2xl font-bold text-gray-900">4.8</div>
+                        <div class="text-xs text-gray-600 font-medium uppercase tracking-wide mt-1">Rating</div>
+                    </div>
+                </div>
+
+                <!-- About -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-0.5 bg-gray-900"></div>
+                        <h2 class="text-sm font-bold text-gray-900 tracking-wider uppercase">Tentang</h2>
+                    </div>
+                    <p class="text-gray-700 leading-loose text-base font-light">
+                        Nikmati keindahan matahari terbit di salah satu gunung berapi paling ikonik di Indonesia.
+                        Pemandangan spektakuler dan pengalaman tak terlupakan menanti Anda di ketinggian 2.329 meter.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Pricing & Regulation Preview -->
+            <section class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-0.5 bg-gray-900"></div>
+                    <h2 class="text-sm font-bold text-gray-900 tracking-wider uppercase">Informasi Pendakian</h2>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- Pricing Card -->
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <div class="text-xs text-blue-600 font-semibold uppercase tracking-wide mb-1">Tiket Masuk
+                                </div>
+                                <div class="text-2xl font-bold text-gray-900">Rp 250.000</div>
+                                <div class="text-xs text-gray-600 mt-1">per orang / hari</div>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Info Cards -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="bg-white border border-gray-200 rounded-2xl p-4">
+                            <div class="flex items-start gap-3">
+                                <div
+                                    class="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">Status</div>
+                                    <div class="text-sm font-semibold text-gray-900 mt-0.5">Buka Normal</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white border border-gray-200 rounded-2xl p-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 bg-amber-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="text-xs text-gray-500 font-medium uppercase tracking-wide">Durasi</div>
+                                    <div class="text-sm font-semibold text-gray-900 mt-0.5">2-3 Hari</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gallery Section - Image Focused -->
+            <section class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-0.5 bg-gray-900"></div>
+                        <h2 class="text-sm font-bold text-gray-900 tracking-wider uppercase">Galeri</h2>
+                    </div>
+                    <button
+                        class="text-xs font-semibold text-gray-900 hover:text-blue-600 transition-colors uppercase tracking-wide">
+                        Lihat Semua →
+                    </button>
+                </div>
+
+                <!-- Masonry-style Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <button
+                        onclick="openImageModal('https://gelorajatim.com/wp-content/uploads/2024/08/IMG-20240828-WA0020-scaled.jpg')"
+                        class="relative h-48 rounded-2xl overflow-hidden group focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <img src="https://gelorajatim.com/wp-content/uploads/2024/08/IMG-20240828-WA0020-scaled.jpg"
+                            alt="Pemandangan Gunung Bromo 1"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                    </button>
+
+                    <button
+                        onclick="openImageModal('https://gelorajatim.com/wp-content/uploads/2024/08/IMG-20240828-WA0020-scaled.jpg')"
+                        class="relative h-48 rounded-2xl overflow-hidden group focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <img src="https://gelorajatim.com/wp-content/uploads/2024/08/IMG-20240828-WA0020-scaled.jpg"
+                            alt="Pemandangan Gunung Bromo 2"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                    </button>
+
+                    <button
+                        onclick="openImageModal('https://gelorajatim.com/wp-content/uploads/2024/08/IMG-20240828-WA0020-scaled.jpg')"
+                        class="relative h-32 rounded-2xl overflow-hidden group focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <img src="https://gelorajatim.com/wp-content/uploads/2024/08/IMG-20240828-WA0020-scaled.jpg"
+                            alt="Pemandangan Gunung Bromo 3"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                    </button>
+
+                    <button
+                        onclick="openImageModal('https://gelorajatim.com/wp-content/uploads/2024/08/IMG-20240828-WA0020-scaled.jpg')"
+                        class="relative h-32 rounded-2xl overflow-hidden group focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <img src="https://gelorajatim.com/wp-content/uploads/2024/08/IMG-20240828-WA0020-scaled.jpg"
+                            alt="Pemandangan Gunung Bromo 4"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Flora & Fauna Section - Card Based -->
+            <section class="space-y-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-0.5 bg-gray-900"></div>
+                        <h2 class="text-sm font-bold text-gray-900 tracking-wider uppercase">Flora & Fauna</h2>
+                    </div>
+                    <button
+                        class="text-xs font-semibold text-gray-900 hover:text-blue-600 transition-colors uppercase tracking-wide">
+                        Lihat Semua →
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="openFloraModal('edelweiss')"
+                        class="group text-left focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded-2xl">
+                        <div class="relative h-44 rounded-2xl overflow-hidden mb-3">
+                            <img src="https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                alt="Edelweiss"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                            </div>
+                            <div class="absolute bottom-3 left-3 right-3">
+                                <div class="text-white font-bold text-base mb-0.5">Edelweiss</div>
+                                <div class="text-white/80 text-xs font-light">Bunga abadi</div>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button onclick="openFloraModal('elang')"
+                        class="group text-left focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-2xl">
+                        <div class="relative h-44 rounded-2xl overflow-hidden mb-3">
+                            <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+                                alt="Elang Jawa"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                            </div>
+                            <div class="absolute bottom-3 left-3 right-3">
+                                <div class="text-white font-bold text-base mb-0.5">Elang Jawa</div>
+                                <div class="text-white/80 text-xs font-light">Burung langka</div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section class="space-y-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-0.5 bg-gray-900"></div>
+                    <h2 class="text-sm font-bold text-gray-900 tracking-wider uppercase">FAQ</h2>
+                </div>
+
+                <div class="space-y-3">
+                    <!-- FAQ 1 -->
+                    <details class="group bg-white border border-gray-200 rounded-2xl overflow-hidden">
+                        <summary
+                            class="flex items-center justify-between p-5 cursor-pointer hover:bg-gray-50 transition-colors">
+                            <span class="font-semibold text-gray-900 text-sm">Apa saja yang perlu dibawa?</span>
+                            <svg class="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 text-sm text-gray-600 leading-relaxed">
+                            Bawa jaket tebal, sleeping bag, tenda, makanan, air minum, obat-obatan pribadi, dan dokumen
+                            identitas. Pastikan juga membawa headlamp dan powerbank.
+                        </div>
+                    </details>
+
+                    <!-- FAQ 2 -->
+                    <details class="group bg-white border border-gray-200 rounded-2xl overflow-hidden">
+                        <summary
+                            class="flex items-center justify-between p-5 cursor-pointer hover:bg-gray-50 transition-colors">
+                            <span class="font-semibold text-gray-900 text-sm">Apakah ada guide lokal?</span>
+                            <svg class="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 text-sm text-gray-600 leading-relaxed">
+                            Ya, tersedia guide bersertifikat yang siap mendampingi perjalanan Anda. Biaya guide mulai dari
+                            Rp 150.000/hari dan dapat dipesan saat booking.
+                        </div>
+                    </details>
+
+                    <!-- FAQ 3 -->
+                    <details class="group bg-white border border-gray-200 rounded-2xl overflow-hidden">
+                        <summary
+                            class="flex items-center justify-between p-5 cursor-pointer hover:bg-gray-50 transition-colors">
+                            <span class="font-semibold text-gray-900 text-sm">Bagaimana jika cuaca buruk?</span>
+                            <svg class="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 text-sm text-gray-600 leading-relaxed">
+                            Pendakian akan ditunda atau dibatalkan demi keselamatan. Anda dapat reschedule tanpa biaya
+                            tambahan atau refund 80% dari total pembayaran.
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <!-- Contact Section - Minimal Cards -->
+            <section class="space-y-6 pb-12">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-0.5 bg-gray-900"></div>
+                    <h2 class="text-sm font-bold text-gray-900 tracking-wider uppercase">Kontak</h2>
+                </div>
+
+                <div class="grid gap-3">
+                    <a href="mailto:info@gunungbromo.id"
+                        class="group bg-white border border-gray-200 rounded-2xl p-5 hover:border-blue-400 hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center group-hover:bg-blue-100 transition-colors flex-shrink-0">
+                                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-0.5">Email</div>
+                                <div class="text-sm font-semibold text-gray-900 truncate">info@gunungbromo.id</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://wa.me/6281234567890" target="_blank"
+                        class="group bg-white border border-gray-200 rounded-2xl p-5 hover:border-green-400 hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center group-hover:bg-green-100 transition-colors flex-shrink-0">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-0.5">WhatsApp
+                                </div>
+                                <div class="text-sm font-semibold text-gray-900">+62 812 3456 7890</div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="https://instagram.com/gunungbromo_official" target="_blank"
+                        class="group bg-white border border-gray-200 rounded-2xl p-5 hover:border-pink-400 hover:shadow-lg transition-all duration-300">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-pink-50 rounded-full flex items-center justify-center group-hover:bg-pink-100 transition-colors flex-shrink-0">
+                                <svg class="w-5 h-5 text-pink-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                </svg>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-0.5">Instagram
+                                </div>
+                                <div class="text-sm font-semibold text-gray-900 truncate">@gunungbromo_official</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <!-- Floating CTA - Redesigned Swiss Style with Scroll Animation -->
+        <div id="floatingCTA"
+            class="fixed bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-full max-w-lg px-6 pb-6 z-50 opacity-0"
+            style="transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out;">
+            <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
+                <!-- Price & Rating Info -->
+                <div class="p-6 pb-4">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="space-y-1">
+                            <div class="text-xs text-gray-500 font-medium uppercase tracking-wider">Mulai dari</div>
+                            <div class="text-3xl font-bold text-gray-900">Rp 250.000</div>
+                            <div class="text-xs text-gray-500 font-light">per orang / hari</div>
+                        </div>
+                        <div class="text-right space-y-1">
+                            <div class="flex items-center gap-1.5">
+                                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                <span class="text-lg font-bold text-gray-900">4.8</span>
+                            </div>
+                            <div class="text-xs text-gray-500">1,234 ulasan</div>
+                        </div>
+                    </div>
+
+                    <!-- CTA Button -->
+                    <button onclick="window.location.href='/booking'"
+                        class="group w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity">
+                        </div>
+                        <div class="relative flex items-center justify-center gap-2">
+                            <span class="text-base tracking-wide">Booking Sekarang</span>
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </div>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Enhanced Flora Modal -->
-    <div id="floraModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-            <!-- Modal Header with Image Carousel -->
-            <div class="relative h-64">
-                <div id="imageCarousel" class="w-full h-full relative overflow-hidden rounded-t-3xl">
-                    <!-- Images will be dynamically added here -->
-                </div>
-
-                <!-- Carousel Navigation -->
-                <button id="prevBtn" onclick="changeImage(-1)"
-                    class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-2 text-white hover:bg-white/30 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
-                        </path>
-                    </svg>
-                </button>
-
-                <button id="nextBtn" onclick="changeImage(1)"
-                    class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-2 text-white hover:bg-white/30 transition-all">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                        </path>
-                    </svg>
-                </button>
-
-                <!-- Image Counter -->
-                <div id="imageCounter"
-                    class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md rounded-full px-3 py-1">
-                    <span class="text-white text-sm font-medium">1 / 4</span>
-                </div>
-
-                <!-- Close Button -->
-                <button onclick="closeFloraModal()"
-                    class="absolute top-4 right-4 bg-white/20 backdrop-blur-md rounded-full p-2 text-white hover:bg-white/30 transition-all">
+    <!-- Image Modal - Redesigned -->
+    <div id="imageModal"
+        class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-screen p-6">
+            <div class="relative max-w-4xl w-full">
+                <img id="modalImage" src="" alt="Foto penuh"
+                    class="w-full h-auto object-contain rounded-3xl shadow-2xl">
+                <button onclick="closeImageModal()"
+                    class="absolute -top-4 -right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-gray-100 transition-all shadow-xl hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-            </div>
-
-            <!-- Modal Content -->
-            <div class="flex-1 overflow-y-auto">
-                <div class="p-6 space-y-6">
-                    <!-- Title Section -->
-                    <div class="text-center space-y-2">
-                        <h3 id="floraTitle" class="text-3xl font-bold text-gray-900"></h3>
-                        <p id="floraSubtitle" class="text-lg text-gray-600 italic"></p>
-                        <div id="conservationStatus"
-                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium"></div>
-                    </div>
-
-                    <!-- Description -->
-                    <div class="space-y-4">
-                        <div id="floraDescription" class="text-gray-700 leading-relaxed space-y-3"></div>
-                    </div>
-
-                    <!-- Characteristics Grid -->
-                    <div id="characteristicsGrid" class="grid grid-cols-2 gap-4">
-                        <!-- Dynamic characteristics will be added here -->
-                    </div>
-
-                    <!-- Habitat Info -->
-                    <div id="habitatInfo"
-                        class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-4">
-                        <h4 class="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                            <span>🏔️</span>
-                            <span>Habitat & Persebaran</span>
-                        </h4>
-                        <div id="habitatContent" class="text-sm text-gray-700 space-y-2"></div>
-                    </div>
-
-                    <!-- Conservation Note -->
-                    <div id="conservationNote"
-                        class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-4">
-                        <h4 class="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                            <span>⚠️</span>
-                            <span>Status Konservasi</span>
-                        </h4>
-                        <div id="conservationContent" class="text-sm text-gray-700"></div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        let currentImageIndex = 0;
-        let currentImages = [];
+    <!-- Flora Modal - Redesigned -->
+    <div id="floraModal"
+        class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="flex items-center justify-center min-h-screen p-6">
+            <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+                <!-- Modal Header with Image Carousel -->
+                <div class="relative h-64">
+                    <div id="imageCarousel" class="w-full h-full relative overflow-hidden rounded-t-3xl">
+                        <!-- Images will be dynamically added here -->
+                    </div>
 
-        function openImageModal(imageSrc) {
-            document.getElementById('modalImage').src = imageSrc;
-            document.getElementById('imageModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
+                    <!-- Carousel Navigation -->
+                    <button id="prevBtn" onclick="changeImage(-1)"
+                        class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-2 text-white hover:bg-white/30 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
+                            </path>
+                        </svg>
+                    </button>
 
-        function closeImageModal() {
-            document.getElementById('imageModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
+                    <button id="nextBtn" onclick="changeImage(1)"
+                        class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-2 text-white hover:bg-white/30 transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                            </path>
+                        </svg>
+                    </button>
 
-        function changeImage(direction) {
-            currentImageIndex += direction;
-            if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
-            if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
+                    <!-- Image Counter -->
+                    <div id="imageCounter"
+                        class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md rounded-full px-3 py-1">
+                        <span class="text-white text-sm font-medium">1 / 4</span>
+                    </div>
 
-            updateCarouselImage();
-        }
+                    <!-- Close Button -->
+                    <button onclick="closeFloraModal()"
+                        class="absolute top-4 right-4 bg-white/20 backdrop-blur-md rounded-full p-2 text-white hover:bg-white/30 transition-all">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
 
-        function updateCarouselImage() {
-            const carousel = document.getElementById('imageCarousel');
-            const counter = document.getElementById('imageCounter');
+                <!-- Modal Content -->
+                <div class="flex-1 overflow-y-auto">
+                    <div class="p-6 space-y-6">
+                        <!-- Title Section -->
+                        <div class="text-center space-y-2">
+                            <h3 id="floraTitle" class="text-3xl font-bold text-gray-900"></h3>
+                            <p id="floraSubtitle" class="text-lg text-gray-600 italic"></p>
+                            <div id="conservationStatus"
+                                class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium"></div>
+                        </div>
 
-            carousel.innerHTML = `
+                        <!-- Description -->
+                        <div class="space-y-4">
+                            <div id="floraDescription" class="text-gray-700 leading-relaxed space-y-3"></div>
+                        </div>
+
+                        <!-- Characteristics Grid -->
+                        <div id="characteristicsGrid" class="grid grid-cols-2 gap-4">
+                            <!-- Dynamic characteristics will be added here -->
+                        </div>
+
+                        <!-- Habitat Info -->
+                        <div id="habitatInfo"
+                            class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-4">
+                            <h4 class="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                <span>🏔️</span>
+                                <span>Habitat & Persebaran</span>
+                            </h4>
+                            <div id="habitatContent" class="text-sm text-gray-700 space-y-2"></div>
+                        </div>
+
+                        <!-- Conservation Note -->
+                        <div id="conservationNote"
+                            class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-4">
+                            <h4 class="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                <span>⚠️</span>
+                                <span>Status Konservasi</span>
+                            </h4>
+                            <div id="conservationContent" class="text-sm text-gray-700"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let currentImageIndex = 0;
+            let currentImages = [];
+
+            // Initialize Rellax for smooth parallax
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Rellax with custom settings
+                if (typeof Rellax !== 'undefined') {
+                    try {
+                        var rellax = new Rellax('.rellax', {
+                            speed: -2,
+                            center: false,
+                            wrapper: null,
+                            round: true,
+                            vertical: true,
+                            horizontal: false,
+                            breakpoints: [576, 768, 1201]
+                        });
+                    } catch (e) {
+                        console.warn('Rellax initialization failed:', e);
+                    }
+                } else {
+                    console.warn('Rellax library not loaded');
+                }
+            });
+
+            // Smooth modal animations
+            function openImageModal(imageSrc) {
+                const modal = document.getElementById('imageModal');
+                document.getElementById('modalImage').src = imageSrc;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                }, 10);
+            }
+
+            function closeImageModal() {
+                const modal = document.getElementById('imageModal');
+                modal.classList.add('opacity-0');
+
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            }
+
+            function changeImage(direction) {
+                currentImageIndex += direction;
+                if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
+                if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
+
+                updateCarouselImage();
+            }
+
+            function updateCarouselImage() {
+                const carousel = document.getElementById('imageCarousel');
+                const counter = document.getElementById('imageCounter');
+
+                carousel.innerHTML = `
                 <img src="${currentImages[currentImageIndex]}"
                      alt="Flora/Fauna Image"
                      class="w-full h-full object-cover transition-opacity duration-300">
             `;
 
-            counter.innerHTML =
-                `<span class="text-white text-sm font-medium">${currentImageIndex + 1} / ${currentImages.length}</span>`;
-        }
+                counter.innerHTML =
+                    `<span class="text-white text-sm font-medium">${currentImageIndex + 1} / ${currentImages.length}</span>`;
+            }
 
-        function openFloraModal(type) {
-            const floraData = {
-                edelweiss: {
-                    title: 'Edelweiss',
-                    subtitle: 'Leontopodium alpinum',
-                    status: {
-                        text: 'Dilindungi',
-                        class: 'bg-yellow-100 text-yellow-800'
-                    },
-                    images: [
-                        'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                    ],
-                    description: `
+            function openFloraModal(type) {
+                const floraData = {
+                    edelweiss: {
+                        title: 'Edelweiss',
+                        subtitle: 'Leontopodium alpinum',
+                        status: {
+                            text: 'Dilindungi',
+                            class: 'bg-yellow-100 text-yellow-800'
+                        },
+                        images: [
+                            'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                            'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                            'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                            'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                        ],
+                        description: `
                         <p>Edelweiss adalah bunga yang tumbuh di daerah pegunungan tinggi dan dikenal sebagai "bunga abadi" karena keindahannya yang tahan lama. Bunga ini menjadi simbol keabadian, cinta sejati, dan keberanian karena tumbuh di tempat-tempat yang sulit dijangkau.</p>
                         <p>Di Indonesia, edelweiss ditemukan di berbagai gunung tinggi termasuk Gunung Bromo, Semeru, Gede-Pangrango, dan gunung-gunung tinggi lainnya. Bunga ini memiliki adaptasi khusus untuk bertahan hidup di kondisi ekstrem pegunungan.</p>
                     `,
-                    characteristics: [{
-                            icon: '📏',
-                            label: 'Tinggi',
-                            value: '20-60 cm'
-                        },
-                        {
-                            icon: '🌸',
-                            label: 'Warna',
-                            value: 'Putih keperakan'
-                        },
-                        {
-                            icon: '🏔️',
-                            label: 'Ketinggian',
-                            value: '1.500-3.000 mdpl'
-                        },
-                        {
-                            icon: '🌡️',
-                            label: 'Suhu',
-                            value: '5-15°C'
-                        }
-                    ],
-                    habitat: `
+                        characteristics: [{
+                                icon: '📏',
+                                label: 'Tinggi',
+                                value: '20-60 cm'
+                            },
+                            {
+                                icon: '🌸',
+                                label: 'Warna',
+                                value: 'Putih keperakan'
+                            },
+                            {
+                                icon: '🏔️',
+                                label: 'Ketinggian',
+                                value: '1.500-3.000 mdpl'
+                            },
+                            {
+                                icon: '🌡️',
+                                label: 'Suhu',
+                                value: '5-15°C'
+                            }
+                        ],
+                        habitat: `
                         <p>• Tumbuh di padang rumput alpine dan lereng gunung yang terbuka</p>
                         <p>• Membutuhkan drainase yang baik dan sinar matahari penuh</p>
                         <p>• Tersebar di Jawa, Sumatra, dan Sulawesi</p>
                         <p>• Habitat utama: Gunung Gede-Pangrango, Bromo-Tengger-Semeru, Kerinci</p>
                     `,
-                    conservation: `Edelweiss termasuk tanaman yang dilindungi karena populasinya yang terus menurun akibat pengambilan liar untuk dijual sebagai bunga kering. Pengambilan edelweiss dari habitat aslinya dapat merusak ekosistem pegunungan dan mengurangi biodiversitas.`
-                },
-                elang: {
-                    title: 'Elang Jawa',
-                    subtitle: 'Nisaetus bartelsi',
-                    status: {
-                        text: 'Terancam Punah',
-                        class: 'bg-red-100 text-red-800'
+                        conservation: `Edelweiss termasuk tanaman yang dilindungi karena populasinya yang terus menurun akibat pengambilan liar untuk dijual sebagai bunga kering. Pengambilan edelweiss dari habitat aslinya dapat merusak ekosistem pegunungan dan mengurangi biodiversitas.`
                     },
-                    images: [
-                        'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1551522435-a13afa10f66a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                        'https://images.unsplash.com/photo-1574263867128-c8c2b27f3a0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                    ],
-                    description: `
+                    elang: {
+                        title: 'Elang Jawa',
+                        subtitle: 'Nisaetus bartelsi',
+                        status: {
+                            text: 'Terancam Punah',
+                            class: 'bg-red-100 text-red-800'
+                        },
+                        images: [
+                            'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                            'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                            'https://images.unsplash.com/photo-1551522435-a13afa10f66a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+                            'https://images.unsplash.com/photo-1574263867128-c8c2b27f3a0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+                        ],
+                        description: `
                         <p>Elang Jawa adalah burung endemik Indonesia yang menjadi lambang negara dan merupakan salah satu raptor paling langka di dunia. Dengan populasi kurang dari 1.000 ekor di alam liar, burung ini menghadapi ancaman serius kepunahan.</p>
                         <p>Sebagai predator puncak di ekosistem hutan Jawa, Elang Jawa memainkan peran penting dalam menjaga keseimbangan rantai makanan. Keberadaannya menjadi indikator kesehatan ekosistem hutan.</p>
                     `,
-                    characteristics: [{
-                            icon: '📐',
-                            label: 'Panjang',
-                            value: '60-70 cm'
-                        },
-                        {
-                            icon: '🦅',
-                            label: 'Rentang Sayap',
-                            value: '110-130 cm'
-                        },
-                        {
-                            icon: '⚖️',
-                            label: 'Berat',
-                            value: '1.2-1.8 kg'
-                        },
-                        {
-                            icon: '🥚',
-                            label: 'Telur',
-                            value: '1-2 butir'
-                        }
-                    ],
-                    habitat: `
+                        characteristics: [{
+                                icon: '📐',
+                                label: 'Panjang',
+                                value: '60-70 cm'
+                            },
+                            {
+                                icon: '🦅',
+                                label: 'Rentang Sayap',
+                                value: '110-130 cm'
+                            },
+                            {
+                                icon: '⚖️',
+                                label: 'Berat',
+                                value: '1.2-1.8 kg'
+                            },
+                            {
+                                icon: '🥚',
+                                label: 'Telur',
+                                value: '1-2 butir'
+                            }
+                        ],
+                        habitat: `
                         <p>• Hutan primer dan sekunder di ketinggian 500-3.000 mdpl</p>
                         <p>• Tersebar di Jawa dan Bali (populasi sangat kecil)</p>
                         <p>• Habitat utama: Taman Nasional Gunung Halimun-Salak, Bromo-Tengger-Semeru</p>
                         <p>• Membutuhkan wilayah jelajah yang luas (1.000-2.000 hektar per pasang)</p>
                     `,
-                    conservation: `Elang Jawa menghadapi ancaman serius dari deforestasi, perburuan ilegal, dan perdagangan satwa liar. Populasinya menurun drastis dengan perkiraan hanya tersisa 600-800 ekor dewasa di alam liar. Program konservasi intensif sedang dilakukan melalui perlindungan habitat, penangkaran, dan edukasi masyarakat.`
-                }
-            };
+                        conservation: `Elang Jawa menghadapi ancaman serius dari deforestasi, perburuan ilegal, dan perdagangan satwa liar. Populasinya menurun drastis dengan perkiraan hanya tersisa 600-800 ekor dewasa di alam liar. Program konservasi intensif sedang dilakukan melalui perlindungan habitat, penangkaran, dan edukasi masyarakat.`
+                    }
+                };
 
-            const data = floraData[type];
-            currentImages = data.images;
-            currentImageIndex = 0;
+                const data = floraData[type];
+                currentImages = data.images;
+                currentImageIndex = 0;
 
-            // Update modal content
-            document.getElementById('floraTitle').textContent = data.title;
-            document.getElementById('floraSubtitle').textContent = data.subtitle;
-            document.getElementById('conservationStatus').innerHTML =
-                `<span class="px-3 py-1 rounded-full text-sm font-medium ${data.status.class}">${data.status.text}</span>`;
-            document.getElementById('floraDescription').innerHTML = data.description;
-            document.getElementById('habitatContent').innerHTML = data.habitat;
-            document.getElementById('conservationContent').innerHTML = data.conservation;
+                // Update modal content
+                document.getElementById('floraTitle').textContent = data.title;
+                document.getElementById('floraSubtitle').textContent = data.subtitle;
+                document.getElementById('conservationStatus').innerHTML =
+                    `<span class="px-3 py-1 rounded-full text-sm font-medium ${data.status.class}">${data.status.text}</span>`;
+                document.getElementById('floraDescription').innerHTML = data.description;
+                document.getElementById('habitatContent').innerHTML = data.habitat;
+                document.getElementById('conservationContent').innerHTML = data.conservation;
 
-            // Update characteristics grid
-            const characteristicsGrid = document.getElementById('characteristicsGrid');
-            characteristicsGrid.innerHTML = data.characteristics.map(char => `
+                // Update characteristics grid
+                const characteristicsGrid = document.getElementById('characteristicsGrid');
+                characteristicsGrid.innerHTML = data.characteristics.map(char => `
                 <div class="bg-gray-50 rounded-xl p-3 text-center">
                     <div class="text-2xl mb-1">${char.icon}</div>
                     <div class="text-xs text-gray-600 font-medium">${char.label}</div>
@@ -420,83 +737,157 @@
                 </div>
             `).join('');
 
-            // Initialize carousel
-            updateCarouselImage();
+                // Initialize carousel
+                updateCarouselImage();
 
-            // Show modal
-            document.getElementById('floraModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
+                // Show modal with animation
+                const modal = document.getElementById('floraModal');
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
 
-        function closeFloraModal() {
-            document.getElementById('floraModal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modals when clicking outside
-        document.getElementById('imageModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeImageModal();
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                }, 10);
             }
-        });
 
-        document.getElementById('floraModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeFloraModal();
+            function closeFloraModal() {
+                const modal = document.getElementById('floraModal');
+                modal.classList.add('opacity-0');
+
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }, 300);
             }
-        });
 
-        // Keyboard navigation for image carousel
-        document.addEventListener('keydown', function(e) {
-            if (document.getElementById('floraModal').classList.contains('hidden')) return;
+            // Close modals when clicking outside
+            document.getElementById('imageModal').addEventListener('click', function(e) {
+                if (e.target === this || e.target.closest('.flex.items-center.justify-center.min-h-screen') === e
+                    .target) {
+                    closeImageModal();
+                }
+            });
 
-            if (e.key === 'ArrowLeft') changeImage(-1);
-            if (e.key === 'ArrowRight') changeImage(1);
-            if (e.key === 'Escape') closeFloraModal();
-        });
+            document.getElementById('floraModal').addEventListener('click', function(e) {
+                if (e.target === this || e.target.closest('.flex.items-center.justify-center.min-h-screen') === e
+                    .target) {
+                    closeFloraModal();
+                }
+            });
 
-        // Touch/swipe support for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
+            // Keyboard navigation for image carousel
+            document.addEventListener('keydown', function(e) {
+                if (document.getElementById('floraModal').classList.contains('hidden')) return;
 
-        document.getElementById('imageCarousel').addEventListener('touchstart', function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        });
+                if (e.key === 'ArrowLeft') changeImage(-1);
+                if (e.key === 'ArrowRight') changeImage(1);
+                if (e.key === 'Escape') closeFloraModal();
+            });
 
-        document.getElementById('imageCarousel').addEventListener('touchend', function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
+            // Touch/swipe support for mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
 
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
+            document.getElementById('imageCarousel').addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            });
 
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
-                    changeImage(1); // Swipe left, next image
-                } else {
-                    changeImage(-1); // Swipe right, previous image
+            document.getElementById('imageCarousel').addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+
+            function handleSwipe() {
+                const swipeThreshold = 50;
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > swipeThreshold) {
+                    if (diff > 0) {
+                        changeImage(1); // Swipe left, next image
+                    } else {
+                        changeImage(-1); // Swipe right, previous image
+                    }
                 }
             }
-        }
 
-        // Auto-hide floating button on scroll (optional enhancement)
-        let lastScrollTop = 0;
-        const floatingButton = document.querySelector('.fixed.bottom-0');
+            // Intersection Observer for fade-in animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
 
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const fadeInObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        // Unobserve after animation to improve performance
+                        fadeInObserver.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
 
-            if (scrollTop > lastScrollTop && scrollTop > 100) {
-                // Scrolling down
-                floatingButton.style.transform = 'translateX(-50%) translateY(100%)';
-            } else {
-                // Scrolling up
-                floatingButton.style.transform = 'translateX(-50%) translateY(0)';
+            // Observe all sections for animation
+            window.addEventListener('DOMContentLoaded', function() {
+                const sections = document.querySelectorAll('section');
+                sections.forEach((section, index) => {
+                    section.style.opacity = '0';
+                    section.style.transform = 'translateY(20px)';
+                    section.style.transition =
+                        `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`;
+                    fadeInObserver.observe(section);
+                });
+            });
+
+            // Floating CTA Show/Hide on Scroll - Smooth Animation
+            let fabTicking = false;
+            let fabVisible = false;
+            const floatingCTA = document.getElementById('floatingCTA');
+            const scrollThreshold = 400; // Show FAB after scrolling 400px (after hero)
+            const hideDelay = 100; // Small delay before hiding
+
+            function updateFloatingCTA() {
+                const currentScroll = window.scrollY;
+                const shouldShow = currentScroll > scrollThreshold;
+
+                // Only update if state changed to prevent unnecessary reflows
+                if (shouldShow !== fabVisible) {
+                    fabVisible = shouldShow;
+
+                    if (shouldShow) {
+                        // Show FAB with smooth slide up and subtle scale
+                        floatingCTA.style.transform = 'translateX(-50%) translateY(0) scale(1)';
+                        floatingCTA.style.opacity = '1';
+                    } else {
+                        // Hide FAB with smooth slide down and scale
+                        setTimeout(() => {
+                            floatingCTA.style.transform = 'translateX(-50%) translateY(100%) scale(0.95)';
+                            floatingCTA.style.opacity = '0';
+                        }, hideDelay);
+                    }
+                }
+
+                fabTicking = false;
             }
 
-            lastScrollTop = scrollTop;
-        }, false);
-    </script>
-@endsection
+            // Throttled scroll handler using requestAnimationFrame
+            window.addEventListener('scroll', function() {
+                if (!fabTicking) {
+                    window.requestAnimationFrame(updateFloatingCTA);
+                    fabTicking = true;
+                }
+            }, {
+                passive: true
+            });
+
+            // Initial check on page load
+            window.addEventListener('DOMContentLoaded', function() {
+                // Ensure FAB starts hidden
+                floatingCTA.style.transform = 'translateX(-50%) translateY(100%)';
+                floatingCTA.style.opacity = '0';
+
+                // Check scroll position after a short delay
+                setTimeout(updateFloatingCTA, 100);
+            });
+        </script>
+    @endsection

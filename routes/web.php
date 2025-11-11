@@ -136,5 +136,9 @@ Route::get('/profile', function () {
     return view('profile');
 });
 
+Route::get('/booking-history', function () {
+    return view('booking-history');
+});
+
 Route::get('/test', [SOSMonitoringController::class, 'createTmpsos'])->name('mountain_hikers.logs');
 
