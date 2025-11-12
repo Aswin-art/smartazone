@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\MountainHikerController;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ComplaintsController;
 use App\Http\Controllers\EquipmentRentalsController;
 use App\Http\Controllers\HikerHistoryController;
@@ -10,14 +10,16 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\HealthMonitoringController;
 use App\Http\Controllers\HikersController;
 use App\Http\Controllers\LocationTrackingController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SOSMonitoringController;
 use App\Http\Controllers\Superadmin\MountainController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::prefix('superadmin')->middleware('role:superadmin')->name('superadmin.')->group(function () {
@@ -132,13 +134,9 @@ Route::get('/booking', function () {
     return view('booking');
 });
 
-Route::get('/profile', function () {
-    return view('profile');
-});
+Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
 
-Route::get('/booking-history', function () {
-    return view('booking-history');
-});
+Route::get('/booking-history', [ProfileController::class, 'bookingHistory'])->name('booking-history');
 
 Route::get('/test', [SOSMonitoringController::class, 'createTmpsos'])->name('mountain_hikers.logs');
 

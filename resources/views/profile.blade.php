@@ -25,8 +25,8 @@
                     </svg>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-bold text-white tracking-tight">John Doe</h1>
-                    <p class="text-white/70 text-sm font-light mt-1">john.doe@email.com</p>
+                    <h1 class="text-2xl font-bold text-white tracking-tight">{{ $user->name ?? 'Pengguna' }}</h1>
+                    <p class="text-white/70 text-sm font-light mt-1">{{ $user->email ?? '-' }}</p>
                 </div>
             </div>
         </div>
@@ -45,19 +45,19 @@
                     <!-- Name -->
                     <div class="p-4 rounded-2xl border-2 border-gray-200">
                         <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama Lengkap</label>
-                        <p class="text-sm font-medium text-gray-900 mt-1">John Doe</p>
+                        <p class="text-sm font-medium text-gray-900 mt-1">{{ $user->name ?? '-' }}</p>
                     </div>
 
                     <!-- Email -->
                     <div class="p-4 rounded-2xl border-2 border-gray-200">
                         <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</label>
-                        <p class="text-sm font-medium text-gray-900 mt-1">john.doe@email.com</p>
+                        <p class="text-sm font-medium text-gray-900 mt-1">{{ $user->email ?? '-' }}</p>
                     </div>
 
                     <!-- Phone -->
                     <div class="p-4 rounded-2xl border-2 border-gray-200">
                         <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider">No. Telepon</label>
-                        <p class="text-sm font-medium text-gray-900 mt-1">+62 812 3456 7890</p>
+                        <p class="text-sm font-medium text-gray-900 mt-1">{{ $user->phone ?? '-' }}</p>
                     </div>
                 </div>
             </div>
@@ -143,15 +143,17 @@
             <div class="w-full h-px bg-gray-200"></div>
 
             <!-- Logout Button -->
-            <button
-                class="w-full text-white font-bold py-4 px-6 rounded-2xl transition-all hover:shadow-xl flex items-center justify-center gap-3 group"
-                style="background-color: #dc2626;">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                <span class="text-sm uppercase tracking-wider">Keluar</span>
-            </button>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit"
+                    class="w-full text-white font-bold py-4 px-6 rounded-2xl transition-all hover:shadow-xl flex items-center justify-center gap-3 group"
+                    style="background-color: #dc2626;">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <span class="text-sm uppercase tracking-wider">Keluar</span>
+                </button>
         </div>
     </div>
 @endsection

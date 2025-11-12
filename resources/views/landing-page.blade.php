@@ -70,12 +70,7 @@
             <!-- Quick Stats & About Combined -->
             <section class="space-y-8">
                 <!-- Stats Grid -->
-                <div class="grid grid-cols-4 gap-2">
-                    <div
-                        class="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-4 text-center border border-blue-100">
-                        <div class="text-2xl font-bold text-gray-900">2.329</div>
-                        <div class="text-xs text-gray-600 font-medium uppercase tracking-wide mt-1">MDPL</div>
-                    </div>
+                <div class="grid grid-cols-3 gap-2">
                     <div
                         class="bg-gradient-to-br from-emerald-50 to-emerald-100/50 rounded-2xl p-4 text-center border border-emerald-100">
                         <div class="text-2xl font-bold text-gray-900">15°</div>
@@ -219,52 +214,6 @@
                             alt="Pemandangan Gunung Bromo 4"
                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors"></div>
-                    </button>
-                </div>
-            </section>
-
-            <!-- Flora & Fauna Section - Card Based -->
-            <section class="space-y-6">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-0.5 bg-gray-900"></div>
-                        <h2 class="text-sm font-bold text-gray-900 tracking-wider uppercase">Flora & Fauna</h2>
-                    </div>
-                    <button
-                        class="text-xs font-semibold text-gray-900 hover:text-blue-600 transition-colors uppercase tracking-wide">
-                        Lihat Semua →
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="openFloraModal('edelweiss')"
-                        class="group text-left focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded-2xl">
-                        <div class="relative h-44 rounded-2xl overflow-hidden mb-3">
-                            <img src="https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="Edelweiss"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
-                            </div>
-                            <div class="absolute bottom-3 left-3 right-3">
-                                <div class="text-white font-bold text-base mb-0.5">Edelweiss</div>
-                                <div class="text-white/80 text-xs font-light">Bunga abadi</div>
-                            </div>
-                        </div>
-                    </button>
-
-                    <button onclick="openFloraModal('elang')"
-                        class="group text-left focus:outline-none focus:ring-2 focus:ring-amber-500 rounded-2xl">
-                        <div class="relative h-44 rounded-2xl overflow-hidden mb-3">
-                            <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
-                                alt="Elang Jawa"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
-                            </div>
-                            <div class="absolute bottom-3 left-3 right-3">
-                                <div class="text-white font-bold text-base mb-0.5">Elang Jawa</div>
-                                <div class="text-white/80 text-xs font-light">Burung langka</div>
-                            </div>
-                        </div>
                     </button>
                 </div>
             </section>
@@ -458,436 +407,148 @@
         </div>
     </div>
 
-    <!-- Flora Modal - Redesigned -->
-    <div id="floraModal"
-        class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
-        <div class="flex items-center justify-center min-h-screen p-6">
-            <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
-                <!-- Modal Header with Image Carousel -->
-                <div class="relative h-64">
-                    <div id="imageCarousel" class="w-full h-full relative overflow-hidden rounded-t-3xl">
-                        <!-- Images will be dynamically added here -->
-                    </div>
+    <script>
+        let currentImageIndex = 0;
+        let currentImages = [];
 
-                    <!-- Carousel Navigation -->
-                    <button id="prevBtn" onclick="changeImage(-1)"
-                        class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-2 text-white hover:bg-white/30 transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7">
-                            </path>
-                        </svg>
-                    </button>
+        // Initialize Rellax for smooth parallax
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Rellax with custom settings
+            if (typeof Rellax !== 'undefined') {
+                try {
+                    var rellax = new Rellax('.rellax', {
+                        speed: -2,
+                        center: false,
+                        wrapper: null,
+                        round: true,
+                        vertical: true,
+                        horizontal: false,
+                        breakpoints: [576, 768, 1201]
+                    });
+                } catch (e) {
+                    console.warn('Rellax initialization failed:', e);
+                }
+            } else {
+                console.warn('Rellax library not loaded');
+            }
+        });
 
-                    <button id="nextBtn" onclick="changeImage(1)"
-                        class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md rounded-full p-2 text-white hover:bg-white/30 transition-all">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
-                            </path>
-                        </svg>
-                    </button>
+        // Smooth modal animations
+        function openImageModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            document.getElementById('modalImage').src = imageSrc;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
 
-                    <!-- Image Counter -->
-                    <div id="imageCounter"
-                        class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md rounded-full px-3 py-1">
-                        <span class="text-white text-sm font-medium">1 / 4</span>
-                    </div>
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+            }, 10);
+        }
 
-                    <!-- Close Button -->
-                    <button onclick="closeFloraModal()"
-                        class="absolute top-4 right-4 bg-white/20 backdrop-blur-md rounded-full p-2 text-white hover:bg-white/30 transition-all">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12">
-                            </path>
-                        </svg>
-                    </button>
-                </div>
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.add('opacity-0');
 
-                <!-- Modal Content -->
-                <div class="flex-1 overflow-y-auto">
-                    <div class="p-6 space-y-6">
-                        <!-- Title Section -->
-                        <div class="text-center space-y-2">
-                            <h3 id="floraTitle" class="text-3xl font-bold text-gray-900"></h3>
-                            <p id="floraSubtitle" class="text-lg text-gray-600 italic"></p>
-                            <div id="conservationStatus"
-                                class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium"></div>
-                        </div>
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
 
-                        <!-- Description -->
-                        <div class="space-y-4">
-                            <div id="floraDescription" class="text-gray-700 leading-relaxed space-y-3"></div>
-                        </div>
+        function changeImage(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
+            if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
 
-                        <!-- Characteristics Grid -->
-                        <div id="characteristicsGrid" class="grid grid-cols-2 gap-4">
-                            <!-- Dynamic characteristics will be added here -->
-                        </div>
+            updateCarouselImage();
+        }
 
-                        <!-- Habitat Info -->
-                        <div id="habitatInfo"
-                            class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-4">
-                            <h4 class="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                                <span>🏔️</span>
-                                <span>Habitat & Persebaran</span>
-                            </h4>
-                            <div id="habitatContent" class="text-sm text-gray-700 space-y-2"></div>
-                        </div>
+        // Close modals when clicking outside
+        document.getElementById('imageModal').addEventListener('click', function(e) {
+            if (e.target === this || e.target.closest('.flex.items-center.justify-center.min-h-screen') === e
+                .target) {
+                closeImageModal();
+            }
+        });
 
-                        <!-- Conservation Note -->
-                        <div id="conservationNote"
-                            class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-4">
-                            <h4 class="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                                <span>⚠️</span>
-                                <span>Status Konservasi</span>
-                            </h4>
-                            <div id="conservationContent" class="text-sm text-gray-700"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-        <script>
-            let currentImageIndex = 0;
-            let currentImages = [];
+        const fadeInObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    // Unobserve after animation to improve performance
+                    fadeInObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
 
-            // Initialize Rellax for smooth parallax
-            document.addEventListener('DOMContentLoaded', function() {
-                // Initialize Rellax with custom settings
-                if (typeof Rellax !== 'undefined') {
-                    try {
-                        var rellax = new Rellax('.rellax', {
-                            speed: -2,
-                            center: false,
-                            wrapper: null,
-                            round: true,
-                            vertical: true,
-                            horizontal: false,
-                            breakpoints: [576, 768, 1201]
-                        });
-                    } catch (e) {
-                        console.warn('Rellax initialization failed:', e);
-                    }
+        // Observe all sections for animation
+        window.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('section');
+            sections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition =
+                    `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`;
+                fadeInObserver.observe(section);
+            });
+        });
+
+        // Floating CTA Show/Hide on Scroll - Smooth Animation
+        let fabTicking = false;
+        let fabVisible = false;
+        const floatingCTA = document.getElementById('floatingCTA');
+        const scrollThreshold = 400; // Show FAB after scrolling 400px (after hero)
+        const hideDelay = 100; // Small delay before hiding
+
+        function updateFloatingCTA() {
+            const currentScroll = window.scrollY;
+            const shouldShow = currentScroll > scrollThreshold;
+
+            // Only update if state changed to prevent unnecessary reflows
+            if (shouldShow !== fabVisible) {
+                fabVisible = shouldShow;
+
+                if (shouldShow) {
+                    // Show FAB with smooth slide up and subtle scale
+                    floatingCTA.style.transform = 'translateX(-50%) translateY(0) scale(1)';
+                    floatingCTA.style.opacity = '1';
                 } else {
-                    console.warn('Rellax library not loaded');
-                }
-            });
-
-            // Smooth modal animations
-            function openImageModal(imageSrc) {
-                const modal = document.getElementById('imageModal');
-                document.getElementById('modalImage').src = imageSrc;
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                }, 10);
-            }
-
-            function closeImageModal() {
-                const modal = document.getElementById('imageModal');
-                modal.classList.add('opacity-0');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
-
-            function changeImage(direction) {
-                currentImageIndex += direction;
-                if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
-                if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
-
-                updateCarouselImage();
-            }
-
-            function updateCarouselImage() {
-                const carousel = document.getElementById('imageCarousel');
-                const counter = document.getElementById('imageCounter');
-
-                carousel.innerHTML = `
-                <img src="${currentImages[currentImageIndex]}"
-                     alt="Flora/Fauna Image"
-                     class="w-full h-full object-cover transition-opacity duration-300">
-            `;
-
-                counter.innerHTML =
-                    `<span class="text-white text-sm font-medium">${currentImageIndex + 1} / ${currentImages.length}</span>`;
-            }
-
-            function openFloraModal(type) {
-                const floraData = {
-                    edelweiss: {
-                        title: 'Edelweiss',
-                        subtitle: 'Leontopodium alpinum',
-                        status: {
-                            text: 'Dilindungi',
-                            class: 'bg-yellow-100 text-yellow-800'
-                        },
-                        images: [
-                            'https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                        ],
-                        description: `
-                        <p>Edelweiss adalah bunga yang tumbuh di daerah pegunungan tinggi dan dikenal sebagai "bunga abadi" karena keindahannya yang tahan lama. Bunga ini menjadi simbol keabadian, cinta sejati, dan keberanian karena tumbuh di tempat-tempat yang sulit dijangkau.</p>
-                        <p>Di Indonesia, edelweiss ditemukan di berbagai gunung tinggi termasuk Gunung Bromo, Semeru, Gede-Pangrango, dan gunung-gunung tinggi lainnya. Bunga ini memiliki adaptasi khusus untuk bertahan hidup di kondisi ekstrem pegunungan.</p>
-                    `,
-                        characteristics: [{
-                                icon: '📏',
-                                label: 'Tinggi',
-                                value: '20-60 cm'
-                            },
-                            {
-                                icon: '🌸',
-                                label: 'Warna',
-                                value: 'Putih keperakan'
-                            },
-                            {
-                                icon: '🏔️',
-                                label: 'Ketinggian',
-                                value: '1.500-3.000 mdpl'
-                            },
-                            {
-                                icon: '🌡️',
-                                label: 'Suhu',
-                                value: '5-15°C'
-                            }
-                        ],
-                        habitat: `
-                        <p>• Tumbuh di padang rumput alpine dan lereng gunung yang terbuka</p>
-                        <p>• Membutuhkan drainase yang baik dan sinar matahari penuh</p>
-                        <p>• Tersebar di Jawa, Sumatra, dan Sulawesi</p>
-                        <p>• Habitat utama: Gunung Gede-Pangrango, Bromo-Tengger-Semeru, Kerinci</p>
-                    `,
-                        conservation: `Edelweiss termasuk tanaman yang dilindungi karena populasinya yang terus menurun akibat pengambilan liar untuk dijual sebagai bunga kering. Pengambilan edelweiss dari habitat aslinya dapat merusak ekosistem pegunungan dan mengurangi biodiversitas.`
-                    },
-                    elang: {
-                        title: 'Elang Jawa',
-                        subtitle: 'Nisaetus bartelsi',
-                        status: {
-                            text: 'Terancam Punah',
-                            class: 'bg-red-100 text-red-800'
-                        },
-                        images: [
-                            'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1551522435-a13afa10f66a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-                            'https://images.unsplash.com/photo-1574263867128-c8c2b27f3a0e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-                        ],
-                        description: `
-                        <p>Elang Jawa adalah burung endemik Indonesia yang menjadi lambang negara dan merupakan salah satu raptor paling langka di dunia. Dengan populasi kurang dari 1.000 ekor di alam liar, burung ini menghadapi ancaman serius kepunahan.</p>
-                        <p>Sebagai predator puncak di ekosistem hutan Jawa, Elang Jawa memainkan peran penting dalam menjaga keseimbangan rantai makanan. Keberadaannya menjadi indikator kesehatan ekosistem hutan.</p>
-                    `,
-                        characteristics: [{
-                                icon: '📐',
-                                label: 'Panjang',
-                                value: '60-70 cm'
-                            },
-                            {
-                                icon: '🦅',
-                                label: 'Rentang Sayap',
-                                value: '110-130 cm'
-                            },
-                            {
-                                icon: '⚖️',
-                                label: 'Berat',
-                                value: '1.2-1.8 kg'
-                            },
-                            {
-                                icon: '🥚',
-                                label: 'Telur',
-                                value: '1-2 butir'
-                            }
-                        ],
-                        habitat: `
-                        <p>• Hutan primer dan sekunder di ketinggian 500-3.000 mdpl</p>
-                        <p>• Tersebar di Jawa dan Bali (populasi sangat kecil)</p>
-                        <p>• Habitat utama: Taman Nasional Gunung Halimun-Salak, Bromo-Tengger-Semeru</p>
-                        <p>• Membutuhkan wilayah jelajah yang luas (1.000-2.000 hektar per pasang)</p>
-                    `,
-                        conservation: `Elang Jawa menghadapi ancaman serius dari deforestasi, perburuan ilegal, dan perdagangan satwa liar. Populasinya menurun drastis dengan perkiraan hanya tersisa 600-800 ekor dewasa di alam liar. Program konservasi intensif sedang dilakukan melalui perlindungan habitat, penangkaran, dan edukasi masyarakat.`
-                    }
-                };
-
-                const data = floraData[type];
-                currentImages = data.images;
-                currentImageIndex = 0;
-
-                // Update modal content
-                document.getElementById('floraTitle').textContent = data.title;
-                document.getElementById('floraSubtitle').textContent = data.subtitle;
-                document.getElementById('conservationStatus').innerHTML =
-                    `<span class="px-3 py-1 rounded-full text-sm font-medium ${data.status.class}">${data.status.text}</span>`;
-                document.getElementById('floraDescription').innerHTML = data.description;
-                document.getElementById('habitatContent').innerHTML = data.habitat;
-                document.getElementById('conservationContent').innerHTML = data.conservation;
-
-                // Update characteristics grid
-                const characteristicsGrid = document.getElementById('characteristicsGrid');
-                characteristicsGrid.innerHTML = data.characteristics.map(char => `
-                <div class="bg-gray-50 rounded-xl p-3 text-center">
-                    <div class="text-2xl mb-1">${char.icon}</div>
-                    <div class="text-xs text-gray-600 font-medium">${char.label}</div>
-                    <div class="text-sm font-semibold text-gray-900">${char.value}</div>
-                </div>
-            `).join('');
-
-                // Initialize carousel
-                updateCarouselImage();
-
-                // Show modal with animation
-                const modal = document.getElementById('floraModal');
-                modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                }, 10);
-            }
-
-            function closeFloraModal() {
-                const modal = document.getElementById('floraModal');
-                modal.classList.add('opacity-0');
-
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    document.body.style.overflow = 'auto';
-                }, 300);
-            }
-
-            // Close modals when clicking outside
-            document.getElementById('imageModal').addEventListener('click', function(e) {
-                if (e.target === this || e.target.closest('.flex.items-center.justify-center.min-h-screen') === e
-                    .target) {
-                    closeImageModal();
-                }
-            });
-
-            document.getElementById('floraModal').addEventListener('click', function(e) {
-                if (e.target === this || e.target.closest('.flex.items-center.justify-center.min-h-screen') === e
-                    .target) {
-                    closeFloraModal();
-                }
-            });
-
-            // Keyboard navigation for image carousel
-            document.addEventListener('keydown', function(e) {
-                if (document.getElementById('floraModal').classList.contains('hidden')) return;
-
-                if (e.key === 'ArrowLeft') changeImage(-1);
-                if (e.key === 'ArrowRight') changeImage(1);
-                if (e.key === 'Escape') closeFloraModal();
-            });
-
-            // Touch/swipe support for mobile
-            let touchStartX = 0;
-            let touchEndX = 0;
-
-            document.getElementById('imageCarousel').addEventListener('touchstart', function(e) {
-                touchStartX = e.changedTouches[0].screenX;
-            });
-
-            document.getElementById('imageCarousel').addEventListener('touchend', function(e) {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            });
-
-            function handleSwipe() {
-                const swipeThreshold = 50;
-                const diff = touchStartX - touchEndX;
-
-                if (Math.abs(diff) > swipeThreshold) {
-                    if (diff > 0) {
-                        changeImage(1); // Swipe left, next image
-                    } else {
-                        changeImage(-1); // Swipe right, previous image
-                    }
+                    // Hide FAB with smooth slide down and scale
+                    setTimeout(() => {
+                        floatingCTA.style.transform = 'translateX(-50%) translateY(100%) scale(0.95)';
+                        floatingCTA.style.opacity = '0';
+                    }, hideDelay);
                 }
             }
 
-            // Intersection Observer for fade-in animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
+            fabTicking = false;
+        }
 
-            const fadeInObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                        // Unobserve after animation to improve performance
-                        fadeInObserver.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            // Observe all sections for animation
-            window.addEventListener('DOMContentLoaded', function() {
-                const sections = document.querySelectorAll('section');
-                sections.forEach((section, index) => {
-                    section.style.opacity = '0';
-                    section.style.transform = 'translateY(20px)';
-                    section.style.transition =
-                        `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`;
-                    fadeInObserver.observe(section);
-                });
-            });
-
-            // Floating CTA Show/Hide on Scroll - Smooth Animation
-            let fabTicking = false;
-            let fabVisible = false;
-            const floatingCTA = document.getElementById('floatingCTA');
-            const scrollThreshold = 400; // Show FAB after scrolling 400px (after hero)
-            const hideDelay = 100; // Small delay before hiding
-
-            function updateFloatingCTA() {
-                const currentScroll = window.scrollY;
-                const shouldShow = currentScroll > scrollThreshold;
-
-                // Only update if state changed to prevent unnecessary reflows
-                if (shouldShow !== fabVisible) {
-                    fabVisible = shouldShow;
-
-                    if (shouldShow) {
-                        // Show FAB with smooth slide up and subtle scale
-                        floatingCTA.style.transform = 'translateX(-50%) translateY(0) scale(1)';
-                        floatingCTA.style.opacity = '1';
-                    } else {
-                        // Hide FAB with smooth slide down and scale
-                        setTimeout(() => {
-                            floatingCTA.style.transform = 'translateX(-50%) translateY(100%) scale(0.95)';
-                            floatingCTA.style.opacity = '0';
-                        }, hideDelay);
-                    }
-                }
-
-                fabTicking = false;
+        // Throttled scroll handler using requestAnimationFrame
+        window.addEventListener('scroll', function() {
+            if (!fabTicking) {
+                window.requestAnimationFrame(updateFloatingCTA);
+                fabTicking = true;
             }
+        }, {
+            passive: true
+        });
 
-            // Throttled scroll handler using requestAnimationFrame
-            window.addEventListener('scroll', function() {
-                if (!fabTicking) {
-                    window.requestAnimationFrame(updateFloatingCTA);
-                    fabTicking = true;
-                }
-            }, {
-                passive: true
-            });
+        // Initial check on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            // Ensure FAB starts hidden
+            floatingCTA.style.transform = 'translateX(-50%) translateY(100%)';
+            floatingCTA.style.opacity = '0';
 
-            // Initial check on page load
-            window.addEventListener('DOMContentLoaded', function() {
-                // Ensure FAB starts hidden
-                floatingCTA.style.transform = 'translateX(-50%) translateY(100%)';
-                floatingCTA.style.opacity = '0';
-
-                // Check scroll position after a short delay
-                setTimeout(updateFloatingCTA, 100);
-            });
-        </script>
-    @endsection
+            // Check scroll position after a short delay
+            setTimeout(updateFloatingCTA, 100);
+        });
+    </script>
+@endsection

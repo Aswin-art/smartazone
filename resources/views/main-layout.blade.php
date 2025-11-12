@@ -9,8 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/rellax@1.12.1/rellax.min.js"></script>
 </head>
 
-<body class="min-h-screen relative overflow-x-hidden"
-    style="background: linear-gradient(135deg, #696868 0%, #4a4a4a 50%, #3d3d3d 100%);">
+<body class="min-h-screen relative overflow-x-hidden bg-black/90">
     <!-- Content Layer with Container - Linktree Style -->
     <div class="relative z-10 min-h-screen md:flex md:items-center md:justify-center md:p-8 md:py-12">
         <!-- Content Container - Full on Mobile, Rounded Card on Desktop -->

@@ -2,10 +2,10 @@
 
 @section('content')
     <!-- Auth Container -->
-    <div class="bg-white min-h-screen overflow-hidden relative">
+    <div class="bg-white min-h-screen relative">
 
         <!-- Hero Section - Swiss Design -->
-        <div class="relative h-screen overflow-hidden">
+        <div class="relative min-h-screen overflow-hidden">
             <!-- Background Image with Blur -->
             <div class="absolute inset-0">
                 <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
@@ -18,7 +18,7 @@
             </div>
 
             <!-- Auth Card - Centered -->
-            <div class="absolute inset-0 flex items-center justify-center p-6">
+            <div class="relative flex items-center justify-center p-6 py-12">
                 <div class="w-full max-w-md space-y-8 animate-fade-in">
                     <!-- Logo & Title -->
                     <div class="text-center space-y-3">
@@ -52,18 +52,21 @@
                         </div>
 
                         <!-- Login Form -->
-                        <div id="loginForm" class="px-6 pb-6 space-y-5">
+                        <form id="loginForm" class="px-6 pb-6 space-y-5" method="POST" action="{{ route('auth.login') }}">
+                            @csrf
                             <!-- Email Input -->
                             <div class="space-y-2">
-                                <label class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Email</label>
-                                <input type="email" placeholder="nama@email.com"
+                                <label for="login_email"
+                                    class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Email</label>
+                                <input id="login_email" type="email" name="email" placeholder="nama@email.com"
                                     class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-4 focus:ring-gray-900/10 transition-all">
                             </div>
 
                             <!-- Password Input -->
                             <div class="space-y-2">
-                                <label class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Password</label>
-                                <input type="password" placeholder="••••••••"
+                                <label for="login_password"
+                                    class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Password</label>
+                                <input id="login_password" type="password" name="password" placeholder="••••••••"
                                     class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-4 focus:ring-gray-900/10 transition-all">
                             </div>
 
@@ -75,7 +78,7 @@
                             </div>
 
                             <!-- Login Button -->
-                            <button
+                            <button type="submit"
                                 class="w-full text-white py-4 rounded-xl font-semibold transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
                                 style="background-color: #1B4965; hover:background-color: #153a52;">
                                 Masuk
@@ -110,42 +113,51 @@
                                         class="text-sm font-semibold text-gray-700 group-hover:text-gray-900">Google</span>
                                 </button>
                             </div>
-                        </div>
+                        </form>
 
                         <!-- Sign Up Form -->
-                        <div id="signupForm" class="px-6 pb-6 space-y-5 hidden">
+                        <form id="signupForm" class="px-6 pb-6 space-y-5 hidden" method="POST"
+                            action="{{ route('auth.register') }}">
+                            @csrf
                             <!-- Name Input -->
                             <div class="space-y-2">
-                                <label class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Nama
+                                <label for="signup_name"
+                                    class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Nama
                                     Lengkap</label>
-                                <input type="text" placeholder="John Doe"
+                                <input id="signup_name" type="text" name="name" placeholder="John Doe"
                                     class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-4 focus:ring-gray-900/10 transition-all">
                             </div>
 
                             <!-- Email Input -->
                             <div class="space-y-2">
-                                <label class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Email</label>
-                                <input type="email" placeholder="nama@email.com"
+                                <label for="signup_email"
+                                    class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Email</label>
+                                <input id="signup_email" type="email" name="email" placeholder="nama@email.com"
                                     class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-4 focus:ring-gray-900/10 transition-all">
                             </div>
 
                             <!-- Phone Input -->
                             <div class="space-y-2">
-                                <label class="text-xs font-semibold text-gray-700 uppercase tracking-wide">No.
+                                <label for="signup_phone"
+                                    class="text-xs font-semibold text-gray-700 uppercase tracking-wide">No.
                                     Telepon</label>
-                                <input type="tel" placeholder="08123456789"
+                                <input id="signup_phone" type="tel" name="phone" placeholder="08123456789"
                                     class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-4 focus:ring-gray-900/10 transition-all">
                             </div>
 
                             <!-- Password Input -->
                             <div class="space-y-2">
-                                <label class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Password</label>
-                                <input type="password" placeholder="••••••••"
+                                <label for="signup_password"
+                                    class="text-xs font-semibold text-gray-700 uppercase tracking-wide">Password</label>
+                                <input id="signup_password" type="password" name="password" placeholder="••••••••"
                                     class="w-full px-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-gray-900 focus:ring-4 focus:ring-gray-900/10 transition-all">
                             </div>
 
+                            <!-- Default user type for public signup -->
+                            <input type="hidden" name="user_type" value="pendaki" />
+
                             <!-- Sign Up Button -->
-                            <button
+                            <button type="submit"
                                 class="w-full text-white py-4 rounded-xl font-semibold transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 mt-2"
                                 style="background-color: #1B4965;">
                                 Daftar Sekarang
@@ -180,7 +192,7 @@
                                         class="text-sm font-semibold text-gray-700 group-hover:text-gray-900">Google</span>
                                 </button>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
