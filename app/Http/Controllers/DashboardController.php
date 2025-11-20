@@ -167,10 +167,12 @@ class DashboardController extends Controller
             ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
             ->count();
 
-        $sosToday = DB::table('mountain_sos_signals')
-            ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
-            ->whereDate('timestamp', Carbon::today())
-            ->count();
+        // $sosToday = DB::table('mountain_sos_signals')
+        //     ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))
+        //     ->whereDate('timestamp', Carbon::today())
+        //     ->count();
+        
+        $sosToday = 0; 
 
         $activeToday = DB::table('mountain_bookings')
             ->when($mountainId, fn($q) => $q->where('mountain_id', $mountainId))

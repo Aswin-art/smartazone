@@ -571,7 +571,7 @@
                     <i class="mdi mdi-login"></i> Login
                 </button>
 
-                <div class="role-badges">
+                {{-- <div class="role-badges">
                     <div class="role-badge badge-superadmin">
                         <i class="mdi mdi-shield-crown"></i> Superadmin
                     </div>
@@ -581,7 +581,7 @@
                     <div class="role-badge badge-pendaki">
                         <i class="mdi mdi-hiking"></i> Pendaki
                     </div>
-                </div>
+                </div> --}}
             </form>
         </div>
     </div>

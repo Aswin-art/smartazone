@@ -31,6 +31,11 @@ class SosController extends Controller
             'updated_at' => now(),
         ]);
 
+        event(new \App\Events\SosSignalCreated([
+            'device_id'  => $validator->validated()['device_id'],
+            'lattitude'   => $validator->validated()['lattitude'],
+            'longitude'  => $validator->validated()['longitude'],
+        ]));
         return response()->json([
             'status'  => 'success',
             'message' => 'SOS triggered successfully.',

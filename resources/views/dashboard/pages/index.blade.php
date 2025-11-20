@@ -6,7 +6,7 @@
         <div class="row gy-6">
 
             {{-- Welcome Card --}}
-            <div class="col-md-12 col-lg-4">
+            {{-- <div class="col-md-12 col-lg-4">
                 <div class="card position-relative overflow-hidden">
                     <div class="card-body text-nowrap">
                         <h5 class="card-title mb-0">Welcome, {{ Auth::user()->name }}! 🎉</h5>
@@ -22,7 +22,7 @@
                     </div>
                     <img src="{{ asset('assets/img/illustrations/trophy.png') }}" class="position-absolute bottom-0 end-0 me-4 mb-4" width="83" alt="view sales" />
                 </div>
-            </div>
+            </div> --}}
 
             {{-- Overview Statistics --}}
             <div class="col-lg-8">
@@ -136,7 +136,7 @@
             </div>
 
             {{-- Popular Routes --}}
-            <div class="col-xl-4 col-md-6">
+            {{-- <div class="col-xl-4 col-md-6">
                 <div class="card h-100">
                     <div class="card-header">
                         <h5 class="card-title m-0">Popular Routes</h5>
@@ -156,7 +156,7 @@
                         @endforeach
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- Safety Alerts & Recent Activity --}}
             <div class="col-xl-8">
