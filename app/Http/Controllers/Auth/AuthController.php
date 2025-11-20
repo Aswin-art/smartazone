@@ -15,7 +15,8 @@ class AuthController extends Controller
     public function showLoginForm()
     {
         // Render the single combined auth view (login/register tabs)
-        return view('auth');
+        // return view('auth');
+        return view('auth.login');
     }
 
     public function login(Request $request)
@@ -26,7 +27,6 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 

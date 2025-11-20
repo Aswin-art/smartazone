@@ -116,6 +116,14 @@
                     <div class="badge rounded-pill bg-label-primary fs-tiny ms-auto">📱</div>
                 </a>
             </li>
+<li class="menu-item">
+    <a href="{{ route('sos.index') }}" class="menu-link">
+        <i class="menu-icon icon-base ri ri-alarm-warning-line"></i>
+        <div data-i18n="SOS Monitoring">SOS Monitoring</div>
+        <div class="badge rounded-pill bg-label-danger fs-tiny ms-auto">‼️</div>
+    </a>
+</li>
+
         @elseif(Auth::user() && Auth::user()->user_type === 'superadmin')
             <li class="menu-item">
                 <a href="{{ route('superadmin.mountains.index') }}" class="menu-link">
