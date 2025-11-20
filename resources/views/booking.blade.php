@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Main Card Container - Swiss Design -->
-    <div class="bg-white overflow-hidden animate-fade-in">
+    <div id="bookingPageRoot" class="bg-white min-h-screen overflow-hidden animate-fade-in" data-mountain-id="1">
         <!-- Header - Navy Background -->
         <div class="relative px-8 py-12" style="background-color: #1B4965;">
             <!-- Back Button -->
@@ -31,223 +31,261 @@
             </div>
         </div>
 
-        <!-- Progress Steps - Minimal Swiss -->
-        <div class="bg-gray-50 px-8 py-6 border-b border-gray-100">
-            <div class="flex items-center justify-center gap-3">
-                <div class="flex items-center gap-2">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm"
-                        style="background-color: #1B4965; color: white;">
-                        01
+        @guest
+            <!-- Guest Prompt - Ask to Login (Full Width Section) -->
+            <div class="px-8 py-20 min-h-screen" style="background-color: #CAE9FF;">
+                <div class="max-w-xl mx-auto text-center space-y-6">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl mb-4"
+                        style="background-color: #1B4965;">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
                     </div>
-                    <span class="text-xs font-medium text-gray-900 hidden sm:inline uppercase tracking-wider">Jadwal</span>
-                </div>
-                <div class="w-16 h-0.5 bg-gray-200"></div>
-                <div class="flex items-center gap-2">
-                    <div
-                        class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-sm text-gray-400">
-                        02
+                    <h2 class="text-3xl font-bold tracking-tight uppercase" style="color: #1B4965;">Masuk untuk Melanjutkan</h2>
+                    <p class="text-base text-gray-700 font-light leading-relaxed max-w-md mx-auto">Silakan login terlebih dahulu
+                        untuk mengisi formulir booking pendakian dan menikmati pengalaman penuh.</p>
+                    <div class="flex items-center justify-center gap-4 pt-4">
+                        <a href="{{ route('login') }}"
+                            class="px-8 py-4 text-white font-bold text-sm uppercase tracking-wider rounded-2xl hover:opacity-90 transition"
+                            style="background-color: #1B4965;">Masuk</a>
+                        <a href="/auth#signup"
+                            class="px-8 py-4 font-bold text-sm uppercase tracking-wider rounded-2xl border-2 transition hover:bg-white"
+                            style="border-color:#1B4965; color:#1B4965;">Daftar</a>
                     </div>
-                    <span class="text-xs font-medium text-gray-400 hidden sm:inline uppercase tracking-wider">Data</span>
-                </div>
-                <div class="w-16 h-0.5 bg-gray-200"></div>
-                <div class="flex items-center gap-2">
-                    <div
-                        class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-sm text-gray-400">
-                        03
-                    </div>
-                    <span class="text-xs font-medium text-gray-400 hidden sm:inline uppercase tracking-wider">Bayar</span>
                 </div>
             </div>
-        </div>
+        @endguest
 
-        <!-- Form Content -->
-        <div class="p-8 space-y-8">
-            <!-- Pilih Tanggal Section -->
-            <div class="space-y-5">
-                <div class="space-y-1">
-                    <h2 class="text-base font-bold text-gray-900 uppercase tracking-wider" style="color: #1B4965;">01 ·
-                        Pilih Tanggal</h2>
-                    <div class="w-16 h-0.5" style="background-color: #FFD166;"></div>
-                </div>
-
-                <div class="space-y-4">
-                    <div>
-                        <label for="departureDate"
-                            class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
-                            Tanggal Berangkat
-                        </label>
-                        <input type="date" id="departureDate"
-                            class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm bg-white"
-                            style="focus:ring-color: #1B4965;" required>
+        @auth
+            <!-- Progress Steps - Minimal Swiss -->
+            <div class="bg-gray-50 px-8 py-6 border-b border-gray-100">
+                <div class="flex items-center justify-center gap-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm"
+                            style="background-color: #1B4965; color: white;">
+                            01
+                        </div>
+                        <span class="text-xs font-medium text-gray-900 hidden sm:inline uppercase tracking-wider">Jadwal</span>
                     </div>
-
-                    <div>
-                        <label for="returnDate"
-                            class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
-                            Tanggal Kembali
-                        </label>
-                        <input type="date" id="returnDate"
-                            class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm bg-white"
-                            style="focus:ring-color: #1B4965;" required>
+                    <div class="w-16 h-0.5 bg-gray-200"></div>
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-sm text-gray-400">
+                            02
+                        </div>
+                        <span class="text-xs font-medium text-gray-400 hidden sm:inline uppercase tracking-wider">Data</span>
                     </div>
-
-                    <div>
-                        <label for="climberCount"
-                            class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
-                            Jumlah Pendaki
-                        </label>
-                        <input type="number" id="climberCount" min="1" max="10" value="1"
-                            class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm bg-white"
-                            style="focus:ring-color: #1B4965;" required>
+                    <div class="w-16 h-0.5 bg-gray-200"></div>
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-bold text-sm text-gray-400">
+                            03
+                        </div>
+                        <span class="text-xs font-medium text-gray-400 hidden sm:inline uppercase tracking-wider">Bayar</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Divider Line -->
-            <div class="w-full h-px bg-gray-200"></div>
-
-            <!-- Form Pengisian Data Diri (Hidden initially) -->
-            <div id="formContainer" class="space-y-8 hidden">
+            <!-- Form Content -->
+            <div class="p-8 space-y-8">
+                <!-- Pilih Tanggal Section -->
                 <div class="space-y-5">
                     <div class="space-y-1">
-                        <h2 class="text-base font-bold text-gray-900 uppercase tracking-wider" style="color: #1B4965;">02 ·
-                            Data Ketua Rombongan</h2>
+                        <h2 class="text-base font-bold text-gray-900 uppercase tracking-wider" style="color: #1B4965;">01 ·
+                            Pilih Tanggal</h2>
                         <div class="w-16 h-0.5" style="background-color: #FFD166;"></div>
                     </div>
 
                     <div class="space-y-4">
                         <div>
-                            <label for="leaderName"
+                            <label for="departureDate"
                                 class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
-                                Nama Lengkap
+                                Tanggal Berangkat
                             </label>
-                            <input type="text" id="leaderName"
+                            <input type="date" id="departureDate"
                                 class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm bg-white"
-                                placeholder="Masukkan nama lengkap" required>
+                                style="focus:ring-color: #1B4965;" required>
                         </div>
+
                         <div>
-                            <label for="leaderEmail"
+                            <label for="returnDate"
                                 class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
-                                Email
+                                Tanggal Kembali
                             </label>
-                            <input type="email" id="leaderEmail"
+                            <input type="date" id="returnDate"
                                 class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm bg-white"
-                                placeholder="example@email.com" required>
+                                style="focus:ring-color: #1B4965;" required>
                         </div>
+
                         <div>
-                            <label for="leaderPhone"
+                            <label for="climberCount"
                                 class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
-                                No. Telepon
+                                Jumlah Pendaki
                             </label>
-                            <input type="tel" id="leaderPhone"
+                            <input type="number" id="climberCount" min="1" max="10" value="1"
                                 class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm bg-white"
-                                placeholder="08xxxxxxxxxx" required>
+                                style="focus:ring-color: #1B4965;" required>
                         </div>
                     </div>
                 </div>
 
-                <!-- Button Data Anggota (Muncul jika pendaki > 1) -->
-                <div id="memberDataBtn" class="hidden">
-                    <button onclick="openMemberModal()"
-                        class="w-full border-2 border-gray-200 rounded-2xl py-5 px-6 flex items-center justify-between transition-all hover:shadow-lg group bg-white">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-colors"
-                                style="background-color: #CAE9FF;">
-                                <svg class="w-6 h-6" style="color: #1B4965;" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                            </div>
-                            <div class="text-left">
-                                <p id="memberBtnText" class="font-bold text-sm text-gray-900 uppercase tracking-wide">
-                                    Input Data Anggota</p>
-                                <p class="text-xs text-gray-500 mt-0.5">Tambahkan informasi anggota lainnya</p>
-                            </div>
-                        </div>
-                        <svg class="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                </div>
-
                 <!-- Divider Line -->
                 <div class="w-full h-px bg-gray-200"></div>
 
-                <!-- Button Sewa Peralatan -->
-                <div>
-                    <button id="equipmentBtn" disabled
-                        class="w-full border-2 border-gray-200 rounded-2xl py-5 px-6 flex items-center justify-between transition-all hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none group bg-white">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-colors"
-                                style="background-color: #CAE9FF;">
-                                <svg class="w-6 h-6" style="color: #1B4965;" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                                </svg>
+                <!-- Form Pengisian Data Diri (Hidden initially) -->
+                <div id="formContainer" class="space-y-8 hidden">
+                    <div class="space-y-5">
+                        <div class="space-y-1">
+                            <h2 class="text-base font-bold text-gray-900 uppercase tracking-wider" style="color: #1B4965;">02 ·
+                                Data Ketua Rombongan</h2>
+                            <div class="w-16 h-0.5" style="background-color: #FFD166;"></div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label for="leaderName"
+                                    class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
+                                    Nama Lengkap
+                                </label>
+                                <input type="text" id="leaderName"
+                                    class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm bg-white"
+                                    placeholder="Masukkan nama lengkap" required>
                             </div>
-                            <div class="text-left">
-                                <p class="font-bold text-sm text-gray-900 uppercase tracking-wide">Sewa Peralatan</p>
-                                <p class="text-xs text-gray-500 mt-0.5">Opsional · Pilih perlengkapan Anda</p>
+                            <div>
+                                <label for="leaderEmail"
+                                    class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
+                                    Email
+                                </label>
+                                <input type="email" id="leaderEmail"
+                                    class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm bg-white"
+                                    placeholder="example@email.com" required>
+                            </div>
+                            <div>
+                                <label for="leaderPhone"
+                                    class="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wider">
+                                    No. Telepon
+                                </label>
+                                <input type="tel" id="leaderPhone"
+                                    class="w-full px-4 py-3.5 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:border-transparent transition-all text-sm bg-white"
+                                    placeholder="08xxxxxxxxxx" required>
                             </div>
                         </div>
-                        <svg class="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-                </div>
+                    </div>
 
-                <!-- Divider Line -->
-                <div class="w-full h-px bg-gray-200"></div>
+                    <!-- Button Data Anggota (Muncul jika pendaki > 1) -->
+                    <div id="memberDataBtn" class="hidden">
+                        <button onclick="openMemberModal()"
+                            class="w-full border-2 border-gray-200 rounded-2xl py-5 px-6 flex items-center justify-between transition-all hover:shadow-lg group bg-white">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-colors"
+                                    style="background-color: #CAE9FF;">
+                                    <svg class="w-6 h-6" style="color: #1B4965;" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div class="text-left">
+                                    <p id="memberBtnText" class="font-bold text-sm text-gray-900 uppercase tracking-wide">
+                                        Input Data Anggota</p>
+                                    <p class="text-xs text-gray-500 mt-0.5">Tambahkan informasi anggota lainnya</p>
+                                </div>
+                            </div>
+                            <svg class="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
 
-                <!-- Total Harga -->
-                <div>
-                    <div class="rounded-2xl p-6 space-y-4" style="background-color: #CAE9FF;">
-                        <h3 class="text-xs font-bold uppercase tracking-wider mb-4" style="color: #1B4965;">Rincian Biaya
-                        </h3>
-                        <div class="space-y-3 text-sm">
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700 font-medium">Biaya Masuk</span>
-                                <span id="entranceFee" class="font-bold" style="color: #1B4965;">Rp 0</span>
+                    <!-- Divider Line -->
+                    <div class="w-full h-px bg-gray-200"></div>
+
+                    <!-- Button Sewa Peralatan -->
+                    <div>
+                        <button id="equipmentBtn" disabled
+                            class="w-full border-2 border-gray-200 rounded-2xl py-5 px-6 flex items-center justify-between transition-all hover:shadow-lg disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none group bg-white">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl flex items-center justify-center transition-colors"
+                                    style="background-color: #CAE9FF;">
+                                    <svg class="w-6 h-6" style="color: #1B4965;" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                                    </svg>
+                                </div>
+                                <div class="text-left">
+                                    <p class="font-bold text-sm text-gray-900 uppercase tracking-wide">Sewa Peralatan</p>
+                                    <p class="text-xs text-gray-500 mt-0.5">Opsional · Pilih perlengkapan Anda</p>
+                                </div>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700 font-medium">
-                                    Biaya Pendaki (<span id="climberDisplay">1</span> orang)
-                                </span>
-                                <span id="climberFee" class="font-bold" style="color: #1B4965;">Rp 0</span>
+                            <svg class="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Divider Line -->
+                    <div class="w-full h-px bg-gray-200"></div>
+
+                    <!-- Total Harga -->
+                    <div>
+                        <div class="rounded-2xl p-6 space-y-4" style="background-color: #CAE9FF;">
+                            <h3 class="text-xs font-bold uppercase tracking-wider mb-4" style="color: #1B4965;">Rincian Biaya
+                            </h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-700 font-medium">Biaya Masuk</span>
+                                    <span id="entranceFee" class="font-bold" style="color: #1B4965;">Rp 0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-700 font-medium">
+                                        Biaya Pendaki (<span id="climberDisplay">1</span> orang)
+                                    </span>
+                                    <span id="climberFee" class="font-bold" style="color: #1B4965;">Rp 0</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-700 font-medium">Sewa Peralatan</span>
+                                    <span id="equipmentFee" class="font-bold" style="color: #1B4965;">Rp 0</span>
+                                </div>
                             </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-700 font-medium">Sewa Peralatan</span>
-                                <span id="equipmentFee" class="font-bold" style="color: #1B4965;">Rp 0</span>
-                            </div>
-                        </div>
-                        <div class="pt-4 mt-4 border-t-2" style="border-color: #1B4965;">
-                            <div class="flex justify-between items-center">
-                                <span class="font-bold text-sm uppercase tracking-wider"
-                                    style="color: #1B4965;">Total</span>
-                                <span id="totalPrice" class="font-bold text-3xl" style="color: #1B4965;">Rp 0</span>
+                            <div class="pt-4 mt-4 border-t-2" style="border-color: #1B4965;">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-sm uppercase tracking-wider"
+                                        style="color: #1B4965;">Total</span>
+                                    <span id="totalPrice" class="font-bold text-3xl" style="color: #1B4965;">Rp 0</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Submit Button -->
-        <div class="p-8 border-t border-gray-100 bg-gray-50">
-            <button id="submitBtn" disabled
-                class="w-full text-white font-bold py-4 px-6 rounded-2xl transition-all hover:shadow-xl disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none flex items-center justify-center gap-3 group"
-                style="background-color: #1B4965;">
-                <span class="text-sm uppercase tracking-wider">Lanjutkan ke Pembayaran</span>
-                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor"
-                    viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-            </button>
-        </div>
+            <!-- Submit Button -->
+            <div class="p-8 border-t border-gray-100 bg-gray-50">
+                <button id="submitBtn" disabled
+                    class="w-full text-white font-bold py-4 px-6 rounded-2xl transition-all hover:shadow-xl disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none flex items-center justify-center gap-3 group"
+                    style="background-color: #1B4965;">
+                    <span class="text-sm uppercase tracking-wider">Lanjutkan ke Pembayaran</span>
+                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Hidden Booking Form (auto-submitted by JS) -->
+            <form id="bookingForm" method="POST" action="{{ route('booking.store') }}" class="hidden">
+                @csrf
+                <input type="hidden" name="hike_date" id="formHikeDate">
+                <input type="hidden" name="return_date" id="formReturnDate">
+                <input type="hidden" name="team_size" id="formTeamSize">
+                <input type="hidden" name="members" id="formMembers">
+                <input type="hidden" name="mountain_id" id="formMountainId" value="1">
+            </form>
+        @endauth
     </div>
 
     <!-- CSS Animations -->
@@ -361,6 +399,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const root = document.getElementById('bookingPageRoot');
+            const mountainId = (root && root.dataset && root.dataset.mountainId) ? root.dataset.mountainId : '1';
             const departureDate = document.getElementById('departureDate');
             const returnDate = document.getElementById('returnDate');
             const climberCount = document.getElementById('climberCount');
@@ -374,6 +414,14 @@
             const confirmEquipment = document.getElementById('confirmEquipment');
             const confirmMembers = document.getElementById('confirmMembers');
             const submitBtn = document.getElementById('submitBtn');
+
+            // Hidden form elements
+            const bookingForm = document.getElementById('bookingForm');
+            const formHikeDate = document.getElementById('formHikeDate');
+            const formReturnDate = document.getElementById('formReturnDate');
+            const formTeamSize = document.getElementById('formTeamSize');
+            const formMembers = document.getElementById('formMembers');
+            const formMountainId = document.getElementById('formMountainId');
 
             // Price elements
             const entranceFee = document.getElementById('entranceFee');
@@ -746,8 +794,16 @@
                         }
                     }
 
-                    alert('Booking berhasil! Lanjut ke pembayaran...');
-                    // Here you would normally send data to server
+                    // Populate hidden form fields
+                    formHikeDate.value = departureDate.value;
+                    formReturnDate.value = returnDate.value;
+                    formTeamSize.value = parseInt(climberCount.value) || 1;
+                    // Only companions (excludes leader) are included in members
+                    formMembers.value = JSON.stringify(memberData);
+                    formMountainId.value = mountainId;
+
+                    // Submit the form to the server
+                    bookingForm.submit();
                 }
             });
         });

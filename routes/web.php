@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\MountainHikerController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ComplaintsController;
 use App\Http\Controllers\EquipmentRentalsController;
 use App\Http\Controllers\HikerHistoryController;
@@ -130,8 +131,11 @@ Route::get('/auth', function () {
     return view('auth');
 });
 
-Route::get('/booking', function () {
-    return view('booking');
+Route::prefix('booking')->group(function() {
+    Route::get('/', [BookingController::class, 'index'])->name('booking.index');
+    
+    Route::post('', [BookingController::class, 'booking'])->name('booking.store');
+
 });
 
 Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
