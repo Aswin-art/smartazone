@@ -345,49 +345,24 @@
             </section>
         </div>
 
-        <!-- Floating CTA - Redesigned Swiss Style with Scroll Animation -->
-        <div id="floatingCTA"
-            class="fixed bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-full max-w-lg px-6 pb-6 z-50 opacity-0"
-            style="transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out;">
-            <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
-                <!-- Price & Rating Info -->
-                <div class="p-6 pb-4">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="space-y-1">
-                            <div class="text-xs text-gray-500 font-medium uppercase tracking-wider">Mulai dari</div>
-                            <div class="text-3xl font-bold text-gray-900">Rp 250.000</div>
-                            <div class="text-xs text-gray-500 font-light">per orang / hari</div>
-                        </div>
-                        <div class="text-right space-y-1">
-                            <div class="flex items-center gap-1.5">
-                                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                                <span class="text-lg font-bold text-gray-900">4.8</span>
-                            </div>
-                            <div class="text-xs text-gray-500">1,234 ulasan</div>
-                        </div>
+        <!-- Floating CTA (Mobile Only) - Swiss Style -->
+    <div id="floatingCTA" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 w-full px-6 transition-all duration-500 transform translate-y-full opacity-0 max-w-lg">
+        <a href="/booking" class="group block w-full bg-[#1B4965] text-white p-1 rounded-full shadow-2xl overflow-hidden">
+            <div class="relative flex items-center justify-between px-6 py-3">
+                <div class="flex flex-col">
+                    <span class="text-[10px] font-medium text-white/70 uppercase tracking-widest">Start from</span>
+                    <span class="text-lg font-bold text-white">Rp 250.000</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs font-bold uppercase tracking-wider">Book Now</span>
+                    <div class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
                     </div>
-
-                    <!-- CTA Button -->
-                    <button onclick="window.location.href='/booking'"
-                        class="group w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-                        <div class="relative flex items-center justify-center gap-2">
-                            <span class="text-base tracking-wide">Booking Sekarang</span>
-                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                            </svg>
-                        </div>
-                    </button>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 
     <!-- Image Modal - Redesigned -->
@@ -506,10 +481,25 @@
         const floatingCTA = document.getElementById('floatingCTA');
         const scrollThreshold = 400; // Show FAB after scrolling 400px (after hero)
         const hideDelay = 100; // Small delay before hiding
+        const footer = document.querySelector('footer'); // Assuming there is a footer tag
 
         function updateFloatingCTA() {
             const currentScroll = window.scrollY;
             const shouldShow = currentScroll > scrollThreshold;
+            
+            // Check for footer intersection
+            if (footer) {
+                const footerRect = footer.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                
+                // If footer is entering viewport, adjust FAB
+                if (footerRect.top < windowHeight) {
+                    const offset = windowHeight - footerRect.top + 24; // 24px padding
+                    floatingCTA.style.bottom = `${offset}px`;
+                } else {
+                    floatingCTA.style.bottom = '6rem'; // Default bottom-24 (96px)
+                }
+            }
 
             // Only update if state changed to prevent unnecessary reflows
             if (shouldShow !== fabVisible) {
@@ -546,6 +536,7 @@
             // Ensure FAB starts hidden
             floatingCTA.style.transform = 'translateX(-50%) translateY(100%)';
             floatingCTA.style.opacity = '0';
+            floatingCTA.style.bottom = '6rem'; // Default bottom-24
 
             // Check scroll position after a short delay
             setTimeout(updateFloatingCTA, 100);
