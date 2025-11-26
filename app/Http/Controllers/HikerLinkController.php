@@ -42,8 +42,8 @@ class HikerLinkController extends Controller
             'booking_id' => 'required|integer',
             'device_id' => 'required|integer',
             'member_name' => 'required|string',
-            'member_nik' => 'required|string',
-            'member_phone' => 'required|string',
+            'member_nik' => 'nullable|string',
+            'member_phone' => 'nullable|string',
         ]);
 
         $booking = DB::table('mountain_bookings')->where('id', $request->booking_id)->first();
@@ -53,8 +53,8 @@ class HikerLinkController extends Controller
             'mountain_id' => $booking->mountain_id,
             'device_id' => $request->device_id,
             'hiker_name' => $request->member_name,
-            'hiker_nik' => $request->member_nik,
-            'hiker_phone' => $request->member_phone,
+            'hiker_nik' => $request->member_nik ?? '',
+            'hiker_phone' => $request->member_phone ?? '',
             'status' => 'active',
             'started_at' => now(),
             'created_at' => now(),

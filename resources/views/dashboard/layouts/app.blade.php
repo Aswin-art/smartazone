@@ -101,5 +101,6 @@
         <div class="layout-overlay layout-menu-toggle"></div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/ol/dist/ol.js"></script>
     @stack('scripts')
     @include('dashboard.layouts.tail')

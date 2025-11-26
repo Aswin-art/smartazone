@@ -30,7 +30,7 @@
                     <tbody>
                         @forelse($linked as $l)
                             <tr>
-                                <td>{{ $l->id }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td>{{ $l->hiker_name }}</td>
                                 <td>{{ $l->hiker_nik }}</td>
                                 <td>{{ $l->hiker_phone }}</td>
