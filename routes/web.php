@@ -135,11 +135,15 @@ Route::prefix('booking')->group(function() {
     Route::get('/', [BookingController::class, 'index'])->name('booking.index');
     
     Route::post('', [BookingController::class, 'booking'])->name('booking.store');
-
+    Route::get('/{id}/ticket', [BookingController::class, 'downloadTicket'])->name('booking.ticket');
 });
 
 Route::get('/profile', [ProfileController::class, 'profile'])->name('profile');
 
 Route::get('/booking-history', [ProfileController::class, 'bookingHistory'])->name('booking-history');
+
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+Route::get('/help-support', [ProfileController::class, 'helpSupport'])->name('help-support');
 // Route::get('/test', [SOSMonitoringController::class, 'createTmpsos'])->name('mountain_hikers.logs');
 

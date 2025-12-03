@@ -24,7 +24,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5 10l7-7m0 0l7 7m-7-7v18" />
                         </svg>
-                        <span class="text-white text-sm font-semibold tracking-wide">2.329 MDPL</span>
+                        <span class="text-white text-sm font-semibold tracking-wide">3.339 MDPL</span>
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     <!-- Mountain Name - Tipografi Tegas -->
                     <div class="space-y-2">
                         <h1 class="text-white text-5xl font-bold tracking-tight leading-none drop-shadow-2xl">
-                            Gunung<br>Bromo
+                            Gunung<br>Arjuna
                         </h1>
                         <p class="text-white/80 text-lg font-light tracking-wide">
                             Jawa Timur, Indonesia
@@ -95,8 +95,8 @@
                         <h2 class="text-sm font-bold text-gray-900 tracking-wider uppercase">Tentang</h2>
                     </div>
                     <p class="text-gray-700 leading-loose text-base font-light">
-                        Nikmati keindahan matahari terbit di salah satu gunung berapi paling ikonik di Indonesia.
-                        Pemandangan spektakuler dan pengalaman tak terlupakan menanti Anda di ketinggian 2.329 meter.
+                        Nikmati tantangan mendaki salah satu puncak tertinggi di Jawa Timur.
+                        Pemandangan spektakuler dan pengalaman tak terlupakan menanti Anda di ketinggian 3.339 meter.
                     </p>
                 </div>
             </section>
@@ -115,7 +115,7 @@
                             <div>
                                 <div class="text-xs text-blue-600 font-semibold uppercase tracking-wide mb-1">Tiket Masuk
                                 </div>
-                                <div class="text-2xl font-bold text-gray-900">Rp 250.000</div>
+                                <div class="text-2xl font-bold text-gray-900">Rp 35.000</div>
                                 <div class="text-xs text-gray-600 mt-1">per orang / hari</div>
                             </div>
                             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -287,7 +287,7 @@
                 </div>
 
                 <div class="grid gap-3">
-                    <a href="mailto:info@gunungbromo.id"
+                    <a href="mailto:info@gunungarjuna.id"
                         class="group bg-white border border-gray-200 rounded-2xl p-5 hover:border-blue-400 hover:shadow-lg transition-all duration-300">
                         <div class="flex items-center gap-4">
                             <div
@@ -300,7 +300,7 @@
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-0.5">Email</div>
-                                <div class="text-sm font-semibold text-gray-900 truncate">info@gunungbromo.id</div>
+                                <div class="text-sm font-semibold text-gray-900 truncate">info@gunungarjuna.id</div>
                             </div>
                         </div>
                     </a>
@@ -324,7 +324,7 @@
                         </div>
                     </a>
 
-                    <a href="https://instagram.com/gunungbromo_official" target="_blank"
+                    <a href="https://instagram.com/gunungarjuna_official" target="_blank"
                         class="group bg-white border border-gray-200 rounded-2xl p-5 hover:border-pink-400 hover:shadow-lg transition-all duration-300">
                         <div class="flex items-center gap-4">
                             <div
@@ -337,7 +337,7 @@
                             <div class="flex-1 min-w-0">
                                 <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-0.5">Instagram
                                 </div>
-                                <div class="text-sm font-semibold text-gray-900 truncate">@gunungbromo_official</div>
+                                <div class="text-sm font-semibold text-gray-900 truncate">@gunungarjuna_official</div>
                             </div>
                         </div>
                     </a>
@@ -346,200 +346,205 @@
         </div>
 
         <!-- Floating CTA (Mobile Only) - Swiss Style -->
-    <div id="floatingCTA" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 w-full px-6 transition-all duration-500 transform translate-y-full opacity-0 max-w-lg">
-        <a href="/booking" class="group block w-full bg-[#1B4965] text-white p-1 rounded-full shadow-2xl overflow-hidden">
-            <div class="relative flex items-center justify-between px-6 py-3">
-                <div class="flex flex-col">
-                    <span class="text-[10px] font-medium text-white/70 uppercase tracking-widest">Start from</span>
-                    <span class="text-lg font-bold text-white">Rp 250.000</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-xs font-bold uppercase tracking-wider">Book Now</span>
-                    <div class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
+        <div id="floatingCTA"
+            class="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 w-full px-6 transition-all duration-500 transform translate-y-full opacity-0 max-w-lg">
+            <a href="/booking"
+                class="group block w-full bg-[#1B4965] text-white p-1 rounded-full shadow-2xl overflow-hidden">
+                <div class="relative flex items-center justify-between px-6 py-3">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] font-medium text-white/70 uppercase tracking-widest">Start from</span>
+                        <span class="text-lg font-bold text-white">Rp 35.000</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold uppercase tracking-wider">Book Now</span>
+                        <div
+                            class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5"
+                                    d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </a>
-    </div>
+            </a>
+        </div>
 
-    <!-- Image Modal - Redesigned -->
-    <div id="imageModal"
-        class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
-        <div class="flex items-center justify-center min-h-screen p-6">
-            <div class="relative max-w-4xl w-full">
-                <img id="modalImage" src="" alt="Foto penuh"
-                    class="w-full h-auto object-contain rounded-3xl shadow-2xl">
-                <button onclick="closeImageModal()"
-                    class="absolute -top-4 -right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-gray-100 transition-all shadow-xl hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+        <!-- Image Modal - Redesigned -->
+        <div id="imageModal"
+            class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
+            <div class="flex items-center justify-center min-h-screen p-6">
+                <div class="relative max-w-4xl w-full">
+                    <img id="modalImage" src="" alt="Foto penuh"
+                        class="w-full h-auto object-contain rounded-3xl shadow-2xl">
+                    <button onclick="closeImageModal()"
+                        class="absolute -top-4 -right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-gray-100 transition-all shadow-xl hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        let currentImageIndex = 0;
-        let currentImages = [];
+        <script>
+            let currentImageIndex = 0;
+            let currentImages = [];
 
-        // Initialize Rellax for smooth parallax
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Rellax with custom settings
-            if (typeof Rellax !== 'undefined') {
-                try {
-                    var rellax = new Rellax('.rellax', {
-                        speed: -2,
-                        center: false,
-                        wrapper: null,
-                        round: true,
-                        vertical: true,
-                        horizontal: false,
-                        breakpoints: [576, 768, 1201]
-                    });
-                } catch (e) {
-                    console.warn('Rellax initialization failed:', e);
-                }
-            } else {
-                console.warn('Rellax library not loaded');
-            }
-        });
-
-        // Smooth modal animations
-        function openImageModal(imageSrc) {
-            const modal = document.getElementById('imageModal');
-            document.getElementById('modalImage').src = imageSrc;
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-            }, 10);
-        }
-
-        function closeImageModal() {
-            const modal = document.getElementById('imageModal');
-            modal.classList.add('opacity-0');
-
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 300);
-        }
-
-        function changeImage(direction) {
-            currentImageIndex += direction;
-            if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
-            if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
-
-            updateCarouselImage();
-        }
-
-        // Close modals when clicking outside
-        document.getElementById('imageModal').addEventListener('click', function(e) {
-            if (e.target === this || e.target.closest('.flex.items-center.justify-center.min-h-screen') === e
-                .target) {
-                closeImageModal();
-            }
-        });
-
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const fadeInObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    // Unobserve after animation to improve performance
-                    fadeInObserver.unobserve(entry.target);
+            // Initialize Rellax for smooth parallax
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Rellax with custom settings
+                if (typeof Rellax !== 'undefined') {
+                    try {
+                        var rellax = new Rellax('.rellax', {
+                            speed: -2,
+                            center: false,
+                            wrapper: null,
+                            round: true,
+                            vertical: true,
+                            horizontal: false,
+                            breakpoints: [576, 768, 1201]
+                        });
+                    } catch (e) {
+                        console.warn('Rellax initialization failed:', e);
+                    }
+                } else {
+                    console.warn('Rellax library not loaded');
                 }
             });
-        }, observerOptions);
 
-        // Observe all sections for animation
-        window.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('section');
-            sections.forEach((section, index) => {
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(20px)';
-                section.style.transition =
-                    `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`;
-                fadeInObserver.observe(section);
+            // Smooth modal animations
+            function openImageModal(imageSrc) {
+                const modal = document.getElementById('imageModal');
+                document.getElementById('modalImage').src = imageSrc;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                }, 10);
+            }
+
+            function closeImageModal() {
+                const modal = document.getElementById('imageModal');
+                modal.classList.add('opacity-0');
+
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            }
+
+            function changeImage(direction) {
+                currentImageIndex += direction;
+                if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
+                if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
+
+                updateCarouselImage();
+            }
+
+            // Close modals when clicking outside
+            document.getElementById('imageModal').addEventListener('click', function(e) {
+                if (e.target === this || e.target.closest('.flex.items-center.justify-center.min-h-screen') === e
+                    .target) {
+                    closeImageModal();
+                }
             });
-        });
 
-        // Floating CTA Show/Hide on Scroll - Smooth Animation
-        let fabTicking = false;
-        let fabVisible = false;
-        const floatingCTA = document.getElementById('floatingCTA');
-        const scrollThreshold = 400; // Show FAB after scrolling 400px (after hero)
-        const hideDelay = 100; // Small delay before hiding
-        const footer = document.querySelector('footer'); // Assuming there is a footer tag
+            // Intersection Observer for fade-in animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
 
-        function updateFloatingCTA() {
-            const currentScroll = window.scrollY;
-            const shouldShow = currentScroll > scrollThreshold;
-            
-            // Check for footer intersection
-            if (footer) {
-                const footerRect = footer.getBoundingClientRect();
-                const windowHeight = window.innerHeight;
-                
-                // If footer is entering viewport, adjust FAB
-                if (footerRect.top < windowHeight) {
-                    const offset = windowHeight - footerRect.top + 24; // 24px padding
-                    floatingCTA.style.bottom = `${offset}px`;
-                } else {
-                    floatingCTA.style.bottom = '6rem'; // Default bottom-24 (96px)
+            const fadeInObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        // Unobserve after animation to improve performance
+                        fadeInObserver.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections for animation
+            window.addEventListener('DOMContentLoaded', function() {
+                const sections = document.querySelectorAll('section');
+                sections.forEach((section, index) => {
+                    section.style.opacity = '0';
+                    section.style.transform = 'translateY(20px)';
+                    section.style.transition =
+                        `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`;
+                    fadeInObserver.observe(section);
+                });
+            });
+
+            // Floating CTA Show/Hide on Scroll - Smooth Animation
+            let fabTicking = false;
+            let fabVisible = false;
+            const floatingCTA = document.getElementById('floatingCTA');
+            const scrollThreshold = 400; // Show FAB after scrolling 400px (after hero)
+            const hideDelay = 100; // Small delay before hiding
+            const footer = document.querySelector('footer'); // Assuming there is a footer tag
+
+            function updateFloatingCTA() {
+                const currentScroll = window.scrollY;
+                const shouldShow = currentScroll > scrollThreshold;
+
+                // Check for footer intersection
+                if (footer) {
+                    const footerRect = footer.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+
+                    // If footer is entering viewport, adjust FAB
+                    if (footerRect.top < windowHeight) {
+                        const offset = windowHeight - footerRect.top + 24; // 24px padding
+                        floatingCTA.style.bottom = `${offset}px`;
+                    } else {
+                        floatingCTA.style.bottom = '6rem'; // Default bottom-24 (96px)
+                    }
                 }
-            }
 
-            // Only update if state changed to prevent unnecessary reflows
-            if (shouldShow !== fabVisible) {
-                fabVisible = shouldShow;
+                // Only update if state changed to prevent unnecessary reflows
+                if (shouldShow !== fabVisible) {
+                    fabVisible = shouldShow;
 
-                if (shouldShow) {
-                    // Show FAB with smooth slide up and subtle scale
-                    floatingCTA.style.transform = 'translateX(-50%) translateY(0) scale(1)';
-                    floatingCTA.style.opacity = '1';
-                } else {
-                    // Hide FAB with smooth slide down and scale
-                    setTimeout(() => {
-                        floatingCTA.style.transform = 'translateX(-50%) translateY(100%) scale(0.95)';
-                        floatingCTA.style.opacity = '0';
-                    }, hideDelay);
+                    if (shouldShow) {
+                        // Show FAB with smooth slide up and subtle scale
+                        floatingCTA.style.transform = 'translateX(-50%) translateY(0) scale(1)';
+                        floatingCTA.style.opacity = '1';
+                    } else {
+                        // Hide FAB with smooth slide down and scale
+                        setTimeout(() => {
+                            floatingCTA.style.transform = 'translateX(-50%) translateY(100%) scale(0.95)';
+                            floatingCTA.style.opacity = '0';
+                        }, hideDelay);
+                    }
                 }
+
+                fabTicking = false;
             }
 
-            fabTicking = false;
-        }
+            // Throttled scroll handler using requestAnimationFrame
+            window.addEventListener('scroll', function() {
+                if (!fabTicking) {
+                    window.requestAnimationFrame(updateFloatingCTA);
+                    fabTicking = true;
+                }
+            }, {
+                passive: true
+            });
 
-        // Throttled scroll handler using requestAnimationFrame
-        window.addEventListener('scroll', function() {
-            if (!fabTicking) {
-                window.requestAnimationFrame(updateFloatingCTA);
-                fabTicking = true;
-            }
-        }, {
-            passive: true
-        });
+            // Initial check on page load
+            window.addEventListener('DOMContentLoaded', function() {
+                // Ensure FAB starts hidden
+                floatingCTA.style.transform = 'translateX(-50%) translateY(100%)';
+                floatingCTA.style.opacity = '0';
+                floatingCTA.style.bottom = '6rem'; // Default bottom-24
 
-        // Initial check on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            // Ensure FAB starts hidden
-            floatingCTA.style.transform = 'translateX(-50%) translateY(100%)';
-            floatingCTA.style.opacity = '0';
-            floatingCTA.style.bottom = '6rem'; // Default bottom-24
-
-            // Check scroll position after a short delay
-            setTimeout(updateFloatingCTA, 100);
-        });
-    </script>
-@endsection
+                // Check scroll position after a short delay
+                setTimeout(updateFloatingCTA, 100);
+            });
+        </script>
+    @endsection
