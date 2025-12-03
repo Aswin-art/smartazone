@@ -26,23 +26,25 @@ class BookingController extends Controller
             'hike_date' => ['required', 'date'],
             'return_date' => ['required', 'date', 'after_or_equal:hike_date'],
             'team_size' => ['required', 'integer', 'min:1'],
-            'members' => ['nullable', 'array'],
+            'members' => ['nullable', 'string'], // Changed from array to string (JSON)
         ]);
 
         $userId = Auth::id();
-        $mountainId = (int) request('mountain_id', 1); // Assumption: default mountain id 1 when not provided
-        $hikeDate = Carbon::parse(request('hike_date'));
-        $returnDate = Carbon::parse(request('return_date'));
+        $mountainId = (int) request('mountain_id', 1);
+        $hike_date = Carbon::parse(request('hike_date'));
+        $return_date = Carbon::parse(request('return_date'));
         $teamSize = (int) request('team_size');
-        $members = request('members', []);
+        
+        // Decode the JSON string members
+        $members = json_decode(request('members', '[]'), true);
 
-        $totalDurationMinutes = $returnDate->diffInMinutes($hikeDate);
+        $totalDurationMinutes = $return_date->diffInMinutes($hike_date);
 
         DB::table('mountain_bookings')->insert([
             'user_id' => $userId,
             'mountain_id' => $mountainId,
-            'hike_date' => $hikeDate->toDateString(),
-            'return_date' => $returnDate->toDateString(),
+            'hike_date' => $hike_date->toDateString(),
+            'return_date' => $return_date->toDateString(),
             'team_size' => $teamSize,
             'members' => json_encode($members),
             'status' => 'active',
@@ -55,5 +57,24 @@ class BookingController extends Controller
         ]);
 
         return redirect()->route('booking-history')->with('success', 'Booking berhasil dibuat.');
+    }
+
+    public function downloadTicket($id)
+    {
+        $booking = DB::table('mountain_bookings as mb')
+            ->join('mountains as m', 'mb.mountain_id', '=', 'm.id')
+            ->select(
+                'mb.*',
+                'm.name as mountain_name'
+            )
+            ->where('mb.id', $id)
+            ->where('mb.user_id', Auth::id())
+            ->first();
+
+        if (!$booking) {
+            abort(404);
+        }
+
+        return view('booking-ticket', compact('booking'));
     }
 }

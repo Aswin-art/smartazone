@@ -24,7 +24,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5 10l7-7m0 0l7 7m-7-7v18" />
                         </svg>
-                        <span class="text-white text-sm font-semibold tracking-wide">2.329 MDPL</span>
+                        <span class="text-white text-sm font-semibold tracking-wide">3.339 MDPL</span>
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                     <!-- Mountain Name - Tipografi Tegas -->
                     <div class="space-y-2">
                         <h1 class="text-white text-5xl font-bold tracking-tight leading-none drop-shadow-2xl">
-                            Gunung<br>Bromo
+                            Gunung<br>Arjuna
                         </h1>
                         <p class="text-white/80 text-lg font-light tracking-wide">
                             Jawa Timur, Indonesia
@@ -95,8 +95,8 @@
                         <h2 class="text-sm font-bold text-gray-900 tracking-wider uppercase">Tentang</h2>
                     </div>
                     <p class="text-gray-700 leading-loose text-base font-light">
-                        Nikmati keindahan matahari terbit di salah satu gunung berapi paling ikonik di Indonesia.
-                        Pemandangan spektakuler dan pengalaman tak terlupakan menanti Anda di ketinggian 2.329 meter.
+                        Nikmati tantangan mendaki salah satu puncak tertinggi di Jawa Timur.
+                        Pemandangan spektakuler dan pengalaman tak terlupakan menanti Anda di ketinggian 3.339 meter.
                     </p>
                 </div>
             </section>
@@ -115,7 +115,7 @@
                             <div>
                                 <div class="text-xs text-blue-600 font-semibold uppercase tracking-wide mb-1">Tiket Masuk
                                 </div>
-                                <div class="text-2xl font-bold text-gray-900">Rp 250.000</div>
+                                <div class="text-2xl font-bold text-gray-900">Rp 35.000</div>
                                 <div class="text-xs text-gray-600 mt-1">per orang / hari</div>
                             </div>
                             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
@@ -287,7 +287,7 @@
                 </div>
 
                 <div class="grid gap-3">
-                    <a href="mailto:info@gunungbromo.id"
+                    <a href="mailto:info@gunungarjuna.id"
                         class="group bg-white border border-gray-200 rounded-2xl p-5 hover:border-blue-400 hover:shadow-lg transition-all duration-300">
                         <div class="flex items-center gap-4">
                             <div
@@ -300,7 +300,7 @@
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-0.5">Email</div>
-                                <div class="text-sm font-semibold text-gray-900 truncate">info@gunungbromo.id</div>
+                                <div class="text-sm font-semibold text-gray-900 truncate">info@gunungarjuna.id</div>
                             </div>
                         </div>
                     </a>
@@ -324,7 +324,7 @@
                         </div>
                     </a>
 
-                    <a href="https://instagram.com/gunungbromo_official" target="_blank"
+                    <a href="https://instagram.com/gunungarjuna_official" target="_blank"
                         class="group bg-white border border-gray-200 rounded-2xl p-5 hover:border-pink-400 hover:shadow-lg transition-all duration-300">
                         <div class="flex items-center gap-4">
                             <div
@@ -337,7 +337,7 @@
                             <div class="flex-1 min-w-0">
                                 <div class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-0.5">Instagram
                                 </div>
-                                <div class="text-sm font-semibold text-gray-900 truncate">@gunungbromo_official</div>
+                                <div class="text-sm font-semibold text-gray-900 truncate">@gunungarjuna_official</div>
                             </div>
                         </div>
                     </a>
@@ -345,210 +345,206 @@
             </section>
         </div>
 
-        <!-- Floating CTA - Redesigned Swiss Style with Scroll Animation -->
+        <!-- Floating CTA (Mobile Only) - Swiss Style -->
         <div id="floatingCTA"
-            class="fixed bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-full max-w-lg px-6 pb-6 z-50 opacity-0"
-            style="transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease-out;">
-            <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
-                <!-- Price & Rating Info -->
-                <div class="p-6 pb-4">
-                    <div class="flex items-start justify-between mb-6">
-                        <div class="space-y-1">
-                            <div class="text-xs text-gray-500 font-medium uppercase tracking-wider">Mulai dari</div>
-                            <div class="text-3xl font-bold text-gray-900">Rp 250.000</div>
-                            <div class="text-xs text-gray-500 font-light">per orang / hari</div>
-                        </div>
-                        <div class="text-right space-y-1">
-                            <div class="flex items-center gap-1.5">
-                                <svg class="w-5 h-5 text-amber-400 fill-current" viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                                <span class="text-lg font-bold text-gray-900">4.8</span>
-                            </div>
-                            <div class="text-xs text-gray-500">1,234 ulasan</div>
-                        </div>
+            class="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 w-full px-6 transition-all duration-500 transform translate-y-full opacity-0 max-w-lg">
+            <a href="/booking"
+                class="group block w-full bg-[#1B4965] text-white p-1 rounded-full shadow-2xl overflow-hidden">
+                <div class="relative flex items-center justify-between px-6 py-3">
+                    <div class="flex flex-col">
+                        <span class="text-[10px] font-medium text-white/70 uppercase tracking-widest">Start from</span>
+                        <span class="text-lg font-bold text-white">Rp 35.000</span>
                     </div>
-
-                    <!-- CTA Button -->
-                    <button onclick="window.location.href='/booking'"
-                        class="group w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 relative overflow-hidden">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-bold uppercase tracking-wider">Book Now</span>
                         <div
-                            class="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-                        <div class="relative flex items-center justify-center gap-2">
-                            <span class="text-base tracking-wide">Booking Sekarang</span>
-                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="1.5"
                                     d="M13 7l5 5m0 0l-5 5m5-5H6" />
                             </svg>
                         </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Image Modal - Redesigned -->
+        <div id="imageModal"
+            class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
+            <div class="flex items-center justify-center min-h-screen p-6">
+                <div class="relative max-w-4xl w-full">
+                    <img id="modalImage" src="" alt="Foto penuh"
+                        class="w-full h-auto object-contain rounded-3xl shadow-2xl">
+                    <button onclick="closeImageModal()"
+                        class="absolute -top-4 -right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-gray-100 transition-all shadow-xl hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                     </button>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Image Modal - Redesigned -->
-    <div id="imageModal"
-        class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
-        <div class="flex items-center justify-center min-h-screen p-6">
-            <div class="relative max-w-4xl w-full">
-                <img id="modalImage" src="" alt="Foto penuh"
-                    class="w-full h-auto object-contain rounded-3xl shadow-2xl">
-                <button onclick="closeImageModal()"
-                    class="absolute -top-4 -right-4 w-12 h-12 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-gray-100 transition-all shadow-xl hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
+        <script>
+            let currentImageIndex = 0;
+            let currentImages = [];
 
-    <script>
-        let currentImageIndex = 0;
-        let currentImages = [];
-
-        // Initialize Rellax for smooth parallax
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Rellax with custom settings
-            if (typeof Rellax !== 'undefined') {
-                try {
-                    var rellax = new Rellax('.rellax', {
-                        speed: -2,
-                        center: false,
-                        wrapper: null,
-                        round: true,
-                        vertical: true,
-                        horizontal: false,
-                        breakpoints: [576, 768, 1201]
-                    });
-                } catch (e) {
-                    console.warn('Rellax initialization failed:', e);
-                }
-            } else {
-                console.warn('Rellax library not loaded');
-            }
-        });
-
-        // Smooth modal animations
-        function openImageModal(imageSrc) {
-            const modal = document.getElementById('imageModal');
-            document.getElementById('modalImage').src = imageSrc;
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-            }, 10);
-        }
-
-        function closeImageModal() {
-            const modal = document.getElementById('imageModal');
-            modal.classList.add('opacity-0');
-
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = 'auto';
-            }, 300);
-        }
-
-        function changeImage(direction) {
-            currentImageIndex += direction;
-            if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
-            if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
-
-            updateCarouselImage();
-        }
-
-        // Close modals when clicking outside
-        document.getElementById('imageModal').addEventListener('click', function(e) {
-            if (e.target === this || e.target.closest('.flex.items-center.justify-center.min-h-screen') === e
-                .target) {
-                closeImageModal();
-            }
-        });
-
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const fadeInObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                    // Unobserve after animation to improve performance
-                    fadeInObserver.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        // Observe all sections for animation
-        window.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('section');
-            sections.forEach((section, index) => {
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(20px)';
-                section.style.transition =
-                    `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`;
-                fadeInObserver.observe(section);
-            });
-        });
-
-        // Floating CTA Show/Hide on Scroll - Smooth Animation
-        let fabTicking = false;
-        let fabVisible = false;
-        const floatingCTA = document.getElementById('floatingCTA');
-        const scrollThreshold = 400; // Show FAB after scrolling 400px (after hero)
-        const hideDelay = 100; // Small delay before hiding
-
-        function updateFloatingCTA() {
-            const currentScroll = window.scrollY;
-            const shouldShow = currentScroll > scrollThreshold;
-
-            // Only update if state changed to prevent unnecessary reflows
-            if (shouldShow !== fabVisible) {
-                fabVisible = shouldShow;
-
-                if (shouldShow) {
-                    // Show FAB with smooth slide up and subtle scale
-                    floatingCTA.style.transform = 'translateX(-50%) translateY(0) scale(1)';
-                    floatingCTA.style.opacity = '1';
+            // Initialize Rellax for smooth parallax
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize Rellax with custom settings
+                if (typeof Rellax !== 'undefined') {
+                    try {
+                        var rellax = new Rellax('.rellax', {
+                            speed: -2,
+                            center: false,
+                            wrapper: null,
+                            round: true,
+                            vertical: true,
+                            horizontal: false,
+                            breakpoints: [576, 768, 1201]
+                        });
+                    } catch (e) {
+                        console.warn('Rellax initialization failed:', e);
+                    }
                 } else {
-                    // Hide FAB with smooth slide down and scale
-                    setTimeout(() => {
-                        floatingCTA.style.transform = 'translateX(-50%) translateY(100%) scale(0.95)';
-                        floatingCTA.style.opacity = '0';
-                    }, hideDelay);
+                    console.warn('Rellax library not loaded');
                 }
+            });
+
+            // Smooth modal animations
+            function openImageModal(imageSrc) {
+                const modal = document.getElementById('imageModal');
+                document.getElementById('modalImage').src = imageSrc;
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                }, 10);
             }
 
-            fabTicking = false;
-        }
+            function closeImageModal() {
+                const modal = document.getElementById('imageModal');
+                modal.classList.add('opacity-0');
 
-        // Throttled scroll handler using requestAnimationFrame
-        window.addEventListener('scroll', function() {
-            if (!fabTicking) {
-                window.requestAnimationFrame(updateFloatingCTA);
-                fabTicking = true;
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }, 300);
             }
-        }, {
-            passive: true
-        });
 
-        // Initial check on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            // Ensure FAB starts hidden
-            floatingCTA.style.transform = 'translateX(-50%) translateY(100%)';
-            floatingCTA.style.opacity = '0';
+            function changeImage(direction) {
+                currentImageIndex += direction;
+                if (currentImageIndex < 0) currentImageIndex = currentImages.length - 1;
+                if (currentImageIndex >= currentImages.length) currentImageIndex = 0;
 
-            // Check scroll position after a short delay
-            setTimeout(updateFloatingCTA, 100);
-        });
-    </script>
-@endsection
+                updateCarouselImage();
+            }
+
+            // Close modals when clicking outside
+            document.getElementById('imageModal').addEventListener('click', function(e) {
+                if (e.target === this || e.target.closest('.flex.items-center.justify-center.min-h-screen') === e
+                    .target) {
+                    closeImageModal();
+                }
+            });
+
+            // Intersection Observer for fade-in animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const fadeInObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        // Unobserve after animation to improve performance
+                        fadeInObserver.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections for animation
+            window.addEventListener('DOMContentLoaded', function() {
+                const sections = document.querySelectorAll('section');
+                sections.forEach((section, index) => {
+                    section.style.opacity = '0';
+                    section.style.transform = 'translateY(20px)';
+                    section.style.transition =
+                        `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`;
+                    fadeInObserver.observe(section);
+                });
+            });
+
+            // Floating CTA Show/Hide on Scroll - Smooth Animation
+            let fabTicking = false;
+            let fabVisible = false;
+            const floatingCTA = document.getElementById('floatingCTA');
+            const scrollThreshold = 400; // Show FAB after scrolling 400px (after hero)
+            const hideDelay = 100; // Small delay before hiding
+            const footer = document.querySelector('footer'); // Assuming there is a footer tag
+
+            function updateFloatingCTA() {
+                const currentScroll = window.scrollY;
+                const shouldShow = currentScroll > scrollThreshold;
+
+                // Check for footer intersection
+                if (footer) {
+                    const footerRect = footer.getBoundingClientRect();
+                    const windowHeight = window.innerHeight;
+
+                    // If footer is entering viewport, adjust FAB
+                    if (footerRect.top < windowHeight) {
+                        const offset = windowHeight - footerRect.top + 24; // 24px padding
+                        floatingCTA.style.bottom = `${offset}px`;
+                    } else {
+                        floatingCTA.style.bottom = '6rem'; // Default bottom-24 (96px)
+                    }
+                }
+
+                // Only update if state changed to prevent unnecessary reflows
+                if (shouldShow !== fabVisible) {
+                    fabVisible = shouldShow;
+
+                    if (shouldShow) {
+                        // Show FAB with smooth slide up and subtle scale
+                        floatingCTA.style.transform = 'translateX(-50%) translateY(0) scale(1)';
+                        floatingCTA.style.opacity = '1';
+                    } else {
+                        // Hide FAB with smooth slide down and scale
+                        setTimeout(() => {
+                            floatingCTA.style.transform = 'translateX(-50%) translateY(100%) scale(0.95)';
+                            floatingCTA.style.opacity = '0';
+                        }, hideDelay);
+                    }
+                }
+
+                fabTicking = false;
+            }
+
+            // Throttled scroll handler using requestAnimationFrame
+            window.addEventListener('scroll', function() {
+                if (!fabTicking) {
+                    window.requestAnimationFrame(updateFloatingCTA);
+                    fabTicking = true;
+                }
+            }, {
+                passive: true
+            });
+
+            // Initial check on page load
+            window.addEventListener('DOMContentLoaded', function() {
+                // Ensure FAB starts hidden
+                floatingCTA.style.transform = 'translateX(-50%) translateY(100%)';
+                floatingCTA.style.opacity = '0';
+                floatingCTA.style.bottom = '6rem'; // Default bottom-24
+
+                // Check scroll position after a short delay
+                setTimeout(updateFloatingCTA, 100);
+            });
+        </script>
+    @endsection
