@@ -14,92 +14,190 @@ class HikerHistoryController extends Controller
         return view('dashboard.pages.hiker-history.index');
     }
 
+    // public function getData(Request $request)
+    // {
+    //     $mountainId = Auth::user()->mountain_id;
+    //     $search = $request->get('search', '');
+    //     $start  = $request->get('start', 0);
+    //     $length = $request->get('length', 10);
+    //     $orderColumn = $request->get('order_column', 'mb.hike_date');
+    //     $orderDir    = $request->get('order_dir', 'desc');
+
+    //     $query = DB::table('mountain_bookings as mb')
+    //         ->join('users as u', 'mb.user_id', '=', 'u.id')
+    //         ->join('mountains as m', 'mb.mountain_id', '=', 'm.id')
+    //         ->leftJoin('mountain_feedbacks as f', 'mb.id', '=', 'f.booking_id')
+    //         ->select(
+    //             'u.id as user_id',
+    //             'u.name as user_name',
+    //             'u.email',
+    //             'u.phone',
+    //             'm.name as mountain_name',
+    //             'm.location as mountain_location',
+    //             'mb.id as booking_id',
+    //             'mb.status',
+    //             'mb.hike_date as start_time',
+    //             'mb.return_date as end_time',
+    //             'mb.total_duration_minutes',
+    //             'mb.checkin_time',
+    //             'mb.checkout_time',
+    //             DB::raw('ROUND(AVG(COALESCE(f.rating, 0)), 1) as avg_rating')
+    //         )
+    //         ->when($mountainId, fn($q) => $q->where('mb.mountain_id', $mountainId))
+    //         ->where('u.user_type', 'pendaki')
+    //         ->groupBy(
+    //             'u.id',
+    //             'u.name',
+    //             'u.email',
+    //             'u.phone',
+    //             'm.name',
+    //             'm.location',
+    //             'mb.id',
+    //             'mb.status',
+    //             'mb.hike_date',
+    //             'mb.return_date',
+    //             'mb.total_duration_minutes',
+    //             'mb.checkin_time',
+    //             'mb.checkout_time'
+    //         );
+
+
+    //     if (!empty($search)) {
+    //         $query->where(function ($q) use ($search) {
+    //             $q->where('u.name', 'LIKE', "%{$search}%")
+    //                 ->orWhere('u.email', 'LIKE', "%{$search}%")
+    //                 ->orWhere('u.phone', 'LIKE', "%{$search}%")
+    //                 ->orWhere('m.name', 'LIKE', "%{$search}%")
+    //                 ->orWhere('m.location', 'LIKE', "%{$search}%")
+    //                 ->orWhere('mb.status', 'LIKE', "%{$search}%");
+    //         });
+    //     }
+
+    //     $totalRecords = $query->count();
+
+    //     $histories = $query->orderBy($orderColumn, $orderDir)
+    //         ->skip($start)
+    //         ->take($length)
+    //         ->get();
+
+    //     $data = $histories->map(function ($history) {
+    //         $durationText = '-';
+    //         if ($history->total_duration_minutes) {
+    //             $hours = floor($history->total_duration_minutes / 60);
+    //             $minutes = $history->total_duration_minutes % 60;
+    //             $durationText = "{$hours} jam {$minutes} menit";
+    //         }
+
+    //         return [
+    //             'user_name'        => $history->user_name,
+    //             'email'            => $history->email,
+    //             'phone'            => $history->phone,
+    //             'mountain_name'    => $history->mountain_name,
+    //             'mountain_location' => $history->mountain_location,
+    //             'start_time'       => $history->start_time ? date('d/m/Y', strtotime($history->start_time)) : '-',
+    //             'end_time'         => $history->end_time ? date('d/m/Y', strtotime($history->end_time)) : '-',
+    //             'total_duration'   => $durationText,
+    //             'avg_rating'       => $history->avg_rating,
+    //             'status'           => ucfirst($history->status),
+    //             'booking_id'       => $history->booking_id
+    //         ];
+    //     });
+
+    //     return response()->json([
+    //         'draw'            => intval($request->get('draw', 1)),
+    //         'recordsTotal'    => $totalRecords,
+    //         'recordsFiltered' => $totalRecords,
+    //         'data'            => $data
+    //     ]);
+    // }
+
     public function getData(Request $request)
-    {
-        $mountainId = Auth::user()->mountain_id;
+{
+    $mountainId = Auth::user()->mountain_id;
+    $search = $request->get('search', '');
+    $start  = $request->get('start', 0);
+    $length = $request->get('length', 10);
+    $orderColumn = $request->get('order_column', 'mb.hike_date');
+    $orderDir    = $request->get('order_dir', 'desc');
 
-        $search = $request->get('search', '');
-        $start  = $request->get('start', 0);
-        $length = $request->get('length', 10);
-        $orderColumn = $request->get('order_column', 'mb.hike_date');
-        $orderDir    = $request->get('order_dir', 'desc');
+    $feedbackAvg = DB::table('mountain_feedbacks')
+        ->select('booking_id', DB::raw('ROUND(AVG(rating), 1) AS avg_rating'))
+        ->groupBy('booking_id');
 
-        $query = DB::table('mountain_bookings as mb')
-            ->join('users as u', 'mb.user_id', '=', 'u.id')
-            ->join('mountains as m', 'mb.mountain_id', '=', 'm.id')
-            ->leftJoin('mountain_feedbacks as f', 'mb.id', '=', 'f.booking_id')
-            ->select(
-                'u.id as user_id',
-                'u.name as user_name',
-                'u.email',
-                'u.phone',
-                'm.name as mountain_name',
-                'm.location as mountain_location',
-                'mb.hike_date as start_time',
-                'mb.return_date as end_time',
-                'mb.total_duration_minutes',
-                'mb.status',
-                'mb.id as booking_id',
-                DB::raw('ROUND(AVG(COALESCE(f.rating, 0)), 1) as avg_rating')
-            )
-            ->when($mountainId, fn($q) => $q->where('mb.mountain_id', $mountainId))
-            ->where('u.user_type', 'pendaki')
-            ->groupBy(
-                'u.id', 'u.name', 'u.email', 'u.phone',
-                'm.name', 'm.location',
-                'mb.hike_date', 'mb.return_date',
-                'mb.total_duration_minutes',
-                'mb.status', 'mb.id'
-            );
+    $query = DB::table('mountain_bookings as mb')
+        ->join('users as u', 'mb.user_id', '=', 'u.id')
+        ->join('mountains as m', 'mb.mountain_id', '=', 'm.id')
+        ->leftJoinSub($feedbackAvg, 'f', function ($join) {
+            $join->on('mb.id', '=', 'f.booking_id');
+        })
+        ->select(
+            'u.id as user_id',
+            'u.name as user_name',
+            'u.email',
+            'u.phone',
+            'm.name as mountain_name',
+            'm.location as mountain_location',
+            'mb.id as booking_id',
+            'mb.status',
+            'mb.hike_date as start_time',
+            'mb.return_date as end_time',
+            'mb.total_duration_minutes',
+            'mb.checkin_time',
+            'mb.checkout_time',
+            DB::raw('COALESCE(f.avg_rating, 0) AS avg_rating')
+        )
+        ->when($mountainId, fn($q) => $q->where('mb.mountain_id', $mountainId))
+        ->where('u.user_type', 'pendaki');
 
-        if (!empty($search)) {
-            $query->where(function ($q) use ($search) {
-                $q->where('u.name', 'LIKE', "%{$search}%")
-                  ->orWhere('u.email', 'LIKE', "%{$search}%")
-                  ->orWhere('u.phone', 'LIKE', "%{$search}%")
-                  ->orWhere('m.name', 'LIKE', "%{$search}%")
-                  ->orWhere('m.location', 'LIKE', "%{$search}%")
-                  ->orWhere('mb.status', 'LIKE', "%{$search}%");
-            });
+    if (!empty($search)) {
+        $query->where(function ($q) use ($search) {
+            $q->where('u.name', 'LIKE', "%{$search}%")
+                ->orWhere('u.email', 'LIKE', "%{$search}%")
+                ->orWhere('u.phone', 'LIKE', "%{$search}%")
+                ->orWhere('m.name', 'LIKE', "%{$search}%")
+                ->orWhere('m.location', 'LIKE', "%{$search}%")
+                ->orWhere('mb.status', 'LIKE', "%{$search}%");
+        });
+    }
+
+    $totalRecords = $query->count();
+
+    $histories = $query->orderBy($orderColumn, $orderDir)
+        ->skip($start)
+        ->take($length)
+        ->get();
+
+    $data = $histories->map(function ($history) {
+        $durationText = '-';
+        if ($history->total_duration_minutes) {
+            $hours = floor($history->total_duration_minutes / 60);
+            $minutes = $history->total_duration_minutes % 60;
+            $durationText = "{$hours} jam {$minutes} menit";
         }
 
-        $totalRecords = $query->count();
+        return [
+            'user_name'        => $history->user_name,
+            'email'            => $history->email,
+            'phone'            => $history->phone,
+            'mountain_name'    => $history->mountain_name,
+            'mountain_location' => $history->mountain_location,
+            'start_time'       => $history->start_time ? date('d/m/Y', strtotime($history->start_time)) : '-',
+            'end_time'         => $history->end_time ? date('d/m/Y', strtotime($history->end_time)) : '-',
+            'total_duration'   => $durationText,
+            'avg_rating'       => $history->avg_rating,
+            'status'           => ucfirst($history->status),
+            'booking_id'       => $history->booking_id
+        ];
+    });
 
-        $histories = $query->orderBy($orderColumn, $orderDir)
-            ->skip($start)
-            ->take($length)
-            ->get();
+    return response()->json([
+        'draw'            => intval($request->get('draw', 1)),
+        'recordsTotal'    => $totalRecords,
+        'recordsFiltered' => $totalRecords,
+        'data'            => $data
+    ]);
+}
 
-        $data = $histories->map(function ($history) {
-            $durationText = '-';
-            if ($history->total_duration_minutes) {
-                $hours = floor($history->total_duration_minutes / 60);
-                $minutes = $history->total_duration_minutes % 60;
-                $durationText = "{$hours} jam {$minutes} menit";
-            }
-
-            return [
-                'user_name'        => $history->user_name,
-                'email'            => $history->email,
-                'phone'            => $history->phone,
-                'mountain_name'    => $history->mountain_name,
-                'mountain_location'=> $history->mountain_location,
-                'start_time'       => $history->start_time ? date('d/m/Y', strtotime($history->start_time)) : '-',
-                'end_time'         => $history->end_time ? date('d/m/Y', strtotime($history->end_time)) : '-',
-                'total_duration'   => $durationText,
-                'avg_rating'       => $history->avg_rating,
-                'status'           => ucfirst($history->status),
-                'booking_id'       => $history->booking_id
-            ];
-        });
-
-        return response()->json([
-            'draw'            => intval($request->get('draw', 1)),
-            'recordsTotal'    => $totalRecords,
-            'recordsFiltered' => $totalRecords,
-            'data'            => $data
-        ]);
-    }
 
     public function show($bookingId)
     {
@@ -154,7 +252,7 @@ class HikerHistoryController extends Controller
         return response()->json([
             'history'          => $history,
             'hiker_logs'       => $hikerLogs,
-            'equipment_rentals'=> $equipmentRentals,
+            'equipment_rentals' => $equipmentRentals,
             'feedback'         => $feedback,
             'total_duration'   => $totalDuration
         ]);

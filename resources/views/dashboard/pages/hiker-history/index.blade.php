@@ -18,12 +18,12 @@
                                     <th>Nama Pendaki</th>
                                     <th>Gunung</th>
                                     <th>Tanggal Pendakian</th>
-                                    <th>Check-in</th>
-                                    <th>Check-out</th>
+                                    {{-- <th>Check-in</th> --}}
+                                    {{-- <th>Check-out</th> --}}
                                     <th>Total Durasi</th>
-                                    <th>Tracking Rute</th>
+                                    {{-- <th>Tracking Rute</th> --}}
                                     <th>Status</th>
-                                    <th>Actions</th>
+                                    {{-- <th>Actions</th> --}}
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
@@ -175,85 +175,177 @@
                 });
             }
 
-            function renderTable(data) {
-                let html = '';
-                data.forEach(function(history) {
-                    let statusBadge = getStatusBadge(history.status);
-                    let trackingBadge = getTrackingBadge(history.has_tracking, history.tracking_info);
+        //     function renderTable(data) {
+        //         let html = '';
 
-                    html += `
-                <tr>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <i class="icon-base ri ri-user-3-line icon-22px text-info me-3"></i>
-                            <div>
-                                <span class="fw-medium">${history.user_name}</span>
-                                <br>
-                                <small class="text-muted">${history.email}</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <i class="icon-base ri ri-mountain-line icon-22px text-success me-2"></i>
-                            <div>
-                                <span class="fw-medium">${history.mountain_name}</span>
-                                <br>
-                                <small class="text-muted">${history.mountain_location}</small>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div>
-                            <span class="fw-medium">${history.hike_date}</span>
-                            ${history.return_date !== '-' ? '<br><small class="text-muted">s/d ' + history.return_date + '</small>' : ''}
-                        </div>
-                    </td>
-                    <td>
-                        <span class="badge bg-label-success">${history.checkin_time}</span>
-                    </td>
-                    <td>
-                        ${history.checkout_time !== '-' ? 
-                            '<span class="badge bg-label-primary">' + history.checkout_time + '</span>' : 
-                            '<span class="badge bg-label-warning">Belum checkout</span>'
-                        }
-                    </td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <i class="icon-base ri ri-time-line icon-18px text-primary me-2"></i>
-                            <span class="fw-medium">${history.total_duration}</span>
-                        </div>
-                    </td>
-                    <td>${trackingBadge}</td>
-                    <td>${statusBadge}</td>
-                    <td>
-                        <div class="dropdown">
-                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none" data-bs-toggle="dropdown">
-                                <i class="icon-base ri ri-more-2-line icon-18px"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="javascript:void(0);" onclick="viewDetail(${history.booking_id})">
-                                    <i class="icon-base ri ri-eye-line icon-18px me-2"></i>
-                                    Lihat Detail
-                                </a>
-                                ${history.has_tracking ? 
-                                    '<a class="dropdown-item" href="javascript:void(0);" onclick="viewTracking(' + history.booking_id + ')">' +
-                                    '<i class="icon-base ri ri-map-pin-line icon-18px me-2"></i>' +
-                                    'Lihat Rute' +
-                                    '</a>' : ''
-                                }
-                                <a class="dropdown-item" href="javascript:void(0);" onclick="exportData(${history.booking_id})">
-                                    <i class="icon-base ri ri-download-line icon-18px me-2"></i>
-                                    Export Data
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            `;
-                });
-                $('#hikerHistoryTable tbody').html(html);
-            }
+        //         data.forEach(history => {
+        //             const userName = history.user_name ?? '-';
+        //             const email = history.email ?? '-';
+        //             const mountainName = history.mountain_name ?? '-';
+        //             const mountainLocation = history.mountain_location ?? '-';
+        //             const startTime = history.start_time ?? '-';
+        //             const endTime = history.return_date ?? '-';
+        //             const checkinTime = history.checkin_time ?? '-';
+        //             const checkoutTime = history.checkout_time ?? '-';
+        //             const duration = history.total_duration ?? '-';
+        //             const bookingId = history.booking_id ?? 'null';
+
+        //             const statusBadge = getStatusBadge(history.status);
+        //             const trackingBadge = getTrackingBadge(history.has_tracking, history.tracking_info);
+
+        //             html += `
+        // <tr>
+        //     <td>
+        //         <div class="d-flex align-items-center">
+        //             <i class="icon-base ri ri-user-3-line icon-22px text-info me-3"></i>
+        //             <div>
+        //                 <span class="fw-medium">${userName}</span><br>
+        //                 <small class="text-muted">${email}</small>
+        //             </div>
+        //         </div>
+        //     </td>
+
+        //     <td>
+        //         <div class="d-flex align-items-center">
+        //             <i class="icon-base ri ri-mountain-line icon-22px text-success me-2"></i>
+        //             <div>
+        //                 <span class="fw-medium">${mountainName}</span><br>
+        //                 <small class="text-muted">${mountainLocation}</small>
+        //             </div>
+        //         </div>
+        //     </td>
+
+        //     <td>
+        //         <div>
+        //             <span class="fw-medium">${startTime}</span>
+        //             ${endTime && endTime !== '-' ? `<br><small class="text-muted">s/d ${endTime}</small>` : ''}
+        //         </div>
+        //     </td>
+
+        //     <td>
+        //         <span class="badge bg-label-success">
+        //             ${checkinTime !== '-' ? checkinTime : 'Belum check-in'}
+        //         </span>
+        //     </td>
+
+        //     <td>
+        //         ${
+        //             checkoutTime && checkoutTime !== '-' 
+        //             ? `<span class="badge bg-label-primary">${checkoutTime}</span>`
+        //             : '<span class="badge bg-label-warning">Belum checkout</span>'
+        //         }
+        //     </td>
+
+        //     <td>
+        //         <div class="d-flex align-items-center">
+        //             <i class="icon-base ri ri-time-line icon-18px text-primary me-2"></i>
+        //             <span class="fw-medium">${duration}</span>
+        //         </div>
+        //     </td>
+
+        //     <td>${trackingBadge}</td>
+
+        //     <td>${statusBadge}</td>
+
+        //     <td>
+        //         <div class="dropdown">
+        //             <button type="button" class="btn p-0 dropdown-toggle hide-arrow shadow-none" data-bs-toggle="dropdown">
+        //                 <i class="icon-base ri ri-more-2-line icon-18px"></i>
+        //             </button>
+        //             <div class="dropdown-menu">
+
+        //                 <a class="dropdown-item" href="javascript:void(0);" onclick="viewDetail(${bookingId})">
+        //                     <i class="icon-base ri ri-eye-line icon-18px me-2"></i>
+        //                     Lihat Detail
+        //                 </a>
+
+        //                 ${
+        //                     history.has_tracking
+        //                     ? `
+        //                             <a class="dropdown-item" href="javascript:void(0);" onclick="viewTracking(${bookingId})">
+        //                                 <i class="icon-base ri ri-map-pin-line icon-18px me-2"></i>
+        //                                 Lihat Rute
+        //                             </a>
+        //                           `
+        //                     : ''
+        //                 }
+
+        //                 <a class="dropdown-item" href="javascript:void(0);" onclick="exportData(${bookingId})">
+        //                     <i class="icon-base ri ri-download-line icon-18px me-2"></i>
+        //                     Export Data
+        //                 </a>
+
+        //             </div>
+        //         </div>
+        //     </td>
+        // </tr>
+        // `;
+        //         });
+
+        //         $('#hikerHistoryTable tbody').html(html);
+        //     }
+
+function renderTable(data) {
+    let html = '';
+
+    data.forEach(history => {
+        const userName = history.user_name ?? '-';
+        const email = history.email ?? '-';
+        const mountainName = history.mountain_name ?? '-';
+        const mountainLocation = history.mountain_location ?? '-';
+        const startTime = history.start_time ?? '-';
+        const endTime = history.end_time ?? '-';
+        const duration = history.total_duration ?? '-';
+        const rating = history.avg_rating ?? '-';
+        const statusBadge = getStatusBadge(history.status);
+        const bookingId = history.booking_id ?? 'null';
+
+        html += `
+        <tr>
+            <td>
+                <div class="d-flex align-items-center">
+                    <i class="icon-base ri ri-user-3-line icon-22px text-info me-3"></i>
+                    <div>
+                        <span class="fw-medium">${userName}</span><br>
+                        <small class="text-muted">${email}</small>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div class="d-flex align-items-center">
+                    <i class="icon-base ri ri-mountain-line icon-22px text-success me-2"></i>
+                    <div>
+                        <span class="fw-medium">${mountainName}</span><br>
+                        <small class="text-muted">${mountainLocation}</small>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div>
+                    <span class="fw-medium">${startTime}</span>
+                    ${endTime !== '-' ? `<br><small class="text-muted">s/d ${endTime}</small>` : ''}
+                </div>
+            </td>
+
+            <td>
+                <div class="d-flex align-items-center">
+                    <i class="icon-base ri ri-time-line icon-18px text-primary me-2"></i>
+                    <span class="fw-medium">${duration}</span>
+                </div>
+            </td>
+
+           
+
+            <td>${statusBadge}</td>
+        </tr>
+        `;
+    });
+
+    $('#hikerHistoryTable tbody').html(html);
+}
+
 
             function getStatusBadge(status) {
                 let badgeClass = '';
@@ -508,46 +600,46 @@
             </div>
 
             ${membersHtml ? `
-                    <div class="mt-4">
-                        <h6>Anggota Tim</h6>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                        <th>NIK</th>
-                                        <th>Telepon</th>
-                                        <th>Kontak Darurat</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${membersHtml}
-                                </tbody>
-                            </table>
+                        <div class="mt-4">
+                            <h6>Anggota Tim</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama</th>
+                                            <th>NIK</th>
+                                            <th>Telepon</th>
+                                            <th>Kontak Darurat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${membersHtml}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    ` : ''}
+                        ` : ''}
 
             ${equipmentHtml ? `
-                    <div class="mt-4">
-                        <h6>Penyewaan Peralatan</h6>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Nama Peralatan</th>
-                                        <th>Jumlah</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${equipmentHtml}
-                                </tbody>
-                            </table>
+                        <div class="mt-4">
+                            <h6>Penyewaan Peralatan</h6>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Peralatan</th>
+                                            <th>Jumlah</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${equipmentHtml}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    ` : ''}
+                        ` : ''}
         `;
 
                 $('#detailContent').html(detailHtml);
