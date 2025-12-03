@@ -13,60 +13,61 @@ class MountainHikerController extends Controller
     {
         return view('dashboard.pages.mountain-hikers.index');
     }
-        
+
     public function getList(Request $request)
-{
-    $mountainId = Auth::user()->mountain_id;
+    {
+        $mountainId = Auth::user()->mountain_id;
 
-    $bookings = DB::table('mountain_bookings as mb')
-        ->join('users as u', 'u.id', '=', 'mb.user_id')
-        ->leftJoin('mountain_hiker_status as hs', 'mb.id', '=', 'hs.booking_id')
-        ->leftJoin('mountain_devices as d', 'hs.device_id', '=', 'd.id')
-        ->select(
-            'mb.id as booking_id',
-            'u.name as user_name',
-            'u.phone',
-            'mb.hike_date',
-            'mb.return_date',
-            'mb.team_size',
-            'hs.device_id'
-        )
-        ->where('mb.mountain_id', $mountainId)
-        ->where('mb.status', 'active')
-        ->groupBy(
-            'mb.id', 
-            'u.name', 
-            'u.phone', 
-            'mb.hike_date', 
-            'mb.return_date', 
-            'mb.team_size', 
-            'hs.device_id'
-        )
-        ->get();
+        $bookings = DB::table('mountain_bookings as mb')
+            ->join('users as u', 'u.id', '=', 'mb.user_id')
+            ->leftJoin('mountain_hiker_status as hs', 'mb.id', '=', 'hs.booking_id')
+            ->leftJoin('mountain_devices as d', 'hs.device_id', '=', 'd.id')
+            ->select(
+                'mb.id as booking_id',
+                'u.name as user_name',
+                'u.phone',
+                'mb.hike_date',
+                'mb.return_date',
+                'mb.team_size',
+                'hs.device_id'
+            )
+            ->where('mb.mountain_id', $mountainId)
+            ->where('mb.status', 'active')
+            ->groupBy(
+                'mb.id',
+                'u.name',
+                'u.phone',
+                'mb.hike_date',
+                'mb.return_date',
+                'mb.team_size',
+                'hs.device_id'
+            )
+            ->get();
 
-    $data = $bookings->map(function ($b) {
-        if (!$b->device_id) {
-            $b->lattitude = null;
-            $b->longitude = null;
-            $b->timestamp = null;
+        $data = $bookings->map(function ($b) {
+            if (!$b->device_id) {
+                $b->lattitude = null;
+                $b->longitude = null;
+                $b->timestamp = null;
+                return $b;
+            }
+
+            $lastLog = DB::table('mountain_hiker_logs as hl')
+                ->where('hl.device_id', $b->device_id)
+                ->whereNotNull('hl.lattitude')
+                ->whereNotNull('hl.longitude')
+                ->orderByDesc('hl.timestamp')
+                ->first(['hl.lattitude', 'hl.longitude', 'hl.timestamp']);
+
+            $b->lattitude = $lastLog->lattitude ?? null;
+            $b->longitude = $lastLog->longitude ?? null;
+            $b->timestamp = $lastLog->timestamp ?? null;
             return $b;
-        }
+        });
 
-        $lastLog = DB::table('mountain_hiker_logs as hl')
-            ->where('hl.device_id', $b->device_id)
-            ->whereNotNull('hl.lattitude')
-            ->whereNotNull('hl.longitude')
-            ->orderByDesc('hl.timestamp')
-            ->first(['hl.lattitude', 'hl.longitude', 'hl.timestamp']);
+        return response()->json(['data' => $data]);
+    }
 
-        $b->lattitude = $lastLog->lattitude ?? null;
-        $b->longitude = $lastLog->longitude ?? null;
-        $b->timestamp = $lastLog->timestamp ?? null;
-        return $b;
-    });
-
-    return response()->json(['data' => $data]);
-}
 public function getLogs(Request $request)
 {
     $bookingId = $request->get('id');
@@ -79,15 +80,24 @@ public function getLogs(Request $request)
         return response()->json(['logs' => []]);
     }
 
-    $logs = DB::table('mountain_hiker_logs')
-        ->where('device_id', $device)
-        ->whereNotNull('lattitude')
-        ->whereNotNull('longitude')
-        ->orderByDesc('timestamp')
-        ->limit(50)
-        ->get(['lattitude', 'longitude', 'timestamp', 'heart_rate', 'spo2', 'stress_level']);
+    $fields = ['lattitude', 'longitude', 'heart_rate', 'spo2', 'stress_level'];
+    $log = [];
 
-    return response()->json(['logs' => $logs]);
+    foreach ($fields as $field) {
+        $log[$field] = DB::table('mountain_hiker_logs')
+            ->where('device_id', $device)
+            ->whereNotNull($field)
+            ->orderByDesc('timestamp')
+            ->value($field);
+    }
+
+    $log['timestamp'] = DB::table('mountain_hiker_logs')
+        ->where('device_id', $device)
+        ->orderByDesc('timestamp')
+        ->value('timestamp');
+
+    return response()->json(['logs' => $log]);
 }
+
 
 }

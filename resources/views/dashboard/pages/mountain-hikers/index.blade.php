@@ -87,180 +87,178 @@
 @endpush
 
 @push('scripts')
-    <script>
-        $(document).ready(function() {
-            let logsCache = {}
-            let activeBookingId = null
-            let mapInstance = null
-            let overlayPopup = null
+<script>
+$(document).ready(function() {
+    let logsCache = {}
+    let activeBookingId = null
+    let mapInstance = null
+    let overlayPopup = null
 
-            function loadHikers() {
-                $('#hikerTable tbody').html(
-                    '<tr><td colspan="6" class="text-center text-muted p-3">Memuat data...</td></tr>')
-                $.ajax({
-                    url: '{{ route('mountain_hikers.list') }}',
-                    method: 'GET',
-                    success: function(res) {
-                        const hikers = res.data || []
-                        if (hikers.length === 0) {
-                            $('#hikerTable tbody').html(
-                                '<tr><td colspan="6" class="text-center text-muted p-3">Tidak ada pendaki aktif.</td></tr>'
-                                )
-                            return
-                        }
-                        let html = ''
-                        $.each(hikers, function(_, h) {
-                            html += `
-                    <tr>
-                        <td>${h.user_name}</td>
-                        <td>${h.phone ?? '-'}</td>
-                        <td><small>${h.hike_date} - ${h.return_date}</small></td>
-                        <td>${h.team_size}</td>
-                        <td>${h.lattitude} - ${h.longitude}</td>
-                        <td>
-                            <button class="btn btn-sm btn-info view-map" data-id="${h.booking_id}">
-                                Lihat
-                            </button>
-                        </td>
-                    </tr>`
-                        })
-                        $('#hikerTable tbody').html(html)
-                    }
-                })
-            }
-
-            $(document).on('click', '.view-map', function() {
-                activeBookingId = $(this).data('id')
-                $('#logDetails').html('<p class="text-muted m-3">Memuat data lokasi...</p>')
-                $('#mapModal').modal('show')
-            })
-
-            $('#mapModal').on('shown.bs.modal', function() {
-                if (!activeBookingId) return
-                if (logsCache[activeBookingId]) renderMap(logsCache[activeBookingId])
-                else {
-                    $.ajax({
-                        url: '{{ route('mountain_hikers.logs') }}',
-                        method: 'GET',
-                        data: {
-                            id: activeBookingId
-                        },
-                        success: function(res) {
-                            const logs = res.logs || []
-                            logsCache[activeBookingId] = logs
-                            renderMap(logs)
-                        },
-                        error: function() {
-                            $('#logDetails').html(
-                                '<div class="alert alert-danger m-3">Gagal memuat data.</div>'
-                                )
-                        }
-                    })
-                }
-            })
-
-            function renderMap(logs) {
-                if (mapInstance) {
-                    mapInstance.setTarget(null);
-                    mapInstance = null
-                }
-
-                if (logs.length === 0) {
-                    $('#logDetails').html(
-                        '<div class="alert alert-warning m-3">Tidak ada data lokasi ditemukan.</div>')
-                    $('#infoContent').html('Tidak ada titik ditemukan.')
+    function loadHikers() {
+        $('#hikerTable tbody').html(
+            '<tr><td colspan="6" class="text-center text-muted p-3">Memuat data...</td></tr>')
+        $.ajax({
+            url: '{{ route('mountain_hikers.list') }}',
+            method: 'GET',
+            success: function(res) {
+                const hikers = res.data || []
+                if (hikers.length === 0) {
+                    $('#hikerTable tbody').html(
+                        '<tr><td colspan="6" class="text-center text-muted p-3">Tidak ada pendaki aktif.</td></tr>')
                     return
                 }
-
-                const first = logs[0]
-                const features = logs.map(log => new ol.Feature({
-                    geometry: new ol.geom.Point(
-                        ol.proj.fromLonLat([
-                            parseFloat(log.longitude),
-                            parseFloat(log.lattitude)
-                        ])
-                    ),
-                    data: log
-                }))
-
-                const vectorSource = new ol.source.Vector({
-                    features
+                let html = ''
+                $.each(hikers, function(_, h) {
+                    html += `
+                        <tr>
+                            <td>${h.user_name}</td>
+                            <td>${h.phone ?? '-'}</td>
+                            <td><small>${h.hike_date} - ${h.return_date}</small></td>
+                            <td>${h.team_size}</td>
+                            <td>${h.lattitude} - ${h.longitude}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info view-map" data-id="${h.booking_id}">
+                                    Lihat
+                                </button>
+                            </td>
+                        </tr>`
                 })
-                const vectorLayer = new ol.layer.Vector({
-                    source: vectorSource,
-                    style: new ol.style.Style({
-                        image: new ol.style.Icon({
-                            anchor: [0.5, 1],
-                            src: 'https://cdn-icons-png.flaticon.com/512/535/535239.png',
-                            scale: 0.06
-                        })
-                    })
-                })
+                $('#hikerTable tbody').html(html)
+            }
+        })
+    }
 
-                mapInstance = new ol.Map({
-                    target: 'hikerMap',
-                    layers: [
-                        new ol.layer.Tile({
-                            source: new ol.source.OSM()
-                        }),
-                        vectorLayer
-                    ],
-                    view: new ol.View({
-                        center: ol.proj.fromLonLat([
-                            parseFloat(first.longitude),
-                            parseFloat(first.lattitude)
-                        ]),
-                        zoom: 10
-                    }),
-                    controls: []
-                })
+    $(document).on('click', '.view-map', function() {
+        activeBookingId = $(this).data('id')
+        $('#logDetails').html('<p class="text-muted m-3">Memuat data lokasi...</p>')
+        $('#mapModal').modal('show')
+    })
 
-                const extent = vectorSource.getExtent()
-                mapInstance.getView().fit(extent, {
-                    size: mapInstance.getSize(),
-                    padding: [100, 100, 100, 100],
-                    duration: 800,
-                    maxZoom: 13
-                })
+    $('#mapModal').on('shown.bs.modal', function() {
+        if (!activeBookingId) return
+        if (logsCache[activeBookingId]) renderMap(logsCache[activeBookingId])
+        else {
+            $.ajax({
+                url: '{{ route('mountain_hikers.logs') }}',
+                method: 'GET',
+                data: { id: activeBookingId },
+                success: function(res) {
 
-                const popup = document.createElement('div')
-                popup.className = 'ol-popup'
-                overlayPopup = new ol.Overlay({
-                    element: popup,
-                    autoPan: true,
-                    autoPanAnimation: {
-                        duration: 250
-                    }
-                })
-                mapInstance.addOverlay(overlayPopup)
+                    let logs = res.logs || {}
 
-                mapInstance.on('click', function(evt) {
-                    const feature = mapInstance.forEachFeatureAtPixel(evt.pixel, f => f)
-                    if (feature) {
-                        const d = feature.get('data')
-                        popup.innerHTML = `
+                    // pastikan menjadi array agar map bekerja
+                    logs = Array.isArray(logs) ? logs : [logs]
+
+                    logsCache[activeBookingId] = logs
+                    renderMap(logs)
+                },
+                error: function() {
+                    $('#logDetails').html(
+                        '<div class="alert alert-danger m-3">Gagal memuat data.</div>')
+                }
+            })
+        }
+    })
+
+    function renderMap(logs) {
+
+        if (mapInstance) {
+            mapInstance.setTarget(null);
+            mapInstance = null
+        }
+
+        if (!logs || logs.length === 0 || !logs[0].lattitude || !logs[0].longitude) {
+            $('#logDetails').html(
+                '<div class="alert alert-warning m-3">Tidak ada data lokasi ditemukan.</div>')
+            $('#infoContent').html('Tidak ada titik ditemukan.')
+            return
+        }
+
+        const first = logs[0]
+
+        const features = logs.map(log => new ol.Feature({
+            geometry: new ol.geom.Point(
+                ol.proj.fromLonLat([
+                    parseFloat(log.longitude),
+                    parseFloat(log.lattitude)
+                ])
+            ),
+            data: log
+        }))
+
+        const vectorSource = new ol.source.Vector({ features })
+        const vectorLayer = new ol.layer.Vector({
+            source: vectorSource,
+            style: new ol.style.Style({
+                image: new ol.style.Icon({
+                    anchor: [0.5, 1],
+                    src: 'https://cdn-icons-png.flaticon.com/512/535/535239.png',
+                    scale: 0.06
+                })
+            })
+        })
+
+        mapInstance = new ol.Map({
+            target: 'hikerMap',
+            layers: [
+                new ol.layer.Tile({ source: new ol.source.OSM() }),
+                vectorLayer
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([
+                    parseFloat(first.longitude),
+                    parseFloat(first.lattitude)
+                ]),
+                zoom: 13
+            }),
+            controls: []
+        })
+
+        const extent = vectorSource.getExtent()
+        mapInstance.getView().fit(extent, {
+            size: mapInstance.getSize(),
+            padding: [100, 100, 100, 100],
+            duration: 800,
+            maxZoom: 14
+        })
+
+        const popup = document.createElement('div')
+        popup.className = 'ol-popup'
+        overlayPopup = new ol.Overlay({
+            element: popup,
+            autoPan: true,
+            autoPanAnimation: { duration: 250 }
+        })
+        mapInstance.addOverlay(overlayPopup)
+
+        mapInstance.on('click', function(evt) {
+            const feature = mapInstance.forEachFeatureAtPixel(evt.pixel, f => f)
+            if (feature) {
+                const d = feature.get('data')
+                popup.innerHTML = `
                     <b>${d.timestamp}</b><br>
                     ❤️ BPM: ${d.heart_rate ?? '-'}<br>
                     🩸 SpO₂: ${d.spo2 ?? '-'}<br>
                     😌 Stres: ${d.stress_level ?? '-'}
                 `
-                        overlayPopup.setPosition(feature.getGeometry().getCoordinates())
-                        $('#infoContent').html(`
+                overlayPopup.setPosition(feature.getGeometry().getCoordinates())
+                $('#infoContent').html(`
                     <b>Waktu:</b> ${d.timestamp}<br>
                     <b>BPM:</b> ${d.heart_rate ?? '-'} | <b>SpO₂:</b> ${d.spo2 ?? '-'}<br>
                     <b>Stres:</b> ${d.stress_level ?? '-'}
                 `)
-                    } else {
-                        overlayPopup.setPosition(undefined)
-                    }
-                })
-
-                $('#logDetails').html(`Total titik: ${logs.length}`)
-                $('#infoContent').html('Klik marker untuk melihat detail data kesehatan.')
+            } else {
+                overlayPopup.setPosition(undefined)
             }
-
-            $('#refreshList').click(loadHikers)
-            loadHikers()
         })
-    </script>
+
+        $('#logDetails').html(`Total titik: ${logs.length}`)
+        $('#infoContent').html('Klik marker untuk melihat detail data kesehatan.')
+    }
+
+    $('#refreshList').click(loadHikers)
+    loadHikers()
+})
+</script>
+
 @endpush
