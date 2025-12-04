@@ -20,7 +20,6 @@ class HikerLinkController extends Controller
                 $b->members = json_decode($b->members, true) ?: [];
                 return $b;
             });
-
         $devices = DB::table('mountain_devices')
             ->select('id', 'battery_level')
             ->orderBy('id')

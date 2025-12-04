@@ -104,6 +104,26 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(function() {
+            // $('#bookingSelect').on('change', function() {
+            //     const members = $(this).find(':selected').data('members');
+            //     const $memberSelect = $('#memberSelect');
+
+            //     $memberSelect.empty().append('<option value="">Pilih Member</option>');
+
+            //     if (Array.isArray(members)) {
+            //         members.forEach(m => {
+            //             $memberSelect.append(
+            //                 $('<option>', {
+            //                     value: m,
+            //                     text: m,
+            //                     'data-nik': '',
+            //                     'data-phone': ''
+            //                 })
+            //             );
+            //         });
+            //     }
+            // });
+
             $('#bookingSelect').on('change', function() {
                 const members = $(this).find(':selected').data('members');
                 const $memberSelect = $('#memberSelect');
@@ -114,20 +134,30 @@
                     members.forEach(m => {
                         $memberSelect.append(
                             $('<option>', {
-                                value: m,
-                                text: m,
-                                'data-nik': '',
-                                'data-phone': ''
+                                value: m.name,
+                                text: `${m.name} - ${m.email} - ${m.phone} - ${m.nik}`,
+                                'data-nik': m.nik,
+                                'data-phone': m.phone
                             })
                         );
                     });
                 }
             });
 
+
+            // $('#memberSelect').on('change', function() {
+            //     $('#memberNik').val(''); 
+            //     $('#memberPhone').val('');
+            // });
+
             $('#memberSelect').on('change', function() {
-                $('#memberNik').val(''); 
-                $('#memberPhone').val('');
+                const nik = $(this).find(':selected').data('nik');
+                const phone = $(this).find(':selected').data('phone');
+
+                $('#memberNik').val(nik);
+                $('#memberPhone').val(phone);
             });
+
 
         });
     </script>
